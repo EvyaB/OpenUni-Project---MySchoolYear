@@ -1,0 +1,28 @@
+﻿<Window x:Class="MySchoolYear.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MySchoolYear"
+        xmlns:views = "clr-namespace:MySchoolYear.View"
+        mc:Ignorable="d"
+        Title="MySchoolYear" Height="300" Width="500"
+        Background = "{StaticResource WindowBackgroundBrush}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1.5*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Image Grid.Row="0" Source="View/Utilities/LogoImage.png" Stretch="Fill"/>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1.5
+                                  *"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+            <TextBox Grid.Column="1" Style="{StaticResource placeHolderTextBox}" Tag="שם משתמש..." VerticalAlignment="Center" Margin="0,0,0,50"/>
+            <PasswordBox Grid.Column="2" VerticalAlignment="Center" Margin="0,30,0,0"/>
+            <Button Grid.Column="0" Content="התחבר" VerticalAlignment="Center"/>
+        </Grid>
+    </Grid>
+</Window>
