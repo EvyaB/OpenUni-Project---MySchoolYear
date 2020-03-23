@@ -1,10 +1,9 @@
-﻿<Window x:Class="MySchoolYear.MainWindow"
+﻿<Window x:Class="MySchoolYear.LoginWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MySchoolYear"
-        xmlns:views = "clr-namespace:MySchoolYear.View"
+        x:Name="ThisLoginWindow"
         mc:Ignorable="d"
         Title="MySchoolYear" Height="300" Width="500"
         Background = "{StaticResource WindowBackgroundBrush}">
@@ -20,9 +19,13 @@
                                   *"/>
                 <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
-            <TextBox Grid.Column="1" Style="{StaticResource placeHolderTextBox}" Tag="שם משתמש..." VerticalAlignment="Center" Margin="0,0,0,50"/>
-            <PasswordBox Grid.Column="2" VerticalAlignment="Center" Margin="0,30,0,0"/>
-            <Button Grid.Column="0" Content="התחבר" VerticalAlignment="Center"/>
+
+            <TextBox Grid.Column="1" VerticalAlignment="Center" Margin="65,19,36,59" MaxLength="16"
+                     Style="{StaticResource placeHolderTextBox}" Tag="שם משתמש..." Text="{Binding Path = Username}" Width="Auto" />
+            <PasswordBox x:Name="PasswordText" Grid.Column="1" VerticalAlignment="Center" Margin="65,59,36,19" MaxLength="16" Width="Auto" Tag="סיסמא..."/>
+
+            <Button Grid.Column="0" Content="התחבר" VerticalAlignment="Center" 
+                    Command="{Binding Path=LoginCommand}" CommandParameter="{Binding ElementName=ThisLoginWindow}"/>
         </Grid>
     </Grid>
 </Window>

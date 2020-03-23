@@ -199,14 +199,20 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Model\Globals.cs" />
     <Compile Include="Model\User.cs">
       <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\LoginViewModel.cs" />
+    <Compile Include="ViewModel\Utilities\BaseViewModel.cs" />
+    <Compile Include="ViewModel\Utilities\IHavePassword.cs" />
     <Compile Include="ViewModel\Utilities\RelayCommand.cs" />
+    <Compile Include="ViewModel\Utilities\ValidityResult.cs" />
+    <Compile Include="View\Utilities\WPFMessageBoxService.cs" />
     <Compile Include="View\UserView.xaml.cs">
       <DependentUpon>UserView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\Utilities\IMessageBoxService.cs" />
     <Compile Include="View\Utilities\PasswordBoxMonitor.cs" />
     <Page Include="LoginWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
