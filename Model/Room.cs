@@ -12,20 +12,21 @@ namespace MySchoolYear.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class User
+    public partial class Room
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public User()
+        public Room()
         {
-            this.Persons = new HashSet<Person>();
+            this.Classes = new HashSet<Class>();
+            this.Lessons = new HashSet<Lesson>();
         }
     
-        public int userID { get; set; }
-        public string username { get; set; }
-        public string password { get; set; }
-        public bool isDisabled { get; set; }
+        public int roomID { get; set; }
+        public string roomName { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Person> Persons { get; set; }
+        public virtual ICollection<Class> Classes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Lesson> Lessons { get; set; }
     }
 }

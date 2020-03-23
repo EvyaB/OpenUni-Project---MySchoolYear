@@ -12,12 +12,7 @@ namespace MySchoolYear.ViewModel
     public class LoginViewModel : BaseViewModel
     {
         #region Data Members
-        private bool didLoginFail;
-        private string loginErrorMessage;
-
-        #region Services
         private IMessageBoxService messageBoxService;
-        #endregion
         #endregion
 
         #region Properties
