@@ -241,13 +241,14 @@
     <Compile Include="ViewModel\Utilities\IHavePassword.cs" />
     <Compile Include="ViewModel\Utilities\RelayCommand.cs" />
     <Compile Include="ViewModel\Utilities\ValidityResult.cs" />
+    <Compile Include="View\Utilities\ViewModelLocator.cs" />
     <Compile Include="View\Utilities\WPFMessageBoxService.cs" />
     <Compile Include="View\UserView.xaml.cs">
       <DependentUpon>UserView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\Utilities\IMessageBoxService.cs" />
     <Compile Include="View\Utilities\PasswordBoxMonitor.cs" />
-    <Page Include="LoginWindow.xaml">
+    <Page Include="View\LoginWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -256,15 +257,19 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="LoginWindow.xaml.cs">
+    <Compile Include="View\LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="View\Utilities\TemplatesDictionary.xaml">
+    <Page Include="View\Dictionaries\ServicesDictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Utilities\ViewDictionary.xaml">
+    <Page Include="View\Dictionaries\TemplatesDictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Dictionaries\ViewDictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

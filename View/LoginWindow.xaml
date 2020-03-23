@@ -1,4 +1,4 @@
-﻿<Window x:Class="MySchoolYear.LoginWindow"
+﻿<Window x:Class="MySchoolYear.View.LoginWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,13 +6,15 @@
         x:Name="ThisLoginWindow"
         mc:Ignorable="d"
         Title="MySchoolYear" Height="300" Width="500"
-        Background = "{StaticResource WindowBackgroundBrush}">
+        Background = "{StaticResource WindowBackgroundBrush}"
+        xmlns:viewUtils="clr-namespace:MySchoolYear.View.Utilities"
+        viewUtils:ViewModelLocator.AutoHookedUpViewModel = "True">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1.5*"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
-        <Image Grid.Row="0" Source="View/Utilities/LogoImage.png" Stretch="Fill"/>
+        <Image Grid.Row="0" Source="Utilities/LogoImage.png" Stretch="Fill"/>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1.5

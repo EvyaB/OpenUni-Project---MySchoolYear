@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Security;
+using System.Windows;
 using MySchoolYear.Model;
 using MySchoolYear.ViewModel.Utilities;
 
@@ -25,10 +26,9 @@ namespace MySchoolYear.ViewModel
         #endregion
 
         #region Constructor/Destructors
-        public LoginViewModel(IMessageBoxService messageBoxService)
+        public LoginViewModel()
         {
-            this.messageBoxService = messageBoxService;
-
+            this.messageBoxService = Application.Current.Resources["MessageBoxService"] as IMessageBoxService;
             this.LoginCommand = new RelayCommand(param => AttemptLoginCommand(param));
         }
         #endregion
@@ -62,13 +62,13 @@ namespace MySchoolYear.ViewModel
                 // Report incorrect user credentials error.
                 else
                 {
-                    this.messageBoxService.ShowMessage("שם המשתמש ו/או הסיסמא שגויים!", "NOOOOO!", MessageType.OK_MESSAGE, MessagePurpose.ERROR);
+                    this.messageBoxService.ShowMessage("שם המשתמש ו/או הסיסמא שגויים!", "Login Failed!", MessageType.OK_MESSAGE, MessagePurpose.ERROR);
                 }
             }
             // Report invalid credentials error.
             else
             {
-                this.messageBoxService.ShowMessage(validInput.ErrorReport, "NOOOOO!", MessageType.OK_MESSAGE, MessagePurpose.ERROR);
+                this.messageBoxService.ShowMessage(validInput.ErrorReport, "Login Failed!", MessageType.OK_MESSAGE, MessagePurpose.ERROR);
             }
         }
 

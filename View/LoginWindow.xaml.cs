@@ -4,7 +4,7 @@ using MySchoolYear.View.Utilities;
 using MySchoolYear.ViewModel;
 using MySchoolYear.ViewModel.Utilities;
 
-namespace MySchoolYear
+namespace MySchoolYear.View
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -14,8 +14,8 @@ namespace MySchoolYear
         public LoginWindow()
         {
             InitializeComponent();
-            LoginViewModel VM = new LoginViewModel(new WPFMessageBoxService());
-            this.DataContext = VM;
+            //LoginViewModel VM = new LoginViewModel(new WPFMessageBoxService());
+            //this.DataContext = VM;
         }
 
         /// <summary>
