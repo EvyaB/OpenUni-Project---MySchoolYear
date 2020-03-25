@@ -15,9 +15,10 @@ namespace MySchoolYear.Model
     public partial class Message
     {
         public int messageID { get; set; }
-        public int senderID { get; set; }
+        public Nullable<int> senderID { get; set; }
         public Nullable<int> recipientID { get; set; }
         public Nullable<int> recipientClassID { get; set; }
+        public bool forAllManagement { get; set; }
         public bool forAllTeachers { get; set; }
         public bool forAllStudents { get; set; }
         public bool forEveryone { get; set; }

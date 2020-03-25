@@ -54,10 +54,10 @@ namespace MySchoolYear.ViewModel
                 var myAccount = mySchool.Users.SingleOrDefault(user => user.username == Username && user.password == unsecuredPassword);
 
                 // If the user is found, connect as it and open the application.
-                if (myAccount != null)
+                if (myAccount != null && !myAccount.isDisabled)
                 {
                     // TODO TODO TODO
-                    this.messageBoxService.ShowMessage("Horray", "Yes!", MessageType.ACCEPT_CANCEL_MESSAGE);
+                    this.messageBoxService.ShowMessage("Horray", "Yes!", MessageType.OK_MESSAGE);
                 }
                 // Report incorrect user credentials error.
                 else

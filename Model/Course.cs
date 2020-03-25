@@ -20,6 +20,9 @@ namespace MySchoolYear.Model
             this.Lessons = new HashSet<Lesson>();
             this.Scores = new HashSet<Score>();
             this.Teachers = new HashSet<Teacher>();
+            this.Teachers1 = new HashSet<Teacher>();
+            this.Teachers2 = new HashSet<Teacher>();
+            this.Teachers3 = new HashSet<Teacher>();
         }
     
         public int courseID { get; set; }
@@ -31,5 +34,11 @@ namespace MySchoolYear.Model
         public virtual ICollection<Score> Scores { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Teacher> Teachers { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Teacher> Teachers1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Teacher> Teachers2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Teacher> Teachers3 { get; set; }
     }
 }

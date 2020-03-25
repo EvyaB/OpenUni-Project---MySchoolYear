@@ -4,19 +4,19 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="692ab49454ae46e0a1d0a952b5814b75" Name="Diagram1">
-        <EntityTypeShape EntityType="schoolModel.Class" Width="1.5" PointX="3" PointY="3.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="schoolModel.Course" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="schoolModel.Event" Width="1.5" PointX="5.25" PointY="8.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="schoolModel.Lesson" Width="1.5" PointX="7.5" PointY="13" IsExpanded="true" />
-        <EntityTypeShape EntityType="schoolModel.Message" Width="1.5" PointX="8.25" PointY="8.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="schoolModel.Person" Width="1.5" PointX="3" PointY="7.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="schoolModel.Room" Width="1.5" PointX="0.75" PointY="3.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="schoolModel.SchoolInfo" Width="1.5" PointX="7.75" PointY="1.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="schoolModel.Score" Width="1.5" PointX="7.5" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="schoolModel.Student" Width="1.5" PointX="5.25" PointY="4.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="schoolModel.Teacher" Width="1.5" PointX="5.25" PointY="12.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="schoolModel.User" Width="1.5" PointX="0.75" PointY="8.75" IsExpanded="true" />
+      <Diagram DiagramId="106dd5c76e1642548f648bba10bbbb1a" Name="Diagram1" ZoomLevel="109">
+        <EntityTypeShape EntityType="schoolModel.Class" Width="1.5" PointX="3.75" PointY="10.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="schoolModel.Course" Width="1.5" PointX="0.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="schoolModel.Event" Width="1.5" PointX="6" PointY="13.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="schoolModel.Lesson" Width="1.5" PointX="3" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="schoolModel.Message" Width="1.5" PointX="9" PointY="12.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="schoolModel.Person" Width="1.5" PointX="3.75" PointY="14" IsExpanded="true" />
+        <EntityTypeShape EntityType="schoolModel.Room" Width="1.5" PointX="1.5" PointY="11" IsExpanded="true" />
+        <EntityTypeShape EntityType="schoolModel.SchoolInfo" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="schoolModel.Score" Width="1.5" PointX="6" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="schoolModel.Student" Width="1.5" PointX="3.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="schoolModel.Teacher" Width="1.5" PointX="6" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="schoolModel.User" Width="1.5" PointX="1.5" PointY="15.375" IsExpanded="true" />
         <AssociationConnector Association="schoolModel.FK_Classes_ToRooms" ManuallyRouted="false" />
         <AssociationConnector Association="schoolModel.FK_Events_ToClasses" ManuallyRouted="false" />
         <AssociationConnector Association="schoolModel.FK_Lessons_ToClasses" ManuallyRouted="false" />
@@ -25,7 +25,10 @@
         <AssociationConnector Association="schoolModel.FK_Teachers_ToClasses" ManuallyRouted="false" />
         <AssociationConnector Association="schoolModel.FK_Lessons_ToCourses" ManuallyRouted="false" />
         <AssociationConnector Association="schoolModel.FK_Scores_ToCourses" ManuallyRouted="false" />
-        <AssociationConnector Association="schoolModel.FK_Teachers_ToCourses" ManuallyRouted="false" />
+        <AssociationConnector Association="schoolModel.FK_Teachers_ToCourses_1" ManuallyRouted="false" />
+        <AssociationConnector Association="schoolModel.FK_Teachers_ToCourses_2" ManuallyRouted="false" />
+        <AssociationConnector Association="schoolModel.FK_Teachers_ToCourses_3" ManuallyRouted="false" />
+        <AssociationConnector Association="schoolModel.FK_Teachers_ToCourses_4" ManuallyRouted="false" />
         <AssociationConnector Association="schoolModel.FK_Events_ToPersons" ManuallyRouted="false" />
         <AssociationConnector Association="schoolModel.FK_Lessons_ToRooms" ManuallyRouted="false" />
         <AssociationConnector Association="schoolModel.FK_Lessons_ToTeachers" ManuallyRouted="false" />

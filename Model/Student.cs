@@ -22,7 +22,7 @@ namespace MySchoolYear.Model
     
         public int studentID { get; set; }
         public int classID { get; set; }
-        public Nullable<int> absencesCounter { get; set; }
+        public int absencesCounter { get; set; }
         public Nullable<int> parentUserID { get; set; }
     
         public virtual Class Class { get; set; }

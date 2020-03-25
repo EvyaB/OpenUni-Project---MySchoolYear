@@ -16,7 +16,7 @@ namespace MySchoolYear.Model
     {
         public int eventID { get; set; }
         public int submitterID { get; set; }
-        public int classID { get; set; }
+        public Nullable<int> classID { get; set; }
         public string name { get; set; }
         public string description { get; set; }
         public System.DateTime eventDate { get; set; }

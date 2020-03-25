@@ -19,10 +19,14 @@ namespace MySchoolYear.Model
         public int courseID { get; set; }
         public int classID { get; set; }
         public Nullable<int> roomID { get; set; }
-        public System.DateTime datetimeFirstLesson { get; set; }
-        public Nullable<System.DateTime> datetimeSecondLesson { get; set; }
-        public Nullable<System.DateTime> datetimeThirdLesson { get; set; }
-        public Nullable<System.DateTime> datetimeFourthLesson { get; set; }
+        public byte firstLessonDay { get; set; }
+        public byte firstLessonHour { get; set; }
+        public Nullable<byte> secondLessonDay { get; set; }
+        public Nullable<byte> secondLessonHour { get; set; }
+        public Nullable<byte> thirdLessonDay { get; set; }
+        public Nullable<byte> thirdLessonHour { get; set; }
+        public Nullable<byte> fourthLessonDay { get; set; }
+        public Nullable<byte> fourthLessonHour { get; set; }
     
         public virtual Class Class { get; set; }
         public virtual Course Cours { get; set; }

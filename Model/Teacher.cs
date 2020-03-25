@@ -22,10 +22,16 @@ namespace MySchoolYear.Model
     
         public int teacherID { get; set; }
         public Nullable<int> classID { get; set; }
-        public int courseID { get; set; }
+        public int firstCourseID { get; set; }
+        public Nullable<int> secondCourseID { get; set; }
+        public Nullable<int> thirdCourseID { get; set; }
+        public Nullable<int> fourthCourseID { get; set; }
     
         public virtual Class Class { get; set; }
         public virtual Course Cours { get; set; }
+        public virtual Course Cours1 { get; set; }
+        public virtual Course Cours2 { get; set; }
+        public virtual Course Cours3 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Lesson> Lessons { get; set; }
         public virtual Person Person { get; set; }
