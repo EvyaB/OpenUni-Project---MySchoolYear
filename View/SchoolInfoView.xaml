@@ -21,8 +21,9 @@
         </Grid.RowDefinitions>
 
         <Image Grid.Row="0" Grid.Column="0" Source="{Binding Path=SchoolImage}" />
-        <Label Grid.Row="0" Grid.Column="1" Content="כותרת{Binding Path=SchoolName}" 
-               HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="Cooper Black" FontSize="30" RenderTransformOrigin="0.5,0.5" >
+        <Label Grid.Row="0" Grid.Column="1" Content="{Binding Path=SchoolName}" 
+               HorizontalAlignment="Center" VerticalAlignment="Top" 
+               FontFamily="Cooper Black" FontSize="40" RenderTransformOrigin="0.5,0.5" Margin="0,20,0,0" >
             <Label.RenderTransform>
                 <TransformGroup>
                     <SkewTransform AngleX="-15"/>
@@ -33,7 +34,9 @@
             </Label.Effect>
         </Label>
 
-        <Label Grid.Row="1" Grid.Column="1" Content="{Binding Path=SchoolDescription}"/>
+        <Label Grid.Row="1" Grid.Column="1">
+            <TextBlock Text="{Binding Path=SchoolDescription}" TextWrapping="WrapWithOverflow"/>
+        </Label>
         <StackPanel Grid.Row="1" Grid.Column="0">
             <Label Content="{Binding Path=NumberOfStudents}" ContentStringFormat="מספר התלמידים: {0}" />
             <Label Content="{Binding Path=NumberOfClasses}" ContentStringFormat="מספר הכיתות:{0}" />
@@ -42,9 +45,9 @@
         </StackPanel>
 
         <StackPanel Grid.Row="2" Grid.Column="0">
-
-            <Label Content="{Binding Path=PrincipalName}" ContentStringFormat="המנהל:{0}" Margin="0,30,0,0" />
-            <Label Content="{Binding Path=PrincipalEmail}" ContentStringFormat="מייל:{0}" />                       
+            <Label Content="המנהל:" Margin="0,30,0,0"/>
+            <Label Content="{Binding Path=PrincipalName}" />
+            <Label Content="{Binding Path=PrincipalEmail}" />                       
         </StackPanel>
         <StackPanel Grid.Row="2" Grid.Column="1">
             <Label>
@@ -58,7 +61,7 @@
                                 <ColumnDefinition/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <Label Grid.Column="1" Grid.Row="0" Content="שם{Binding Path=Name}"/>
+                            <Label Grid.Column="1" Grid.Row="0" Content="{Binding Path=Name}"/>
                             <Label Content="{Binding Path=Phone}"/>
                         </Grid>
                     </DataTemplate>

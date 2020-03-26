@@ -12,8 +12,8 @@ namespace MySchoolYear.ViewModel
     {
         public struct Secretary
         {
-            public string Name;
-            public string Phone;
+            public string Name { get; set; }
+            public string Phone { get; set; }
         }
 
         public string ScreenName { get { return "אודות"; } }
@@ -38,28 +38,28 @@ namespace MySchoolYear.ViewModel
             
             // School basic information
             var schoolInfo = dbContext.SchoolInfoes;
-            SchoolName = schoolInfo.Find("schoolName").value;
-            SchoolDescription = schoolInfo.Find("schoolDescription").value;
-            SchoolImage = schoolInfo.Find("schoolImage").value;
+            this.SchoolName = schoolInfo.Find("schoolName").value;
+            this.SchoolDescription = schoolInfo.Find("schoolDescription").value;
+            this.SchoolImage = schoolInfo.Find("schoolImage").value;
 
             // Calculate statistics
-            NumberOfClasses = dbContext.Classes.Count();
-            NumberOfStudents = dbContext.Students.Count();
-            ClassAverageSize = NumberOfStudents / NumberOfClasses;
-            ScoreAverage = CalcAverageScore(dbContext.Students.ToList());
+            this.NumberOfClasses = dbContext.Classes.Count();
+            this.NumberOfStudents = dbContext.Students.Count();
+            this.ClassAverageSize = NumberOfStudents / NumberOfClasses;
+            this.ScoreAverage = CalcAverageScore(dbContext.Students.ToList());
 
             // Get the principal information
             var principal = dbContext.Persons.FirstOrDefault(person => person.isPrincipal);
             if (principal != null)
             {
-                PrincipalName = principal.firstName + " " + principal.LastName;
-                PrincipalEmail = principal.email;
+                this.PrincipalName = principal.firstName + " " + principal.LastName;
+                this.PrincipalEmail = principal.email;
             }
 
             // Get the secretaries information
-    //        Secretaries = dbContext.Persons.Where(person => person.isSecretary)
-      //          .Select(person => new Secretary { Name = person.firstName + " " + person.LastName, Phone = person.phoneNumber }).ToList();
-            
+            this.Secretaries = dbContext.Persons.Where(person => person.isSecretary).ToList()
+                .Select(person => new Secretary() { Name = person.firstName + " " + person.LastName, Phone = person.phoneNumber })
+                .ToList();
         }
 
         // Calculate the school's average score by calculating each student's average and then the average of the averages.

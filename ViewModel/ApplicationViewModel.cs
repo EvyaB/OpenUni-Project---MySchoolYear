@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
+using MySchoolYear.Model;
 using MySchoolYear.ViewModel.Utilities;
 
 namespace MySchoolYear.ViewModel
 {
     /// <summary>
-    /// The application main page's VM. Responsible for navigating between the different screens of the application once the user logged-in
+    /// The application main page's view model. 
+    /// Responsible for navigating between the different screens of the application once the user logged-in
     /// </summary>
-    public class NavigationViewModel : BaseViewModel
+    public class ApplicationViewModel : BaseViewModel
     {
         #region Fields
         private ICommand _changePageCommand;
@@ -19,7 +21,7 @@ namespace MySchoolYear.ViewModel
         #endregion
 
         #region Constructors/Destructors
-        public NavigationViewModel()
+        public ApplicationViewModel(User connectedUser)
         {
             // Add available pages
             ScreensViewModels.Add(new SchoolInfoViewModel());

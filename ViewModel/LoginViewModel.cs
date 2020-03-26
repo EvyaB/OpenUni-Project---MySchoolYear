@@ -3,6 +3,7 @@ using System.Linq;
 using System.Security;
 using System.Windows;
 using MySchoolYear.Model;
+using MySchoolYear.View;
 using MySchoolYear.ViewModel.Utilities;
 
 namespace MySchoolYear.ViewModel
@@ -57,8 +58,13 @@ namespace MySchoolYear.ViewModel
                 // If the user is found, connect as it and open the application.
                 if (myAccount != null && !myAccount.isDisabled)
                 {
-                    // TODO TODO TODO
-                    this.messageBoxService.ShowMessage("Horray", "Yes!", MessageType.OK_MESSAGE);
+                    ApplicationMainWindow appMainWindow = new ApplicationMainWindow();
+                    ApplicationViewModel context = new ApplicationViewModel(myAccount);
+                    appMainWindow.DataContext = context;
+                    appMainWindow.Show();
+
+                    // Close this Login Window 
+                    Application.Current.MainWindow.Close();
                 }
                 // Report incorrect user credentials error.
                 else

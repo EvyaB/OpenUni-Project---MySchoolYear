@@ -237,15 +237,15 @@
       <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\LoginViewModel.cs" />
-    <Compile Include="ViewModel\NavigationViewModel.cs" />
+    <Compile Include="ViewModel\ApplicationViewModel.cs" />
     <Compile Include="ViewModel\SchoolInfoViewModel.cs" />
     <Compile Include="ViewModel\Utilities\BaseViewModel.cs" />
     <Compile Include="ViewModel\Utilities\IHavePassword.cs" />
     <Compile Include="ViewModel\Utilities\IScreenViewModel.cs" />
     <Compile Include="ViewModel\Utilities\RelayCommand.cs" />
     <Compile Include="ViewModel\Utilities\ValidityResult.cs" />
-    <Compile Include="View\NavigationView.xaml.cs">
-      <DependentUpon>NavigationView.xaml</DependentUpon>
+    <Compile Include="View\ApplicationMainWindow.xaml.cs">
+      <DependentUpon>ApplicationMainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\SchoolInfoView.xaml.cs">
       <DependentUpon>SchoolInfoView.xaml</DependentUpon>
@@ -282,7 +282,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\NavigationView.xaml">
+    <Page Include="View\ApplicationMainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -355,6 +355,7 @@
       <DependentUpon>DataModel.edmx</DependentUpon>
       <LastGenOutput>DataModel.cs</LastGenOutput>
     </Content>
+    <Resource Include="View\LogoImage.png" />
     <Resource Include="View\MySchool.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

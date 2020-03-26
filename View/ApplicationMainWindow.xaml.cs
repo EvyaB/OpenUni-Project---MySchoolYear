@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace MySchoolYear.View
 {
     /// <summary>
-    /// Interaction logic for NavigationView.xaml
+    /// Interaction logic for ApplicationMainWindow.xaml
     /// </summary>
-    public partial class NavigationView : Window
+    public partial class ApplicationMainWindow : Window
     {
-        public NavigationView()
+        public ApplicationMainWindow()
         {
             InitializeComponent();
         }
