@@ -29,7 +29,7 @@ namespace MySchoolYear.Model
         public Nullable<byte> fourthLessonHour { get; set; }
     
         public virtual Class Class { get; set; }
-        public virtual Course Cours { get; set; }
+        public virtual Course Course { get; set; }
         public virtual Room Room { get; set; }
         public virtual Teacher Teacher { get; set; }
     }

@@ -26,7 +26,7 @@ namespace MySchoolYear.Model
         public System.DateTime date { get; set; }
     
         public virtual Class Class { get; set; }
-        public virtual Person Person { get; set; }
-        public virtual Person Person1 { get; set; }
+        public virtual Person SenderPerson { get; set; }
+        public virtual Person RecipientPerson { get; set; }
     }
 }

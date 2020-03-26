@@ -237,10 +237,14 @@
       <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\LoginViewModel.cs" />
+    <Compile Include="ViewModel\SchoolInfoViewModel.cs" />
     <Compile Include="ViewModel\Utilities\BaseViewModel.cs" />
     <Compile Include="ViewModel\Utilities\IHavePassword.cs" />
     <Compile Include="ViewModel\Utilities\RelayCommand.cs" />
     <Compile Include="ViewModel\Utilities\ValidityResult.cs" />
+    <Compile Include="View\SchoolInfoView.xaml.cs">
+      <DependentUpon>SchoolInfoView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Utilities\ViewModelLocator.cs" />
     <Compile Include="View\Utilities\WPFMessageBoxService.cs" />
     <Compile Include="View\UserView.xaml.cs">
@@ -270,6 +274,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Dictionaries\ViewDictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SchoolInfoView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -313,9 +321,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="View\Utilities\LogoImage.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
@@ -341,6 +346,7 @@
       <DependentUpon>DataModel.edmx</DependentUpon>
       <LastGenOutput>DataModel.cs</LastGenOutput>
     </Content>
+    <Resource Include="View\MySchool.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

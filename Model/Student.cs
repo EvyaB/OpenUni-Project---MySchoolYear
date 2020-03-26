@@ -26,8 +26,8 @@ namespace MySchoolYear.Model
         public Nullable<int> parentUserID { get; set; }
     
         public virtual Class Class { get; set; }
-        public virtual Person Person { get; set; }
-        public virtual Person Person1 { get; set; }
+        public virtual Person StudentPerson { get; set; }
+        public virtual Person ParentPerson { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Score> Scores { get; set; }
     }

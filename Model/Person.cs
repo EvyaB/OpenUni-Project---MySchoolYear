@@ -18,8 +18,8 @@ namespace MySchoolYear.Model
         public Person()
         {
             this.Events = new HashSet<Event>();
-            this.Messages = new HashSet<Message>();
-            this.Messages1 = new HashSet<Message>();
+            this.MessagesSent = new HashSet<Message>();
+            this.MessagesRecievedDirectly = new HashSet<Message>();
             this.Students = new HashSet<Student>();
         }
     
@@ -39,13 +39,13 @@ namespace MySchoolYear.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Event> Events { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Message> Messages { get; set; }
+        public virtual ICollection<Message> MessagesSent { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Message> Messages1 { get; set; }
+        public virtual ICollection<Message> MessagesRecievedDirectly { get; set; }
         public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Student> Students { get; set; }
-        public virtual Student Student { get; set; }
+        public virtual Student ChildStudents { get; set; }
         public virtual Teacher Teacher { get; set; }
     }
 }
