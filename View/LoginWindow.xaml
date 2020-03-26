@@ -3,11 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewUtils="clr-namespace:MySchoolYear.View.Utilities"
         x:Name="ThisLoginWindow"
         mc:Ignorable="d"
         Title="MySchoolYear" Height="300" Width="500"
         Background = "{StaticResource WindowBackgroundBrush}"
-        xmlns:viewUtils="clr-namespace:MySchoolYear.View.Utilities"
         viewUtils:ViewModelLocator.AutoHookedUpViewModel = "True">
     <Grid>
         <Grid.RowDefinitions>

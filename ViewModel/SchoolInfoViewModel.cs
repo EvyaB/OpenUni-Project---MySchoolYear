@@ -1,16 +1,22 @@
 ﻿using MySchoolYear.Model;
 using System.Linq;
 using System.Collections.Generic;
+using MySchoolYear.ViewModel.Utilities;
 
 namespace MySchoolYear.ViewModel
 {
-    public class SchoolInfoViewModel
+    /// <summary>
+    /// The school's about page - display lots of different data about the school
+    /// </summary>
+    public class SchoolInfoViewModel : BaseViewModel, IScreenViewModel
     {
         public struct Secretary
         {
             public string Name;
             public string Phone;
         }
+
+        public string ScreenName { get { return "אודות"; } }
 
         public string SchoolName { get; private set; }
         public string SchoolDescription { get; private set; }
@@ -51,8 +57,8 @@ namespace MySchoolYear.ViewModel
             }
 
             // Get the secretaries information
-            Secretaries = dbContext.Persons.Where(person => person.isSecretary)
-                .Select(person => new Secretary { Name = person.firstName + " " + person.LastName, Phone = person.phoneNumber }).ToList();
+    //        Secretaries = dbContext.Persons.Where(person => person.isSecretary)
+      //          .Select(person => new Secretary { Name = person.firstName + " " + person.LastName, Phone = person.phoneNumber }).ToList();
             
         }
 

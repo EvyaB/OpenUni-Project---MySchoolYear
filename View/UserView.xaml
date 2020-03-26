@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MySchoolYear.View"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800" Foreground="#FF8F3030" Background="#FF8D1212">
     <Grid>
         <StackPanel HorizontalAlignment = "Left">
             <ItemsControl ItemsSource = "{Binding Path = myUsers}">

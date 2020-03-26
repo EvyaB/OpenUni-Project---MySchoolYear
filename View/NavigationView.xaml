@@ -1,0 +1,38 @@
+﻿<Window x:Class="MySchoolYear.View.NavigationView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MySchoolYear.View"
+        xmlns:viewModels="clr-namespace:MySchoolYear.ViewModel"
+        xmlns:viewUtils="clr-namespace:MySchoolYear.View.Utilities"
+        viewUtils:ViewModelLocator.AutoHookedUpViewModel = "True"
+        mc:Ignorable="d"
+        Title="MySchoolYear" Height="600" Width="800"
+        Background = "{StaticResource WindowBackgroundBrush}">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type viewModels:UserViewModel}">
+            <local:UserView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModels:SchoolInfoViewModel}">
+            <local:SchoolInfoView />
+        </DataTemplate>
+    </Window.Resources>
+
+    <DockPanel>
+        <Border DockPanel.Dock="Right" BorderBrush="Black" BorderThickness="0,0,1,0">
+            <ItemsControl ItemsSource="{Binding ScreensViewModels}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button Content="{Binding ScreenName}"
+                                Command="{Binding DataContext.ChangeScreenCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                                CommandParameter="{Binding }"
+                                Margin="2,5"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Border>
+        
+        <ContentControl Content="{Binding CurrentScreenViewModel}" />
+    </DockPanel>
+</Window>
