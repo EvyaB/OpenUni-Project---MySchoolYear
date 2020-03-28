@@ -24,7 +24,6 @@ namespace MySchoolYear.ViewModel
             get;
             set;
         }
-
         #endregion
 
         #region Constructor/Destructors

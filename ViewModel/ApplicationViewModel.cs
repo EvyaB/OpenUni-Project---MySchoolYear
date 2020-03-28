@@ -20,18 +20,6 @@ namespace MySchoolYear.ViewModel
         private List<IScreenViewModel> _screenViewModels;
         #endregion
 
-        #region Constructors/Destructors
-        public ApplicationViewModel(User connectedUser)
-        {
-            // Add available pages
-            ScreensViewModels.Add(new SchoolInfoViewModel());
-            ScreensViewModels.Add(new UserViewModel());
-
-            // Set starting page
-            CurrentScreenViewModel = ScreensViewModels[0];
-        }
-        #endregion
-
         #region Properties / Commands
         public ICommand ChangeScreenCommand
         {
@@ -76,8 +64,30 @@ namespace MySchoolYear.ViewModel
         }
         #endregion
 
-        #region Methods
+        #region Constructors/Destructors
+        public ApplicationViewModel(User connectedUser)
+        {
+            // Create a list of all possible screens
+            List<IScreenViewModel> allScreens = new List<IScreenViewModel>();
+            allScreens.Add(new SchoolInfoViewModel(connectedUser));
+            allScreens.Add(new UserViewModel());
 
+            // Use only the screens that are relevent to the current user
+            foreach (IScreenViewModel screen in allScreens)
+            {
+                if (screen.HasRequiredPermissions)
+                {
+                    screen.Initialize();
+                    ScreensViewModels.Add(screen);
+                }
+            }
+
+            // Set starting page
+            CurrentScreenViewModel = ScreensViewModels[0];
+        }
+        #endregion
+
+        #region Methods
         /// <summary>
         /// Update the current view model to 'viewModel'
         /// </summary>
@@ -90,7 +100,6 @@ namespace MySchoolYear.ViewModel
             CurrentScreenViewModel = ScreensViewModels
                 .FirstOrDefault(vm => vm == viewModel);
         }
-
         #endregion
     }
 }

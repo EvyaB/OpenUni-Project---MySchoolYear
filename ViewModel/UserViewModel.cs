@@ -13,7 +13,15 @@ namespace MySchoolYear.ViewModel
             set;
         }
 
-        public string ScreenName { get { return "זמני"; } } 
+        public string ScreenName { get { return "זמני"; } }
+
+        public User Session { get; }
+
+        public bool HasRequiredPermissions { get { return true; } }
+
+        public void Initialize()
+        {
+        }
 
         public void LoadStudents()
         {

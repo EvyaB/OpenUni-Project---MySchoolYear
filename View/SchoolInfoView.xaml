@@ -6,9 +6,7 @@
              xmlns:local="clr-namespace:MySchoolYear.View"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
-            Background = "{StaticResource WindowBackgroundBrush}"
-            xmlns:viewUtils="clr-namespace:MySchoolYear.View.Utilities"
-            viewUtils:ViewModelLocator.AutoHookedUpViewModel = "True">
+            Background = "{StaticResource WindowBackgroundBrush}">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>

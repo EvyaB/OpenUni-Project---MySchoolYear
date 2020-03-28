@@ -250,7 +250,6 @@
     <Compile Include="View\SchoolInfoView.xaml.cs">
       <DependentUpon>SchoolInfoView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Utilities\ViewModelLocator.cs" />
     <Compile Include="View\Utilities\WPFMessageBoxService.cs" />
     <Compile Include="View\UserView.xaml.cs">
       <DependentUpon>UserView.xaml</DependentUpon>

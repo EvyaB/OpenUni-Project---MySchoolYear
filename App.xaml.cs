@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
+using MySchoolYear.View;
+using MySchoolYear.ViewModel;
 
 namespace MySchoolYear
 {
@@ -13,5 +10,13 @@ namespace MySchoolYear
     /// </summary>
     public partial class App : Application
     {
+        // Startup the program with its login window
+        private void ApplicationStartup(object sender, StartupEventArgs e)
+        {
+            // Create the Login View and attach its ViewModel
+            LoginWindow loginScreen = new LoginWindow();
+            loginScreen.DataContext = new LoginViewModel();
+            loginScreen.Show();
+        }
     }
 }

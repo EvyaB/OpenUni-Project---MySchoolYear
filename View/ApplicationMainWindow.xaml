@@ -5,8 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MySchoolYear.View"
         xmlns:viewModels="clr-namespace:MySchoolYear.ViewModel"
-        xmlns:viewUtils="clr-namespace:MySchoolYear.View.Utilities"
-        viewUtils:ViewModelLocator.AutoHookedUpViewModel = "False"
         mc:Ignorable="d"
         Title="MySchoolYear" Height="600" Width="800"
         Background = "{StaticResource WindowBackgroundBrush}">
