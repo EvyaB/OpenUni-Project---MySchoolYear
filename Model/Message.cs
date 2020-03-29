@@ -27,6 +27,6 @@ namespace MySchoolYear.Model
     
         public virtual Class Class { get; set; }
         public virtual Person SenderPerson { get; set; }
-        public virtual Person RecipientPerson { get; set; }
+        public virtual Person ReceiverPerson { get; set; }
     }
 }

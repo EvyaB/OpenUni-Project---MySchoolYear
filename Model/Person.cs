@@ -18,15 +18,15 @@ namespace MySchoolYear.Model
         public Person()
         {
             this.Events = new HashSet<Event>();
-            this.MessagesSent = new HashSet<Message>();
-            this.MessagesRecievedDirectly = new HashSet<Message>();
-            this.Students = new HashSet<Student>();
+            this.SentMessages = new HashSet<Message>();
+            this.RecievedMessages = new HashSet<Message>();
+            this.ChildrenStudents = new HashSet<Student>();
         }
     
         public int personID { get; set; }
         public int userID { get; set; }
         public string firstName { get; set; }
-        public string LastName { get; set; }
+        public string lastName { get; set; }
         public string email { get; set; }
         public string phoneNumber { get; set; }
         public Nullable<System.DateTime> birthdate { get; set; }
@@ -39,13 +39,13 @@ namespace MySchoolYear.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Event> Events { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Message> MessagesSent { get; set; }
+        public virtual ICollection<Message> SentMessages { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Message> MessagesRecievedDirectly { get; set; }
+        public virtual ICollection<Message> RecievedMessages { get; set; }
         public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Student> Students { get; set; }
-        public virtual Student ChildStudents { get; set; }
+        public virtual ICollection<Student> ChildrenStudents { get; set; }
+        public virtual Student Student { get; set; }
         public virtual Teacher Teacher { get; set; }
     }
 }

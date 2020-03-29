@@ -9,11 +9,11 @@
         Title="MySchoolYear" Height="600" Width="800"
         Background = "{StaticResource WindowBackgroundBrush}">
     <Window.Resources>
-        <DataTemplate DataType="{x:Type viewModels:UserViewModel}">
-            <local:UserView />
-        </DataTemplate>
         <DataTemplate DataType="{x:Type viewModels:SchoolInfoViewModel}">
             <local:SchoolInfoView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModels:StudentGradesViewModel}">
+            <local:StudentGradesView />
         </DataTemplate>
     </Window.Resources>
 
@@ -23,6 +23,8 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Button Content="{Binding ScreenName}"
+                                FontSize="16"
+                                FontWeight="Medium"
                                 Command="{Binding DataContext.ChangeScreenCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
                                 CommandParameter="{Binding }"
                                 Margin="2,5"/>

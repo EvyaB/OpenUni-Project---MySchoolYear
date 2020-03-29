@@ -15,7 +15,7 @@ namespace MySchoolYear.ViewModel
 
         public string ScreenName { get { return "זמני"; } }
 
-        public User Session { get; }
+        public Person ConnectedUser { get; }
 
         public bool HasRequiredPermissions { get { return true; } }
 

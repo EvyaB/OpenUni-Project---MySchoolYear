@@ -58,7 +58,7 @@ namespace MySchoolYear.ViewModel
                 if (myAccount != null && !myAccount.isDisabled)
                 {
                     ApplicationMainWindow appMainWindow = new ApplicationMainWindow();
-                    ApplicationViewModel context = new ApplicationViewModel(myAccount);
+                    ApplicationViewModel context = new ApplicationViewModel(myAccount.Person.Single());
                     appMainWindow.DataContext = context;
                     appMainWindow.Show();
 

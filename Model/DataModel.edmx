@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="schoolModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="schoolModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Classes">
           <Key>
             <PropertyRef Name="classID" />
@@ -104,6 +104,7 @@
           <Property Name="studentID" Type="int" Nullable="false" />
           <Property Name="courseID" Type="int" Nullable="false" />
           <Property Name="score" Type="tinyint" Nullable="false" />
+          <Property Name="notes" Type="nvarchar" MaxLength="150" />
         </EntityType>
         <EntityType Name="Students">
           <Key>
@@ -112,7 +113,7 @@
           <Property Name="studentID" Type="int" Nullable="false" />
           <Property Name="classID" Type="int" Nullable="false" />
           <Property Name="absencesCounter" Type="int" Nullable="false" />
-          <Property Name="parentUserID" Type="int" />
+          <Property Name="parentID" Type="int" />
         </EntityType>
         <EntityType Name="Teachers">
           <Key>
@@ -310,7 +311,7 @@
               <PropertyRef Name="personID" />
             </Principal>
             <Dependent Role="Students">
-              <PropertyRef Name="parentUserID" />
+              <PropertyRef Name="parentID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -500,7 +501,8 @@
             <End Role="Teachers" EntitySet="Teachers" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="schoolModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -511,13 +513,13 @@
           <Property Name="classID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="roomID" Type="Int32" />
           <Property Name="className" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Name="classSize" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Room" Relationship="Self.FK_Classes_ToRooms" FromRole="Classes" ToRole="Rooms" />
           <NavigationProperty Name="Events" Relationship="Self.FK_Events_ToClasses" FromRole="Classes" ToRole="Events" />
           <NavigationProperty Name="Lessons" Relationship="Self.FK_Lessons_ToClasses" FromRole="Classes" ToRole="Lessons" />
           <NavigationProperty Name="Messages" Relationship="Self.FK_Messages_ToClasses" FromRole="Classes" ToRole="Messages" />
           <NavigationProperty Name="Students" Relationship="Self.FK_Students_ToClasses" FromRole="Classes" ToRole="Students" />
           <NavigationProperty Name="Teachers" Relationship="Self.FK_Teachers_ToClasses" FromRole="Classes" ToRole="Teachers" />
-          <Property Name="classSize" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Course">
           <Key>
@@ -583,7 +585,7 @@
           <Property Name="date" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="Class" Relationship="Self.FK_Messages_ToClasses" FromRole="Messages" ToRole="Classes" />
           <NavigationProperty Name="SenderPerson" Relationship="Self.FK_Messages_ToPersons" FromRole="Messages" ToRole="Persons" />
-          <NavigationProperty Name="RecipientPerson" Relationship="Self.FK_Messages_ToPersonsRecipient" FromRole="Messages" ToRole="Persons" />
+          <NavigationProperty Name="ReceiverPerson" Relationship="Self.FK_Messages_ToPersonsRecipient" FromRole="Messages" ToRole="Persons" />
         </EntityType>
         <EntityType Name="Person">
           <Key>
@@ -592,7 +594,7 @@
           <Property Name="personID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="userID" Type="Int32" Nullable="false" />
           <Property Name="firstName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="LastName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="lastName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="phoneNumber" Type="String" MaxLength="12" FixedLength="true" Unicode="false" Nullable="false" />
           <Property Name="birthdate" Type="DateTime" Precision="0" />
@@ -602,11 +604,11 @@
           <Property Name="isPrincipal" Type="Boolean" Nullable="false" />
           <Property Name="isParent" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Events" Relationship="Self.FK_Events_ToPersons" FromRole="Persons" ToRole="Events" />
-          <NavigationProperty Name="MessagesSent" Relationship="Self.FK_Messages_ToPersons" FromRole="Persons" ToRole="Messages" />
-          <NavigationProperty Name="MessagesRecievedDirectly" Relationship="Self.FK_Messages_ToPersonsRecipient" FromRole="Persons" ToRole="Messages" />
+          <NavigationProperty Name="SentMessages" Relationship="Self.FK_Messages_ToPersons" FromRole="Persons" ToRole="Messages" />
+          <NavigationProperty Name="RecievedMessages" Relationship="Self.FK_Messages_ToPersonsRecipient" FromRole="Persons" ToRole="Messages" />
           <NavigationProperty Name="User" Relationship="Self.FK_Persons_ToUsers" FromRole="Persons" ToRole="Users" />
-          <NavigationProperty Name="Students" Relationship="Self.FK_Students_ToParentPersons" FromRole="Persons" ToRole="Students" />
-          <NavigationProperty Name="ChildStudents" Relationship="Self.FK_Students_ToPersons" FromRole="Persons" ToRole="Students" />
+          <NavigationProperty Name="ChildrenStudents" Relationship="Self.FK_Students_ToParentPersons" FromRole="Persons" ToRole="Students" />
+          <NavigationProperty Name="Student" Relationship="Self.FK_Students_ToPersons" FromRole="Persons" ToRole="Students" />
           <NavigationProperty Name="Teacher" Relationship="Self.FK_Teachers_ToPersons" FromRole="Persons" ToRole="Teachers" />
         </EntityType>
         <EntityType Name="Room">
@@ -633,6 +635,7 @@
           <Property Name="studentID" Type="Int32" Nullable="false" />
           <Property Name="courseID" Type="Int32" Nullable="false" />
           <Property Name="score" Type="Byte" Nullable="false" />
+          <Property Name="notes" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Course" Relationship="Self.FK_Scores_ToCourses" FromRole="Scores" ToRole="Courses" />
           <NavigationProperty Name="Student" Relationship="Self.FK_Scores_ToStudents" FromRole="Scores" ToRole="Students" />
         </EntityType>
@@ -643,10 +646,10 @@
           <Property Name="studentID" Type="Int32" Nullable="false" />
           <Property Name="classID" Type="Int32" Nullable="false" />
           <Property Name="absencesCounter" Type="Int32" Nullable="false" />
-          <Property Name="parentUserID" Type="Int32" />
+          <Property Name="parentID" Type="Int32" />
           <NavigationProperty Name="Class" Relationship="Self.FK_Students_ToClasses" FromRole="Students" ToRole="Classes" />
-          <NavigationProperty Name="StudentPerson" Relationship="Self.FK_Students_ToParentPersons" FromRole="Students" ToRole="Persons" />
-          <NavigationProperty Name="ParentPerson" Relationship="Self.FK_Students_ToPersons" FromRole="Students" ToRole="Persons" />
+          <NavigationProperty Name="ParentPerson" Relationship="Self.FK_Students_ToParentPersons" FromRole="Students" ToRole="Persons" />
+          <NavigationProperty Name="Person" Relationship="Self.FK_Students_ToPersons" FromRole="Students" ToRole="Persons" />
           <NavigationProperty Name="Scores" Relationship="Self.FK_Scores_ToStudents" FromRole="Students" ToRole="Scores" />
         </EntityType>
         <EntityType Name="Teacher">
@@ -675,7 +678,7 @@
           <Property Name="username" Type="String" MaxLength="16" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="password" Type="String" MaxLength="16" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="isDisabled" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Persons" Relationship="Self.FK_Persons_ToUsers" FromRole="Users" ToRole="Persons" />
+          <NavigationProperty Name="Person" Relationship="schoolModel.FK_Persons_ToUsers" FromRole="Users" ToRole="Persons" />
         </EntityType>
         <Association Name="FK_Classes_ToRooms">
           <End Role="Rooms" Type="Self.Room" Multiplicity="0..1" />
@@ -901,7 +904,7 @@
               <PropertyRef Name="personID" />
             </Principal>
             <Dependent Role="Students">
-              <PropertyRef Name="parentUserID" />
+              <PropertyRef Name="parentID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1052,10 +1055,10 @@
           <EntitySetMapping Name="Classes">
             <EntityTypeMapping TypeName="schoolModel.Class">
               <MappingFragment StoreEntitySet="Classes">
-                <ScalarProperty Name="classSize" ColumnName="classSize" />
                 <ScalarProperty Name="classID" ColumnName="classID" />
                 <ScalarProperty Name="roomID" ColumnName="roomID" />
                 <ScalarProperty Name="className" ColumnName="className" />
+                <ScalarProperty Name="classSize" ColumnName="classSize" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1120,7 +1123,7 @@
                 <ScalarProperty Name="personID" ColumnName="personID" />
                 <ScalarProperty Name="userID" ColumnName="userID" />
                 <ScalarProperty Name="firstName" ColumnName="firstName" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="lastName" ColumnName="LastName" />
                 <ScalarProperty Name="email" ColumnName="email" />
                 <ScalarProperty Name="phoneNumber" ColumnName="phoneNumber" />
                 <ScalarProperty Name="birthdate" ColumnName="birthdate" />
@@ -1154,6 +1157,7 @@
                 <ScalarProperty Name="studentID" ColumnName="studentID" />
                 <ScalarProperty Name="courseID" ColumnName="courseID" />
                 <ScalarProperty Name="score" ColumnName="score" />
+                <ScalarProperty Name="notes" ColumnName="notes" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1163,7 +1167,7 @@
                 <ScalarProperty Name="studentID" ColumnName="studentID" />
                 <ScalarProperty Name="classID" ColumnName="classID" />
                 <ScalarProperty Name="absencesCounter" ColumnName="absencesCounter" />
-                <ScalarProperty Name="parentUserID" ColumnName="parentUserID" />
+                <ScalarProperty Name="parentID" ColumnName="parentID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

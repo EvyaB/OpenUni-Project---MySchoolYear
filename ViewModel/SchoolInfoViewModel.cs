@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using MySchoolYear.ViewModel.Utilities;
+using System;
 
 namespace MySchoolYear.ViewModel
 {
@@ -19,9 +20,9 @@ namespace MySchoolYear.ViewModel
         #endregion
 
         #region Properties
-        // Base Properites
+        // Base Properties
         public string ScreenName { get { return "אודות"; } }
-        public User Session { get; }
+        public Person ConnectedUser { get; }
         public bool HasRequiredPermissions { get; private set; }
 
         // Business Logic Properties
@@ -31,7 +32,7 @@ namespace MySchoolYear.ViewModel
         public int NumberOfStudents { get; private set; }
         public int NumberOfClasses { get; private set; }
         public float ClassAverageSize { get; private set; }
-        public int ScoreAverage { get; private set; }
+        public double ScoreAverage { get; private set; }
         public string PrincipalName { get; private set; }
         public string PrincipalEmail { get; private set; }
         public List<Secretary> Secretaries { get; set; }
@@ -39,10 +40,10 @@ namespace MySchoolYear.ViewModel
         #endregion
 
         #region Constructors/Destructor
-        public SchoolInfoViewModel(User session)
+        public SchoolInfoViewModel(Person connectedUser)
         {
             HasRequiredPermissions = true;
-            Session = session;
+            ConnectedUser = connectedUser;
         }
         #endregion
 
@@ -53,14 +54,23 @@ namespace MySchoolYear.ViewModel
         /// </summary>
         /// <param name="students"></param>
         /// <returns></returns>
-        private int CalcAverageScore(List<Student> students)
+        private double CalcAverageScore(List<Student> students)
         {
             // Calculate the average score of each student, then the sum of averages
-            int scoresSum = 0;
-            students.ForEach(student => scoresSum += student.Scores.Sum(x => x.score) / student.Scores.Count());
-            
+            double scoresSum = 0;
+            int releventStudentsNumber = 0;
+            foreach (Student student in students)
+            {
+                // The student has any scores
+                if (student.Scores != null && student.Scores.Count > 0)
+                {
+                    scoresSum += Math.Round(student.Scores.Average(x => x.score), 1);
+                    releventStudentsNumber++;
+                }
+            }
+
             // Calculate average
-            return scoresSum / NumberOfStudents;
+            return Math.Round(scoresSum / releventStudentsNumber, 1);
         }
 
         public void Initialize()
@@ -69,27 +79,27 @@ namespace MySchoolYear.ViewModel
 
             // School basic information
             var schoolInfo = dbContext.SchoolInfoes;
-            this.SchoolName = schoolInfo.Find("schoolName").value;
-            this.SchoolDescription = schoolInfo.Find("schoolDescription").value;
-            this.SchoolImage = schoolInfo.Find("schoolImage").value;
+            SchoolName = schoolInfo.Find("schoolName").value;
+            SchoolDescription = schoolInfo.Find("schoolDescription").value;
+            SchoolImage = schoolInfo.Find("schoolImage").value;
 
             // Calculate statistics
-            this.NumberOfClasses = dbContext.Classes.Count();
-            this.NumberOfStudents = dbContext.Students.Count();
-            this.ClassAverageSize = NumberOfStudents / NumberOfClasses;
-            this.ScoreAverage = CalcAverageScore(dbContext.Students.ToList());
+            NumberOfClasses = dbContext.Classes.Count();
+            NumberOfStudents = dbContext.Students.Count();
+            ClassAverageSize = NumberOfStudents / NumberOfClasses;
+            ScoreAverage = CalcAverageScore(dbContext.Students.ToList());
 
             // Get the principal information
             var principal = dbContext.Persons.FirstOrDefault(person => person.isPrincipal);
             if (principal != null)
             {
-                this.PrincipalName = principal.firstName + " " + principal.LastName;
-                this.PrincipalEmail = principal.email;
+                PrincipalName = principal.firstName + " " + principal.lastName;
+                PrincipalEmail = principal.email;
             }
 
             // Get the secretaries information
-            this.Secretaries = dbContext.Persons.Where(person => person.isSecretary).ToList()
-                .Select(person => new Secretary() { Name = person.firstName + " " + person.LastName, Phone = person.phoneNumber })
+            Secretaries = dbContext.Persons.Where(person => person.isSecretary).ToList()
+                .Select(person => new Secretary() { Name = person.firstName + " " + person.lastName, Phone = person.phoneNumber })
                 .ToList();
         }
         #endregion

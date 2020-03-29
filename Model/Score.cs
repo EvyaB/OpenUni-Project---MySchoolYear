@@ -17,6 +17,7 @@ namespace MySchoolYear.Model
         public int studentID { get; set; }
         public int courseID { get; set; }
         public byte score { get; set; }
+        public string notes { get; set; }
     
         public virtual Course Course { get; set; }
         public virtual Student Student { get; set; }

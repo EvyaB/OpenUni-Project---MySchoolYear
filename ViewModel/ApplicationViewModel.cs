@@ -65,12 +65,12 @@ namespace MySchoolYear.ViewModel
         #endregion
 
         #region Constructors/Destructors
-        public ApplicationViewModel(User connectedUser)
+        public ApplicationViewModel(Person connectedUser)
         {
             // Create a list of all possible screens
             List<IScreenViewModel> allScreens = new List<IScreenViewModel>();
             allScreens.Add(new SchoolInfoViewModel(connectedUser));
-            allScreens.Add(new UserViewModel());
+            allScreens.Add(new StudentGradesViewModel(connectedUser));
 
             // Use only the screens that are relevent to the current user
             foreach (IScreenViewModel screen in allScreens)

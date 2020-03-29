@@ -5,7 +5,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source = "View/Dictionaries/ViewDictionary.xaml"/>
+                <ResourceDictionary Source = "View/Dictionaries/BaseStylesDictionary.xaml"/>
                 <ResourceDictionary Source = "View/Dictionaries/TemplatesDictionary.xaml"/>
                 <ResourceDictionary Source = "View/Dictionaries/ServicesDictionary.xaml"/>
             </ResourceDictionary.MergedDictionaries>

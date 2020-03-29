@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:MySchoolYear.View"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
-            Background = "{StaticResource WindowBackgroundBrush}">
+             Background = "{StaticResource WindowBackgroundBrush}">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
@@ -48,9 +48,7 @@
             <Label Content="{Binding Path=PrincipalEmail}" />                       
         </StackPanel>
         <StackPanel Grid.Row="2" Grid.Column="1">
-            <Label>
-                <TextBlock Text="צור קשר - מזכירות" TextDecorations="Underline" FontSize="20"/>
-            </Label>
+            <TextBlock Text="צור קשר - מזכירות" Style="{StaticResource SecondaryTitleText}"/>
             <ItemsControl ItemsSource="{Binding Path=Secretaries}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>

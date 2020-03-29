@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MySchoolYear" Height="300" Width="500"
         Background = "{StaticResource WindowBackgroundBrush}">
-    <Grid>
+    <Grid FocusManager.FocusedElement="{Binding ElementName=usernameTextBox}">
         <Grid.RowDefinitions>
             <RowDefinition Height="1.5*"/>
             <RowDefinition Height="1*"/>
@@ -20,11 +20,11 @@
                 <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
 
-            <TextBox Grid.Column="1" VerticalAlignment="Center" Margin="65,19,36,59" MaxLength="16"
+            <TextBox Name="usernameTextBox" Grid.Column="1" VerticalAlignment="Center" Margin="65,19,36,59" MaxLength="16"
                      Style="{StaticResource placeHolderTextBox}" Tag="שם משתמש..." Text="{Binding Path = Username}" Width="Auto" />
             <PasswordBox x:Name="PasswordText" Grid.Column="1" VerticalAlignment="Center" Margin="65,59,36,19" MaxLength="16" Width="Auto" Tag="סיסמא..."/>
 
-            <Button Grid.Column="0" Content="התחבר" VerticalAlignment="Center" 
+            <Button Grid.Column="0" Content="התחבר" VerticalAlignment="Center"  IsDefault="True"
                     Command="{Binding Path=LoginCommand}" CommandParameter="{Binding ElementName=ThisLoginWindow}"/>
         </Grid>
     </Grid>

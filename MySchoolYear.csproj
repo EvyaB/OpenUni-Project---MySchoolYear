@@ -239,6 +239,7 @@
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\ApplicationViewModel.cs" />
     <Compile Include="ViewModel\SchoolInfoViewModel.cs" />
+    <Compile Include="ViewModel\StudentGradesViewModel.cs" />
     <Compile Include="ViewModel\Utilities\BaseViewModel.cs" />
     <Compile Include="ViewModel\Utilities\IHavePassword.cs" />
     <Compile Include="ViewModel\Utilities\IScreenViewModel.cs" />
@@ -249,6 +250,9 @@
     </Compile>
     <Compile Include="View\SchoolInfoView.xaml.cs">
       <DependentUpon>SchoolInfoView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\StudentGradesView.xaml.cs">
+      <DependentUpon>StudentGradesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Utilities\WPFMessageBoxService.cs" />
     <Compile Include="View\UserView.xaml.cs">
@@ -277,7 +281,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Dictionaries\ViewDictionary.xaml">
+    <Page Include="View\Dictionaries\BaseStylesDictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -286,6 +290,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\SchoolInfoView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\StudentGradesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -344,6 +352,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="View\LogoImage.png" />
+    <Resource Include="View\MySchool.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="Model\DataModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>DataModel.edmx</DependentUpon>
@@ -354,8 +366,6 @@
       <DependentUpon>DataModel.edmx</DependentUpon>
       <LastGenOutput>DataModel.cs</LastGenOutput>
     </Content>
-    <Resource Include="View\LogoImage.png" />
-    <Resource Include="View\MySchool.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

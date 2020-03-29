@@ -13,7 +13,7 @@ namespace MySchoolYear.ViewModel.Utilities
     public interface IScreenViewModel
     {
         #region Properties
-        User Session { get; }
+        Person ConnectedUser { get; }
         bool HasRequiredPermissions { get; }
         string ScreenName { get; }
         #endregion
