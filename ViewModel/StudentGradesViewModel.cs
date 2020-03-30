@@ -140,7 +140,7 @@ namespace MySchoolYear.ViewModel
             }
         }
 
-        #region Constructor / Destructor
+        #region Constructors
         public StudentGradesViewModel(Person currentUser)
         {
             this.ConnectedUser = currentUser;

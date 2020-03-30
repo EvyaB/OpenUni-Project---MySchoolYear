@@ -78,7 +78,7 @@ namespace MySchoolYear.ViewModel
         }
         #endregion
 
-        #region Constructors/Destructors
+        #region Constructors
         public ApplicationViewModel(Person connectedUser)
         {
             // Create a list of all possible screens

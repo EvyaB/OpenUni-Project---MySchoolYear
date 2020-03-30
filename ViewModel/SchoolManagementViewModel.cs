@@ -141,7 +141,7 @@ namespace MySchoolYear.ViewModel
         }
         #endregion
 
-        #region Constructor / Destructor
+        #region Constructors
         public SchoolManagementViewModel(Person connectedUser, ICommand refreshDataCommand)
         {
             if (connectedUser.isPrincipal)

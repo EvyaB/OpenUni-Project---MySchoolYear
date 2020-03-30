@@ -39,7 +39,7 @@ namespace MySchoolYear.ViewModel
         }
         #endregion
 
-        #region Constructor/Destructors
+        #region Constructors
         public LoginViewModel()
         {
             _messageBoxService = Application.Current.Resources["MessageBoxService"] as IMessageBoxService;

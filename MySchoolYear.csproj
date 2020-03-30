@@ -215,6 +215,7 @@
     <Compile Include="Model\Message.cs">
       <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\MessagesHandler.cs" />
     <Compile Include="Model\Person.cs">
       <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>

@@ -39,7 +39,7 @@ namespace MySchoolYear.ViewModel
 
         #endregion
 
-        #region Constructors/Destructor
+        #region Constructors
         public SchoolInfoViewModel(Person connectedUser)
         {
             HasRequiredPermissions = true;
