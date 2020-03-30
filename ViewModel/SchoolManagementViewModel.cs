@@ -25,6 +25,7 @@ namespace MySchoolYear.ViewModel
         private ICommand _chooseImageCommand;
         private ICommand _prepareNewYearCommand;
         private ICommand _saveChangesCommand;
+        private ICommand _refreshDataCommand;
         #endregion
 
         #region Properties / Commands
@@ -87,6 +88,7 @@ namespace MySchoolYear.ViewModel
                 return SchoolLogo.Contains(":\\") ? SchoolLogo : "/MySchoolYear;component/Images/" + SchoolLogo;   
             }
         }
+
         /// <summary>
         /// Let the user choose a file from his computer
         /// </summary>
@@ -140,12 +142,13 @@ namespace MySchoolYear.ViewModel
         #endregion
 
         #region Constructor / Destructor
-        public SchoolManagementViewModel(Person connectedUser)
+        public SchoolManagementViewModel(Person connectedUser, ICommand refreshDataCommand)
         {
             if (connectedUser.isPrincipal)
             {
                 HasRequiredPermissions = true;
                 ConnectedUser = connectedUser;
+                _refreshDataCommand = refreshDataCommand;
             }
         }
         #endregion
@@ -206,6 +209,7 @@ namespace MySchoolYear.ViewModel
                     mySchool.Lessons.RemoveRange(mySchool.Lessons);
 
                     mySchool.SaveChanges();
+                    _refreshDataCommand.Execute(null);
                     _messageBoxService.ShowMessage("מידע עודכן!", "Saved Changes", MessageType.OK_MESSAGE, MessagePurpose.INFORMATION);
                 }
             }
@@ -222,8 +226,9 @@ namespace MySchoolYear.ViewModel
                 mySchool.SchoolInfo.Find("schoolName").value = SchoolName;
                 mySchool.SchoolInfo.Find("schoolDescription").value = SchoolDescription;
                 mySchool.SchoolInfo.Find("schoolImage").value = SchoolLogo;
-                mySchool.SaveChanges();
 
+                mySchool.SaveChanges();
+                _refreshDataCommand.Execute(null);
                 _messageBoxService.ShowMessage("הגדרות עודכנו!", "Saved Changes", MessageType.OK_MESSAGE, MessagePurpose.INFORMATION);
             }
         }

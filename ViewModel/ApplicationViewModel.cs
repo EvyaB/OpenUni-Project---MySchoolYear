@@ -14,7 +14,8 @@ namespace MySchoolYear.ViewModel
     public class ApplicationViewModel : BaseViewModel
     {
         #region Fields
-        private ICommand _changePageCommand;
+        private ICommand _changeScreenCommand;
+        private ICommand _updateScreensCommand;
 
         private IScreenViewModel _currentScreenViewModel;
         private List<IScreenViewModel> _screenViewModels;
@@ -25,14 +26,27 @@ namespace MySchoolYear.ViewModel
         {
             get
             {
-                if (_changePageCommand == null)
+                if (_changeScreenCommand == null)
                 {
-                    _changePageCommand = new RelayCommand(
+                    _changeScreenCommand = new RelayCommand(
                         p => ChangeViewModel((IScreenViewModel)p),
                         p => p is IScreenViewModel);
                 }
 
-                return _changePageCommand;
+                return _changeScreenCommand;
+            }
+        }
+
+        public ICommand UpdateScreensCommand
+        {
+            get
+            {
+                if (_updateScreensCommand == null)
+                {
+                    _updateScreensCommand = new RelayCommand(p => RefreshViewModels());
+                }
+
+                return _updateScreensCommand;
             }
         }
 
@@ -71,7 +85,7 @@ namespace MySchoolYear.ViewModel
             List<IScreenViewModel> allScreens = new List<IScreenViewModel>();
             allScreens.Add(new SchoolInfoViewModel(connectedUser));
             allScreens.Add(new StudentGradesViewModel(connectedUser));
-            allScreens.Add(new SchoolManagementViewModel(connectedUser));
+            allScreens.Add(new SchoolManagementViewModel(connectedUser, UpdateScreensCommand));
 
             // Use only the screens that are relevent to the current user
             foreach (IScreenViewModel screen in allScreens)
@@ -100,6 +114,17 @@ namespace MySchoolYear.ViewModel
 
             CurrentScreenViewModel = ScreensViewModels
                 .FirstOrDefault(vm => vm == viewModel);
+        }
+
+        /// <summary>
+        /// Refresh the view models following an update to the data
+        /// </summary>
+        private void RefreshViewModels()
+        {
+            foreach (IScreenViewModel viewModel in ScreensViewModels)
+            {
+                viewModel.Initialize();
+            }
         }
         #endregion
     }
