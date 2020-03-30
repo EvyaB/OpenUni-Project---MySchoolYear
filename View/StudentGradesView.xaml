@@ -22,15 +22,17 @@
                 </DataTemplate>
             </ComboBox.ItemTemplate>
         </ComboBox>
-        
-        <DataGrid ItemsSource="{Binding Path=Grades}" Width="600" 
-                  AutoGenerateColumns="False" CanUserSortColumns="False" CanUserResizeColumns="False" IsHitTestVisible="False" IsReadOnly="True">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="מקצוע" Binding="{Binding Path=CourseName}" Width="2*"/>
-                <DataGridTextColumn Header="ציון" Binding="{Binding Path=Score}" Width="0.5*"/>
-                <DataGridTextColumn Header="הערות" Binding="{Binding Path=TeacherNotes}" Width="4*"/>
-            </DataGrid.Columns>
-        </DataGrid>
+
+        <ListView ItemsSource="{Binding Path=Grades}" IsHitTestVisible="False" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                   Width="600" ItemContainerStyle="{StaticResource BorderedItem}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="מקצוע" DisplayMemberBinding="{Binding Path=CourseName}" Width="150"/>
+                    <GridViewColumn Header="ציון" DisplayMemberBinding="{Binding Path=Score}" Width="50"/>
+                    <GridViewColumn Header="הערות" DisplayMemberBinding="{Binding Path=TeacherNotes}" Width="400"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
 
         <TextBlock Text="{Binding Path=AverageGrade, StringFormat='ממוצע:{0}.'}"
                    Style="{StaticResource SecondaryTitleText}" HorizontalAlignment="Center"/>

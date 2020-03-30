@@ -352,10 +352,8 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="View\LogoImage.png" />
-    <Resource Include="View\MySchool.png" />
-  </ItemGroup>
-  <ItemGroup>
+    <Resource Include="Images\LogoImage.png" />
+    <Resource Include="Images\MySchool.png" />
     <Content Include="Model\DataModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>DataModel.edmx</DependentUpon>

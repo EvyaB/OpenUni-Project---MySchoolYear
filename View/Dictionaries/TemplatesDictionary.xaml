@@ -73,4 +73,16 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style x:Key="BorderedItem" TargetType="ListViewItem">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListViewItem">
+                    <Border Name="Border" BorderBrush="LightGray" BorderThickness="1">
+                        <ContentPresenter />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

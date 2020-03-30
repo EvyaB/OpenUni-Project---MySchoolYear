@@ -81,7 +81,7 @@ namespace MySchoolYear.ViewModel
             var schoolInfo = dbContext.SchoolInfoes;
             SchoolName = schoolInfo.Find("schoolName").value;
             SchoolDescription = schoolInfo.Find("schoolDescription").value;
-            SchoolImage = schoolInfo.Find("schoolImage").value;
+            SchoolImage = "/MySchoolYear;component/Images/" + schoolInfo.Find("schoolImage").value;
 
             // Calculate statistics
             NumberOfClasses = dbContext.Classes.Count();
