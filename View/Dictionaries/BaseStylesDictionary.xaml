@@ -45,6 +45,7 @@
 
     <Style TargetType="Button">
         <Setter Property="Foreground" Value="Black"/>
+        <Setter Property="BorderBrush" Value="Black"/>
         <Setter Property="FontWeight" Value="Bold"/>
         <Setter Property="FontSize" Value="18" />
         <Setter Property="FlowDirection" Value="RightToLeft"/>

@@ -43,7 +43,7 @@ namespace MySchoolYear.View.Utilities
             }
 
             // Display the message box and return the user's response.
-            MessageBoxResult result = MessageBox.Show(text, caption, messageButtons, messagePurpose);
+            MessageBoxResult result = MessageBox.Show(text, caption, messageButtons, messagePurpose, MessageBoxResult.OK , MessageBoxOptions.RtlReading);
             if (result == MessageBoxResult.Yes || result == MessageBoxResult.OK)
             {
                 return true;

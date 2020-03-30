@@ -13,10 +13,10 @@ namespace MySchoolYear.Model
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class schoolEntities : DbContext
+    public partial class SchoolEntities : DbContext
     {
-        public schoolEntities()
-            : base("name=schoolEntities")
+        public SchoolEntities()
+            : base("name=SchoolEntities")
         {
         }
     
@@ -32,7 +32,7 @@ namespace MySchoolYear.Model
         public virtual DbSet<Message> Messages { get; set; }
         public virtual DbSet<Person> Persons { get; set; }
         public virtual DbSet<Room> Rooms { get; set; }
-        public virtual DbSet<SchoolInfo> SchoolInfoes { get; set; }
+        public virtual DbSet<SchoolInfo> SchoolInfo { get; set; }
         public virtual DbSet<Score> Scores { get; set; }
         public virtual DbSet<Student> Students { get; set; }
         public virtual DbSet<Teacher> Teachers { get; set; }

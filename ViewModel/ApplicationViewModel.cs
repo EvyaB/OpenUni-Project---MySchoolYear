@@ -71,6 +71,7 @@ namespace MySchoolYear.ViewModel
             List<IScreenViewModel> allScreens = new List<IScreenViewModel>();
             allScreens.Add(new SchoolInfoViewModel(connectedUser));
             allScreens.Add(new StudentGradesViewModel(connectedUser));
+            allScreens.Add(new SchoolManagementViewModel(connectedUser));
 
             // Use only the screens that are relevent to the current user
             foreach (IScreenViewModel screen in allScreens)

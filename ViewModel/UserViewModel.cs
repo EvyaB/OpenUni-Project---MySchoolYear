@@ -25,7 +25,7 @@ namespace MySchoolYear.ViewModel
 
         public void LoadStudents()
         {
-            schoolEntities dbContext = new schoolEntities();
+            SchoolEntities dbContext = new SchoolEntities();
             myUsers = dbContext.Users.ToList();
         }
     }

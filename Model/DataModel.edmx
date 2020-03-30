@@ -944,7 +944,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="schoolEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="SchoolEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Classes" EntityType="Self.Class" />
           <EntitySet Name="Courses" EntityType="schoolModel.Course" />
           <EntitySet Name="Events" EntityType="Self.Event" />
@@ -952,7 +952,7 @@
           <EntitySet Name="Messages" EntityType="Self.Message" />
           <EntitySet Name="Persons" EntityType="Self.Person" />
           <EntitySet Name="Rooms" EntityType="Self.Room" />
-          <EntitySet Name="SchoolInfoes" EntityType="Self.SchoolInfo" />
+          <EntitySet Name="SchoolInfo" EntityType="Self.SchoolInfo" />
           <EntitySet Name="Scores" EntityType="Self.Score" />
           <EntitySet Name="Students" EntityType="Self.Student" />
           <EntitySet Name="Teachers" EntityType="Self.Teacher" />
@@ -1051,7 +1051,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="schoolModelStoreContainer" CdmEntityContainer="schoolEntities">
+        <EntityContainerMapping StorageEntityContainer="schoolModelStoreContainer" CdmEntityContainer="SchoolEntities">
           <EntitySetMapping Name="Classes">
             <EntityTypeMapping TypeName="schoolModel.Class">
               <MappingFragment StoreEntitySet="Classes">
@@ -1143,7 +1143,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="SchoolInfoes">
+          <EntitySetMapping Name="SchoolInfo">
             <EntityTypeMapping TypeName="schoolModel.SchoolInfo">
               <MappingFragment StoreEntitySet="SchoolInfo">
                 <ScalarProperty Name="key" ColumnName="key" />

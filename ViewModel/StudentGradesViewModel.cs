@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using MySchoolYear.Model;
 using MySchoolYear.ViewModel.Utilities;
@@ -22,12 +20,13 @@ namespace MySchoolYear.ViewModel
             public string TeacherNotes { get; set; }
         }
         #endregion
+
+        #region Fields
         private Student _currentStudent;
         private List<Grade> _grades;
         private double _averageGrade;
         private List<Student> _students;
         private ICommand _changeStudentCommand;
-        #region Data Members
         #endregion
 
         #region Properties / Commands
@@ -37,7 +36,7 @@ namespace MySchoolYear.ViewModel
         public string ScreenName { get { return "סיכום לימודים"; } }
         #endregion
 
-        // Business Logic Properties
+        // Business Logic Properties / Commands
         /// <summary>
         /// The grades of the student
         /// </summary>
@@ -141,7 +140,7 @@ namespace MySchoolYear.ViewModel
             }
         }
 
-        #region Constructor/Destructor
+        #region Constructor / Destructor
         public StudentGradesViewModel(Person currentUser)
         {
             this.ConnectedUser = currentUser;

@@ -75,13 +75,16 @@ namespace MySchoolYear.ViewModel
 
         public void Initialize()
         {
-            schoolEntities dbContext = new schoolEntities();
+            SchoolEntities dbContext = new SchoolEntities();
 
             // School basic information
-            var schoolInfo = dbContext.SchoolInfoes;
+            var schoolInfo = dbContext.SchoolInfo;
             SchoolName = schoolInfo.Find("schoolName").value;
             SchoolDescription = schoolInfo.Find("schoolDescription").value;
-            SchoolImage = "/MySchoolYear;component/Images/" + schoolInfo.Find("schoolImage").value;
+
+            // Get the full path to the school logo image
+            string imageSrc = schoolInfo.Find("schoolImage").value;
+            SchoolImage = imageSrc.Contains(":\\") ? imageSrc : "/MySchoolYear;component/Images/" + imageSrc;
 
             // Calculate statistics
             NumberOfClasses = dbContext.Classes.Count();

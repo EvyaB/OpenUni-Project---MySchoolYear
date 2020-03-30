@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Security;
 using System.Windows;
+using System.Windows.Input;
 using MySchoolYear.Model;
 using MySchoolYear.View;
 using MySchoolYear.ViewModel.Utilities;
@@ -13,24 +15,35 @@ namespace MySchoolYear.ViewModel
     /// </summary>
     public class LoginViewModel : BaseViewModel
     {
-        #region Data Members
-        private IMessageBoxService messageBoxService;
+        #region Fields
+        private IMessageBoxService _messageBoxService;
+        private DbSet<User> _mySchoolUsers;
+        private ICommand _loginCommand;
         #endregion
 
         #region Properties
         public string Username { get; set; }
-        public RelayCommand LoginCommand 
-        { 
-            get;
-            set;
+        public ICommand LoginCommand 
+        {
+            get
+            {
+                if (_loginCommand == null)
+                {
+                    _loginCommand = new RelayCommand(
+                        p => AttemptLoginCommand(p),
+                        p => p is IHavePassword);
+                }
+
+                return _loginCommand;
+            }
         }
         #endregion
 
         #region Constructor/Destructors
         public LoginViewModel()
         {
-            this.messageBoxService = Application.Current.Resources["MessageBoxService"] as IMessageBoxService;
-            this.LoginCommand = new RelayCommand(param => AttemptLoginCommand(param));
+            _messageBoxService = Application.Current.Resources["MessageBoxService"] as IMessageBoxService;
+            _mySchoolUsers = new SchoolEntities().Users;
         }
         #endregion
 
@@ -51,8 +64,7 @@ namespace MySchoolYear.ViewModel
                 var unsecuredPassword = password.Unsecure();
 
                 // Search for the user in the DB.
-                schoolEntities mySchool = new schoolEntities();
-                var myAccount = mySchool.Users.SingleOrDefault(user => user.username == Username && user.password == unsecuredPassword);
+                var myAccount = _mySchoolUsers.SingleOrDefault(user => user.username == Username && user.password == unsecuredPassword);
 
                 // If the user is found, connect as it and open the application.
                 if (myAccount != null && !myAccount.isDisabled)
@@ -68,13 +80,13 @@ namespace MySchoolYear.ViewModel
                 // Report incorrect user credentials error.
                 else
                 {
-                    this.messageBoxService.ShowMessage("שם המשתמש ו/או הסיסמא שגויים!", "Login Failed!", MessageType.OK_MESSAGE, MessagePurpose.ERROR);
+                    this._messageBoxService.ShowMessage("שם המשתמש ו/או הסיסמא שגויים!", "Login Failed!", MessageType.OK_MESSAGE, MessagePurpose.ERROR);
                 }
             }
             // Report invalid credentials error.
             else
             {
-                this.messageBoxService.ShowMessage(validInput.ErrorReport, "Login Failed!", MessageType.OK_MESSAGE, MessagePurpose.ERROR);
+                this._messageBoxService.ShowMessage(validInput.ErrorReport, "Login Failed!", MessageType.OK_MESSAGE, MessagePurpose.ERROR);
             }
         }
 
