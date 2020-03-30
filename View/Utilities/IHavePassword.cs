@@ -2,7 +2,7 @@
 using System.Security;
 using System.Runtime.InteropServices;
 
-namespace MySchoolYear.ViewModel.Utilities
+namespace MySchoolYear.View.Utilities
 {
     /// <summary>
     /// An interface for a class that can provide a secure password
@@ -13,6 +13,11 @@ namespace MySchoolYear.ViewModel.Utilities
         /// The secure password
         /// </summary>
         SecureString SecurePassword { get; }
+
+        /// <summary>
+        /// An optional confirmation secure password
+        /// </summary>
+        SecureString ConfirmationSecurePassword { get; }
     }
 
     /// <summary>

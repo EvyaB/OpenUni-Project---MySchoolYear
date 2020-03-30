@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Input;
 using MySchoolYear.Model;
 using MySchoolYear.View;
+using MySchoolYear.View.Utilities;
 using MySchoolYear.ViewModel.Utilities;
 
 namespace MySchoolYear.ViewModel
@@ -17,7 +18,7 @@ namespace MySchoolYear.ViewModel
     {
         #region Fields
         private IMessageBoxService _messageBoxService;
-        private DbSet<User> _mySchoolUsers;
+        private SchoolEntities _mySchoolModel;
         private ICommand _loginCommand;
         #endregion
 
@@ -43,7 +44,7 @@ namespace MySchoolYear.ViewModel
         public LoginViewModel()
         {
             _messageBoxService = Application.Current.Resources["MessageBoxService"] as IMessageBoxService;
-            _mySchoolUsers = new SchoolEntities().Users;
+            _mySchoolModel = new SchoolEntities();
         }
         #endregion
 
@@ -64,11 +65,21 @@ namespace MySchoolYear.ViewModel
                 var unsecuredPassword = password.Unsecure();
 
                 // Search for the user in the DB.
-                var myAccount = _mySchoolUsers.SingleOrDefault(user => user.username == Username && user.password == unsecuredPassword);
+                User myAccount = _mySchoolModel.Users.SingleOrDefault(user => user.username == Username && user.password == unsecuredPassword);
 
                 // If the user is found, connect as it and open the application.
                 if (myAccount != null && !myAccount.isDisabled)
                 {
+                    // Ask the user to change his password before continuing
+                    if (myAccount.hasToChangePassword)
+                    {
+                        NewPasswordWindow newPasswordDialog = new NewPasswordWindow();
+                        NewPasswordViewModel newPasswordDialogVM = new NewPasswordViewModel(_mySchoolModel, myAccount);
+                        newPasswordDialog.DataContext = newPasswordDialogVM;
+                        newPasswordDialog.ShowDialog();
+                    }
+
+                    // Launch the application main window
                     ApplicationMainWindow appMainWindow = new ApplicationMainWindow();
                     ApplicationViewModel context = new ApplicationViewModel(myAccount.Person.Single());
                     appMainWindow.DataContext = context;
@@ -101,22 +112,26 @@ namespace MySchoolYear.ViewModel
             ValidityResult result = new ValidityResult();
             result.Valid = true;
 
+            // Did the user write a username
             if (username == null || username.Length == 0)
             {
                 result.ErrorReport = "אנא הכנס שם משתמש";
                 result.Valid = false;
             }
+            // Is the username valid
             else if (username.Length < Globals.MINIMUM_USERNAME_LENGTH || username.Length > Globals.MAXIMUM_USERNAME_LENGTH)
             {
                 result.ErrorReport = string.Format("שם משתמש לא תקין. אורך שם המשתמש חייב להיות בין {0} לבין {1} תווים",
                                                     Globals.MINIMUM_USERNAME_LENGTH, Globals.MAXIMUM_USERNAME_LENGTH);
                 result.Valid = false;
             }
+            // Did the user write a password
             else if (password == null || password.Length == 0)
             {
                 result.ErrorReport = "אנא הכנס סיסמא";
                 result.Valid = false;
             }
+            // Is the password valid
             else if (password.Length < Globals.MINIMUM_PASSWORD_LENGTH || password.Length > Globals.MAXIMUM_PASSWORD_LENGTH)
             {
                 result.ErrorReport = string.Format("סיסמא לא תקינה. אורך הסיסמא חייב להיות בין {0} לבין {1} תווים",

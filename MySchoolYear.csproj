@@ -239,11 +239,16 @@
     </Compile>
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\ApplicationViewModel.cs" />
+    <Compile Include="ViewModel\NewPasswordViewModel.cs" />
+    <Compile Include="View\NewPasswordWindow.xaml.cs">
+      <DependentUpon>NewPasswordWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\SchoolInfoViewModel.cs" />
     <Compile Include="ViewModel\SchoolManagementViewModel.cs" />
     <Compile Include="ViewModel\StudentGradesViewModel.cs" />
     <Compile Include="ViewModel\Utilities\BaseViewModel.cs" />
-    <Compile Include="ViewModel\Utilities\IHavePassword.cs" />
+    <Compile Include="View\Utilities\IDialogWindow.cs" />
+    <Compile Include="View\Utilities\IHavePassword.cs" />
     <Compile Include="ViewModel\Utilities\IScreenViewModel.cs" />
     <Compile Include="ViewModel\Utilities\RelayCommand.cs" />
     <Compile Include="ViewModel\Utilities\ValidityResult.cs" />
@@ -265,6 +270,10 @@
     </Compile>
     <Compile Include="ViewModel\Utilities\IMessageBoxService.cs" />
     <Compile Include="View\Utilities\PasswordBoxMonitor.cs" />
+    <Page Include="View\NewPasswordWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\LoginWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

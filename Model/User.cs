@@ -24,6 +24,7 @@ namespace MySchoolYear.Model
         public string username { get; set; }
         public string password { get; set; }
         public bool isDisabled { get; set; }
+        public bool hasToChangePassword { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Person> Person { get; set; }

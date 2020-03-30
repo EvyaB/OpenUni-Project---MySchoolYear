@@ -1,8 +1,6 @@
 ﻿using System.Security;
 using System.Windows;
 using MySchoolYear.View.Utilities;
-using MySchoolYear.ViewModel;
-using MySchoolYear.ViewModel.Utilities;
 
 namespace MySchoolYear.View
 {
@@ -14,13 +12,16 @@ namespace MySchoolYear.View
         public LoginWindow()
         {
             InitializeComponent();
-            //LoginViewModel VM = new LoginViewModel(new WPFMessageBoxService());
-            //this.DataContext = VM;
         }
 
         /// <summary>
         /// The secure password for this login page
         /// </summary>
         public SecureString SecurePassword => PasswordText.SecurePassword;
+
+        /// <summary>
+        /// Confirmation secure password for this login page - doesn't actually exists so resending password
+        /// </summary>
+        public SecureString ConfirmationSecurePassword => PasswordText.SecurePassword;
     }
 }

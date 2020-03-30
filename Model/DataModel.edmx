@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="schoolModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="schoolModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Classes">
           <Key>
             <PropertyRef Name="classID" />
@@ -72,7 +72,7 @@
           <Property Name="personID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="userID" Type="int" Nullable="false" />
           <Property Name="firstName" Type="nvarchar" MaxLength="20" Nullable="false" />
-          <Property Name="LastName" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="lastName" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="email" Type="nvarchar" MaxLength="50" />
           <Property Name="phoneNumber" Type="char" MaxLength="12" Nullable="false" />
           <Property Name="birthdate" Type="date" />
@@ -94,7 +94,7 @@
             <PropertyRef Name="key" />
           </Key>
           <Property Name="key" Type="nvarchar" MaxLength="30" Nullable="false" />
-          <Property Name="value" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="value" Type="nvarchar" MaxLength="250" Nullable="false" />
         </EntityType>
         <EntityType Name="Scores">
           <Key>
@@ -134,6 +134,7 @@
           <Property Name="username" Type="nvarchar" MaxLength="16" Nullable="false" />
           <Property Name="password" Type="nvarchar" MaxLength="16" Nullable="false" />
           <Property Name="isDisabled" Type="bit" Nullable="false" />
+          <Property Name="hasToChangePassword" Type="bit" Nullable="false" />
         </EntityType>
         <Association Name="FK_Classes_ToRooms">
           <End Role="Rooms" Type="Self.Rooms" Multiplicity="0..1" />
@@ -501,8 +502,7 @@
             <End Role="Teachers" EntitySet="Teachers" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="schoolModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -594,7 +594,7 @@
           <Property Name="personID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="userID" Type="Int32" Nullable="false" />
           <Property Name="firstName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="lastName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="lastName" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="phoneNumber" Type="String" MaxLength="12" FixedLength="true" Unicode="false" Nullable="false" />
           <Property Name="birthdate" Type="DateTime" Precision="0" />
@@ -625,7 +625,7 @@
             <PropertyRef Name="key" />
           </Key>
           <Property Name="key" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="value" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="value" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
         </EntityType>
         <EntityType Name="Score">
           <Key>
@@ -679,6 +679,7 @@
           <Property Name="password" Type="String" MaxLength="16" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="isDisabled" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Person" Relationship="schoolModel.FK_Persons_ToUsers" FromRole="Users" ToRole="Persons" />
+          <Property Name="hasToChangePassword" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="FK_Classes_ToRooms">
           <End Role="Rooms" Type="Self.Room" Multiplicity="0..1" />
@@ -1120,10 +1121,10 @@
           <EntitySetMapping Name="Persons">
             <EntityTypeMapping TypeName="schoolModel.Person">
               <MappingFragment StoreEntitySet="Persons">
+                <ScalarProperty Name="lastName" ColumnName="lastName" />
                 <ScalarProperty Name="personID" ColumnName="personID" />
                 <ScalarProperty Name="userID" ColumnName="userID" />
                 <ScalarProperty Name="firstName" ColumnName="firstName" />
-                <ScalarProperty Name="lastName" ColumnName="LastName" />
                 <ScalarProperty Name="email" ColumnName="email" />
                 <ScalarProperty Name="phoneNumber" ColumnName="phoneNumber" />
                 <ScalarProperty Name="birthdate" ColumnName="birthdate" />
@@ -1186,6 +1187,7 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="schoolModel.User">
               <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="hasToChangePassword" ColumnName="hasToChangePassword" />
                 <ScalarProperty Name="userID" ColumnName="userID" />
                 <ScalarProperty Name="username" ColumnName="username" />
                 <ScalarProperty Name="password" ColumnName="password" />
