@@ -20,6 +20,7 @@
           </Key>
           <Property Name="courseID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="courseName" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="isHomeroomTeacherOnly" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Events">
           <Key>
@@ -533,6 +534,7 @@
           <NavigationProperty Name="Teachers1" Relationship="Self.FK_Teachers_ToCourses_2" FromRole="Courses" ToRole="Teachers" />
           <NavigationProperty Name="Teachers2" Relationship="Self.FK_Teachers_ToCourses_3" FromRole="Courses" ToRole="Teachers" />
           <NavigationProperty Name="Teachers3" Relationship="Self.FK_Teachers_ToCourses_4" FromRole="Courses" ToRole="Teachers" />
+          <Property Name="isHomeroomTeacherOnly" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="Event">
           <Key>
@@ -1066,6 +1068,7 @@
           <EntitySetMapping Name="Courses">
             <EntityTypeMapping TypeName="schoolModel.Course">
               <MappingFragment StoreEntitySet="Courses">
+                <ScalarProperty Name="isHomeroomTeacherOnly" ColumnName="isHomeroomTeacherOnly" />
                 <ScalarProperty Name="courseID" ColumnName="courseID" />
                 <ScalarProperty Name="courseName" ColumnName="courseName" />
               </MappingFragment>

@@ -13,9 +13,9 @@
         <EntityTypeShape EntityType="schoolModel.Person" Width="1.5" PointX="3.75" PointY="14.5" IsExpanded="true" />
         <EntityTypeShape EntityType="schoolModel.Room" Width="1.5" PointX="1.5" PointY="11.375" IsExpanded="true" />
         <EntityTypeShape EntityType="schoolModel.SchoolInfo" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="schoolModel.Score" Width="1.5" PointX="6" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="schoolModel.Score" Width="1.5" PointX="6" PointY="3.625" IsExpanded="true" />
         <EntityTypeShape EntityType="schoolModel.Student" Width="1.5" PointX="3.75" PointY="0.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="schoolModel.Teacher" Width="1.5" PointX="6" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="schoolModel.Teacher" Width="1.5" PointX="6" PointY="8.75" IsExpanded="true" />
         <EntityTypeShape EntityType="schoolModel.User" Width="1.5" PointX="1.5" PointY="15.875" IsExpanded="true" />
         <AssociationConnector Association="schoolModel.FK_Classes_ToRooms" ManuallyRouted="false" />
         <AssociationConnector Association="schoolModel.FK_Events_ToClasses" ManuallyRouted="false" />

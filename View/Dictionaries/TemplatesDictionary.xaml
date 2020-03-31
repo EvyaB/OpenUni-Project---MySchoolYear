@@ -112,4 +112,16 @@
             </DataTrigger>
         </Style.Triggers>
     </Style>
+
+
+    <Style TargetType="{x:Type ComboBox}" x:Key="ComboBoxCleanWhenDisabled">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsEnabled}" Value="False">
+                <Setter Property="SelectedIndex" Value="-1"/>
+            </DataTrigger>
+            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsEnabled}" Value="True">
+                <Setter Property="SelectedIndex" Value="0"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>

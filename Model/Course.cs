@@ -27,6 +27,7 @@ namespace MySchoolYear.Model
     
         public int courseID { get; set; }
         public string courseName { get; set; }
+        public bool isHomeroomTeacherOnly { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Lesson> Lessons { get; set; }

@@ -41,9 +41,9 @@ namespace MySchoolYear.ViewModel
         #endregion
 
         #region Constructors
-        public LoginViewModel()
+        public LoginViewModel(IMessageBoxService messageBoxService)
         {
-            _messageBoxService = Application.Current.Resources["MessageBoxService"] as IMessageBoxService;
+            _messageBoxService = messageBoxService;
             _mySchoolModel = new SchoolEntities();
         }
         #endregion
@@ -81,7 +81,7 @@ namespace MySchoolYear.ViewModel
 
                     // Launch the application main window
                     ApplicationMainWindow appMainWindow = new ApplicationMainWindow();
-                    ApplicationViewModel context = new ApplicationViewModel(myAccount.Person.Single());
+                    ApplicationViewModel context = new ApplicationViewModel(myAccount.Person.Single(), _messageBoxService);
                     appMainWindow.DataContext = context;
                     appMainWindow.Show();
 
@@ -91,13 +91,13 @@ namespace MySchoolYear.ViewModel
                 // Report incorrect user credentials error.
                 else
                 {
-                    this._messageBoxService.ShowMessage("שם המשתמש ו/או הסיסמא שגויים!", "Login Failed!", MessageType.OK_MESSAGE, MessagePurpose.ERROR);
+                    _messageBoxService.ShowMessage("שם המשתמש ו/או הסיסמא שגויים!", "Login Failed!", MessageType.OK_MESSAGE, MessagePurpose.ERROR);
                 }
             }
             // Report invalid credentials error.
             else
             {
-                this._messageBoxService.ShowMessage(validInput.ErrorReport, "Login Failed!", MessageType.OK_MESSAGE, MessagePurpose.ERROR);
+                _messageBoxService.ShowMessage(validInput.ErrorReport, "Login Failed!", MessageType.OK_MESSAGE, MessagePurpose.ERROR);
             }
         }
 

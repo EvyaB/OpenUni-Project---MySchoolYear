@@ -18,6 +18,9 @@
         <DataTemplate DataType="{x:Type viewModels:SchoolManagementViewModel}">
             <local:SchoolManagementView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModels:UserCreationViewModel}">
+            <local:UserCreationView />
+        </DataTemplate>
     </Window.Resources>
 
     <DockPanel>

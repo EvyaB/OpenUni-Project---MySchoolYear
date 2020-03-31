@@ -79,13 +79,14 @@ namespace MySchoolYear.ViewModel
         #endregion
 
         #region Constructors
-        public ApplicationViewModel(Person connectedUser)
+        public ApplicationViewModel(Person connectedUser, IMessageBoxService messageBoxService)
         {
             // Create a list of all possible screens
             List<IScreenViewModel> allScreens = new List<IScreenViewModel>();
             allScreens.Add(new SchoolInfoViewModel(connectedUser));
             allScreens.Add(new StudentGradesViewModel(connectedUser));
             allScreens.Add(new SchoolManagementViewModel(connectedUser, UpdateScreensCommand));
+            allScreens.Add(new UserCreationViewModel(connectedUser, UpdateScreensCommand, messageBoxService));
 
             // Use only the screens that are relevent to the current user
             foreach (IScreenViewModel screen in allScreens)

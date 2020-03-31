@@ -17,9 +17,8 @@
             <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
-
-        <Image Grid.Row="0" Grid.Column="0" Source="{Binding Path=SchoolImage}" />
-        <Label Grid.Row="0" Grid.Column="1" Content="{Binding Path=SchoolName}" 
+        
+        <Label Grid.Row="0" Grid.Column="0" Content="{Binding Path=SchoolName}" 
                HorizontalAlignment="Center" VerticalAlignment="Top" 
                FontFamily="Cooper Black" FontSize="40" RenderTransformOrigin="0.5,0.5" Margin="0,20,0,0" >
             <Label.RenderTransform>
@@ -31,11 +30,12 @@
                 <DropShadowEffect BlurRadius="1" Opacity="0.1" Direction="318"/>
             </Label.Effect>
         </Label>
+        <Image Grid.Row="0" Grid.Column="1" Source="{Binding Path=SchoolImage}" />
 
-        <Label Grid.Row="1" Grid.Column="1">
+        <Label Grid.Row="1" Grid.Column="0">
             <TextBlock Text="{Binding Path=SchoolDescription}" TextWrapping="WrapWithOverflow"/>
         </Label>
-        <StackPanel Grid.Row="1" Grid.Column="0">
+        <StackPanel Grid.Row="1" Grid.Column="1">
             <Label Content="{Binding Path=NumberOfStudents}" ContentStringFormat="מספר התלמידים: {0}" />
             <Label Content="{Binding Path=NumberOfClasses}" ContentStringFormat="מספר הכיתות:{0}" />
             <Label Content="{Binding Path=ClassAverageSize}" ContentStringFormat="גודל כיתה ממוצע:{0}" />
@@ -43,11 +43,6 @@
         </StackPanel>
 
         <StackPanel Grid.Row="2" Grid.Column="0">
-            <Label Content="המנהל:" Margin="0,30,0,0"/>
-            <Label Content="{Binding Path=PrincipalName}" />
-            <Label Content="{Binding Path=PrincipalEmail}" />                       
-        </StackPanel>
-        <StackPanel Grid.Row="2" Grid.Column="1">
             <TextBlock Text="צור קשר - מזכירות" Style="{StaticResource SecondaryTitleText}"/>
             <ItemsControl ItemsSource="{Binding Path=Secretaries}">
                 <ItemsControl.ItemTemplate>
@@ -63,6 +58,11 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Grid.Column="1">
+            <Label Content="המנהל:" Margin="0,30,0,0"/>
+            <Label Content="{Binding Path=PrincipalName}" />
+            <Label Content="{Binding Path=PrincipalEmail}" />                       
         </StackPanel>
     </Grid>
 </UserControl>
