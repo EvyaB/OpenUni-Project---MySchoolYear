@@ -199,6 +199,28 @@ namespace MySchoolYear.ViewModel
                 AvailableCourses.Add(-1, "לא מוגדר");
                 AvailableCoursesMustChoose.ToList().ForEach(course => AvailableCourses.Add(course.Key, course.Value));
             }
+
+            // Reset all properties
+            Username = "";
+            FirstName = "";
+            LastName = "";
+            Email = "";
+            Phone = "";
+            Birthdate = new DateTime();
+            
+            IsNewStudent = false;
+            IsNewTeacher = false;
+            IsNewParent = false;
+            IsNewSecretary = false;
+
+            SelectedHomeroomClass = null;
+            SelectedParent = null;
+            SelectedStudent = null;
+            SelectedClass = null;
+            SelectedCourse1 = null;
+            SelectedCourse2 = null;
+            SelectedCourse3 = null;
+            SelectedCourse4 = null;
         }
 
         /// <summary>
@@ -285,6 +307,7 @@ namespace MySchoolYear.ViewModel
 
                     _messageBoxService.ShowMessage("נרשם המשתמש " + newPerson.firstName + " " + newPerson.lastName + "!",
                         "הצלחה!", MessageType.OK_MESSAGE, MessagePurpose.INFORMATION);
+                    _refreshDataCommand.Execute(null);
                 }
                 else
                 {
