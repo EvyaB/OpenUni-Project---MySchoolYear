@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MySchoolYear.View"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
+             d:DesignHeight="560" d:DesignWidth="650"
              Background = "{StaticResource WindowBackgroundBrush}">
     <StackPanel>
         <TextBlock HorizontalAlignment="Center" Text="ניהול בית הספר" Style="{StaticResource MainTitleText}"/>
@@ -55,13 +55,13 @@
             <Image Width="200" Height="125" Source="{Binding Path=SchoolLogoFullPath}" Margin="25,0,0,0" Stretch="Fill" />
         </StackPanel>
         
-        <Grid Margin="0,70,0,20">
+        <Grid Margin="0,80,0,20">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Background="#FFE04848" Content="התחל שנה חדשה" Width="200" Command="{Binding Path=PrepareNewYearCommand}"/>
-            <Button Grid.Column="1" Content="עדכן" Width="200" Command="{Binding Path=SaveChangesCommand}"/>
+            <Button Grid.Column="0" Height="40" FontSize="20" Background="#FFE04848" Content="התחל שנה חדשה" Width="200" Command="{Binding Path=PrepareNewYearCommand}"/>
+            <Button Grid.Column="1" Height="40" FontSize="20" Content="עדכן" Width="200" Command="{Binding Path=SaveChangesCommand}"/>
         </Grid>
     </StackPanel>
 </UserControl>

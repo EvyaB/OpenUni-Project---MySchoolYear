@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MySchoolYear.View"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="650"
+             d:DesignHeight="560" d:DesignWidth="650"
              Background = "{StaticResource WindowBackgroundBrush}">
     <UserControl.Resources>
         <Style TargetType="TextBlock" BasedOn="{StaticResource BasicText}"/>
