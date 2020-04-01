@@ -21,6 +21,8 @@ namespace MySchoolYear.ViewModel
         private bool _isNewTeacher;
         private bool _isNewParent;
         private bool _isNewSecretary;
+
+        private const int FIELD_NOT_SET = -1;
         #endregion
 
         #region Properties / Commands
@@ -173,19 +175,22 @@ namespace MySchoolYear.ViewModel
         #region Methods
         public void Initialize()
         {
+            ClearAllViewModelInfo();
+
             if (HasRequiredPermissions)
             {
+                // Get the school data and use to it to populate this View Model's data
                 SchoolEntities schoolData = new SchoolEntities();
-                
+
                 // Create a list of all the classes in the school
                 schoolData.Classes.ToList().ForEach(currClass => AvailableClasses.Add(currClass.classID, currClass.className));
 
-                AvailableHomeroomClasses.Add(-1, "לא מוגדר");
+                AvailableHomeroomClasses.Add(FIELD_NOT_SET, "לא מוגדר");
                 schoolData.Classes.Where(currClass => currClass.Teachers.Count() == 0).ToList()
                     .ForEach(currClass => AvailableHomeroomClasses.Add(currClass.classID, currClass.className));
 
                 // Create a list of all the parents in the school
-                AvailableParents.Add(-1, "לא מוגדר");
+                AvailableParents.Add(FIELD_NOT_SET, "לא מוגדר");
                 schoolData.Persons.Where(p => p.isParent).ToList()
                     .ForEach(parent => AvailableParents.Add(parent.personID, parent.firstName + " " + parent.lastName));
 
@@ -196,9 +201,21 @@ namespace MySchoolYear.ViewModel
                 // Create a list of all the courses in the school
                 schoolData.Courses.Where(course => course.isHomeroomTeacherOnly == false).ToList()
                     .ForEach(course => AvailableCoursesMustChoose.Add(course.courseID, course.courseName));
-                AvailableCourses.Add(-1, "לא מוגדר");
+                AvailableCourses.Add(FIELD_NOT_SET, "לא מוגדר");
                 AvailableCoursesMustChoose.ToList().ForEach(course => AvailableCourses.Add(course.Key, course.Value));
             }
+        }
+
+        // Clears all the data in this View Model
+        private void ClearAllViewModelInfo()
+        {
+            // Reset all of the lists
+            AvailableClasses.Clear();
+            AvailableParents.Clear();
+            AvailableStudents.Clear();
+            AvailableCourses.Clear();
+            AvailableCoursesMustChoose.Clear();
+            AvailableHomeroomClasses.Clear();
 
             // Reset all properties
             Username = "";
@@ -207,7 +224,7 @@ namespace MySchoolYear.ViewModel
             Email = "";
             Phone = "";
             Birthdate = new DateTime();
-            
+
             IsNewStudent = false;
             IsNewTeacher = false;
             IsNewParent = false;
@@ -276,7 +293,7 @@ namespace MySchoolYear.ViewModel
                         {
                             studentID = newPerson.personID,
                             classID = SelectedClass.Value,
-                            parentID = (SelectedParent != null && SelectedParent > 0) ? SelectedParent : null,
+                            parentID = (SelectedParent != null && SelectedParent != FIELD_NOT_SET) ? SelectedParent : null,
                             absencesCounter = 0
                         };
                         schoolData.Students.Add(newStudent);
@@ -295,11 +312,11 @@ namespace MySchoolYear.ViewModel
                         Teacher newTeacher = new Teacher()
                         {
                             teacherID = newPerson.personID,
-                            classID = (SelectedHomeroomClass != null && SelectedHomeroomClass > 0) ? SelectedHomeroomClass : null,
+                            classID = (SelectedHomeroomClass != null && SelectedHomeroomClass != FIELD_NOT_SET) ? SelectedHomeroomClass : null,
                             firstCourseID = SelectedCourse1.Value,
-                            secondCourseID = (SelectedCourse2 != null && SelectedCourse2 > 0) ? SelectedCourse2 : null,
-                            thirdCourseID = (SelectedCourse3 != null && SelectedCourse3 > 0) ? SelectedCourse3 : null,
-                            fourthCourseID = (SelectedCourse4 != null && SelectedCourse4 > 0) ? SelectedCourse4 : null
+                            secondCourseID = (SelectedCourse2 != null && SelectedCourse2 != FIELD_NOT_SET) ? SelectedCourse2 : null,
+                            thirdCourseID = (SelectedCourse3 != null && SelectedCourse3 != FIELD_NOT_SET) ? SelectedCourse3 : null,
+                            fourthCourseID = (SelectedCourse4 != null && SelectedCourse4 != FIELD_NOT_SET) ? SelectedCourse4 : null
                         };
                         schoolData.Teachers.Add(newTeacher);
                         schoolData.SaveChanges();
@@ -358,18 +375,18 @@ namespace MySchoolYear.ViewModel
                 result.Valid = false;
             }
             // Student must be in a class
-            else if (IsNewStudent && SelectedClass == null && SelectedClass > 0)
+            else if (IsNewStudent && (SelectedClass == null || SelectedClass == FIELD_NOT_SET))
             {
                 result.ErrorReport = "אנא בחר כיתה לתלמיד";
                 result.Valid = false;
             }
             // Parent must have a child
-            else if (IsNewParent && SelectedStudent == null && SelectedStudent > 0)
+            else if (IsNewParent && (SelectedStudent == null || SelectedStudent == FIELD_NOT_SET))
             {
                 result.ErrorReport = "אנא בחר את הילד של ההורה";
                 result.Valid = false;
             }
-            else if (IsNewTeacher && SelectedCourse1 == null && SelectedCourse1 > 0)
+            else if (IsNewTeacher && (SelectedCourse1 == null || SelectedCourse1 == FIELD_NOT_SET))
             {
                 result.ErrorReport = "אנא בחר מקצוע אחד לפחות למורה";
                 result.Valid = false;

@@ -87,13 +87,14 @@ namespace MySchoolYear.ViewModel
             SchoolImage = imageSrc.Contains(":\\") ? imageSrc : "/MySchoolYear;component/Images/" + imageSrc;
 
             // Calculate statistics
+            var relevantStudentsQuery = dbContext.Students.Where(student => !student.Person.User.isDisabled);
             NumberOfClasses = dbContext.Classes.Count();
-            NumberOfStudents = dbContext.Students.Count();
+            NumberOfStudents = relevantStudentsQuery.Count();
             ClassAverageSize = NumberOfStudents / NumberOfClasses;
-            ScoreAverage = CalcAverageScore(dbContext.Students.ToList());
+            ScoreAverage = CalcAverageScore(relevantStudentsQuery.ToList());
 
             // Get the principal information
-            var principal = dbContext.Persons.FirstOrDefault(person => person.isPrincipal);
+            var principal = dbContext.Persons.FirstOrDefault(person => person.isPrincipal && !person.User.isDisabled);
             if (principal != null)
             {
                 PrincipalName = principal.firstName + " " + principal.lastName;
@@ -101,7 +102,7 @@ namespace MySchoolYear.ViewModel
             }
 
             // Get the secretaries information
-            Secretaries = dbContext.Persons.Where(person => person.isSecretary).ToList()
+            Secretaries = dbContext.Persons.Where(person => person.isSecretary && !person.User.isDisabled).ToList()
                 .Select(person => new Secretary() { Name = person.firstName + " " + person.lastName, Phone = person.phoneNumber })
                 .ToList();
         }

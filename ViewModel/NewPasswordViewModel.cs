@@ -98,6 +98,7 @@ namespace MySchoolYear.ViewModel
                 // Password is valid. Save it and return.
                 // Note that the password is saved in plain-text for convenience and simplification. In an actual product it would stay secured.
                 _user.password = password.Unsecure();
+                _user.hasToChangePassword = false;
                 _context.SaveChanges();
                 (parameter as IDialogWindow).CloseDialogWindow(true);
             }

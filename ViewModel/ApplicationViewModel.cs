@@ -87,6 +87,7 @@ namespace MySchoolYear.ViewModel
             allScreens.Add(new StudentGradesViewModel(connectedUser));
             allScreens.Add(new SchoolManagementViewModel(connectedUser, UpdateScreensCommand));
             allScreens.Add(new UserCreationViewModel(connectedUser, UpdateScreensCommand, messageBoxService));
+            allScreens.Add(new UserUpdateViewModel(connectedUser, UpdateScreensCommand, messageBoxService));
 
             // Use only the screens that are relevent to the current user
             foreach (IScreenViewModel screen in allScreens)

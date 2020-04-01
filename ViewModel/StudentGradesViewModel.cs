@@ -171,13 +171,13 @@ namespace MySchoolYear.ViewModel
                 else if (ConnectedUser.isTeacher && ConnectedUser.Teacher.classID != null)
                 {
                     // An homeroom teacher can see the grades of all of his students
-                    Students.AddRange(ConnectedUser.Teacher.Class.Students);
+                    Students.AddRange(ConnectedUser.Teacher.Class.Students.Where(student => !student.Person.User.isDisabled == false));
                     CanViewDifferentStudents = true;
                 }
                 else if (ConnectedUser.isParent)
                 {
                     // A parent can see the grades of all of his children
-                    Students.AddRange(ConnectedUser.ChildrenStudents);
+                    Students.AddRange(ConnectedUser.ChildrenStudents.Where(student => student.Person.User.isDisabled == false));
                     CanViewDifferentStudents = true;
                 }
 

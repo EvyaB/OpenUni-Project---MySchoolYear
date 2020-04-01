@@ -240,6 +240,7 @@
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\ApplicationViewModel.cs" />
     <Compile Include="ViewModel\NewPasswordViewModel.cs" />
+    <Compile Include="ViewModel\UserUpdateViewModel.cs" />
     <Compile Include="ViewModel\UserCreationViewModel.cs" />
     <Compile Include="View\NewPasswordWindow.xaml.cs">
       <DependentUpon>NewPasswordWindow.xaml</DependentUpon>
@@ -248,6 +249,9 @@
     <Compile Include="ViewModel\SchoolManagementViewModel.cs" />
     <Compile Include="ViewModel\StudentGradesViewModel.cs" />
     <Compile Include="ViewModel\Utilities\BaseViewModel.cs" />
+    <Compile Include="View\UserUpdateView.xaml.cs">
+      <DependentUpon>UserUpdateView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\UserCreationView.xaml.cs">
       <DependentUpon>UserCreationView.xaml</DependentUpon>
     </Compile>
@@ -269,9 +273,6 @@
       <DependentUpon>StudentGradesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Utilities\WPFMessageBoxService.cs" />
-    <Compile Include="View\UserView.xaml.cs">
-      <DependentUpon>UserView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ViewModel\Utilities\IMessageBoxService.cs" />
     <Compile Include="View\Utilities\PasswordBoxMonitor.cs" />
     <Page Include="View\NewPasswordWindow.xaml">
@@ -282,7 +283,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="ViewModel\UserViewModel.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -319,11 +319,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\UserCreationView.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="View\UserUpdateView.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\UserView.xaml">
+    <Page Include="View\UserCreationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
