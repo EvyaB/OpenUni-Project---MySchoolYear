@@ -18,7 +18,7 @@ namespace MySchoolYear.ViewModel
         private ICommand _refreshDataCommand;
         private IMessageBoxService _messageBoxService;
         private SchoolEntities _schoolData;
-
+        private string _selectedUserType;
         private int _selectedUser;
 
         private string _userEmail;
@@ -173,8 +173,26 @@ namespace MySchoolYear.ViewModel
             }
         }
 
-        public Dictionary<int, string> AvailableUsers { get; set; }
-        public int SelectedPerson 
+        public List<string> AvailableUserTypes { get; set; }
+        public string SelectedUserType
+        {
+            get
+            {
+                return _selectedUserType;
+            }
+            set
+            {
+                if (_selectedUserType != value)
+                {
+                    _selectedUserType = value;
+                    ChangeAvailableUsers(_selectedUserType);
+                    OnPropertyChanged("SelectedUserType");
+                }
+            }
+        }
+
+        public ObservableDictionary<int, string> AvailableUsers { get; set; }
+        public int SelectedUser 
         { 
             get
             {
@@ -186,7 +204,7 @@ namespace MySchoolYear.ViewModel
                 {
                     _selectedUser = value;
                     ChangeSelectedUser();
-                    OnPropertyChanged("SelectedPerson");
+                    OnPropertyChanged("SelectedUser");
                 }
             }
         }
@@ -376,7 +394,8 @@ namespace MySchoolYear.ViewModel
                     CanEditManagement = false;
                 }
 
-                AvailableUsers = new Dictionary<int, string>();
+                AvailableUserTypes = new List<string>();
+                AvailableUsers = new ObservableDictionary<int, string>();
                 AvailableClasses = new Dictionary<int, string>();
                 AvailableParents = new Dictionary<int, string>();
                 AvailableStudents = new Dictionary<int, string>();
@@ -396,6 +415,7 @@ namespace MySchoolYear.ViewModel
         public void Initialize()
         {
             // Reset all information
+            AvailableUserTypes.Clear();
             AvailableUsers.Clear();
             AvailableClasses.Clear();
             AvailableParents.Clear();
@@ -408,20 +428,17 @@ namespace MySchoolYear.ViewModel
             {
                 _schoolData = new SchoolEntities();
 
-                // Create a query all the editable users in the school
-                IQueryable<Person> usersQuery;
+                // Create a list of all the editable user types
                 if (!CanEditManagement)
                 {
-                    // Can't edit principal and secretaries - don't edit them
-                    usersQuery = _schoolData.Persons.Where(person => !person.isSecretary && !person.isPrincipal);
+                    AvailableUserTypes.AddRange(new List<string>() { Globals.USER_TYPE_STUDENT, Globals.USER_TYPE_TEACHERS, Globals.USER_TYPE_PARENTS });
                 }
                 else
                 {
-                    usersQuery = _schoolData.Persons.AsQueryable();
+                    AvailableUserTypes.AddRange(new List<string>() { Globals.USER_TYPE_STUDENT, Globals.USER_TYPE_TEACHERS, Globals.USER_TYPE_PARENTS,
+                                                                     Globals.USER_TYPE_SECRETARIES, Globals.USER_TYPE_PRINCIPAL });
                 }
-                // Create a list of all the editable users in the school
-                usersQuery.Where(person => !person.User.isDisabled).ToList().
-                    ForEach(person => AvailableUsers.Add(person.personID, person.firstName + " " + person.lastName));
+                SelectedUserType = AvailableUserTypes[0];
 
                 // Create a list of all the classes in the school
                 _schoolData.Classes.ToList().ForEach(currClass => AvailableClasses.Add(currClass.classID, currClass.className));
@@ -448,12 +465,62 @@ namespace MySchoolYear.ViewModel
         }
 
         /// <summary>
+        /// Allow choosing users that are from the specific selectedUserType
+        /// </summary>
+        /// <param name="selectedUserType">User type of available users. Expected values per const USER_TYPE_X fields</param>
+        private void ChangeAvailableUsers(string selectedUserType)
+        {
+            // Clean the available users from the previous choice of user types
+            AvailableUsers.Clear();
+
+            // Create a query all the editable users in the school from the specified type
+            IQueryable<Person> usersQuery;
+            switch (selectedUserType)
+            {
+                case Globals.USER_TYPE_STUDENT:
+                {
+                    usersQuery = _schoolData.Persons.Where(person => person.isStudent);
+                    break;
+                }
+                case Globals.USER_TYPE_PARENTS:
+                {
+                    usersQuery = _schoolData.Persons.Where(person => person.isParent);
+                    break;
+                }
+                case Globals.USER_TYPE_TEACHERS:
+                {
+                    usersQuery = _schoolData.Persons.Where(person => person.isTeacher);
+                    break;
+                }
+                case Globals.USER_TYPE_SECRETARIES:
+                {
+                    usersQuery = _schoolData.Persons.Where(person => person.isSecretary);
+                    break;
+                }
+                case Globals.USER_TYPE_PRINCIPAL:
+                {
+                    usersQuery = _schoolData.Persons.Where(person => person.isPrincipal);
+                    break;
+                }
+                default:
+                {
+                    usersQuery = Enumerable.Empty<Person>().AsQueryable();
+                    break;
+                }
+            }
+
+            // Create a list of all the editable users in the school
+            usersQuery.Where(person => !person.User.isDisabled).ToList().
+                ForEach(person => AvailableUsers.Add(person.personID, person.firstName + " " + person.lastName));
+        }
+
+        /// <summary>
         /// Use the new selected user data
         /// </summary>
         private void ChangeSelectedUser()
         {
             // Get the selected person's data
-            Person selectedPerson = _schoolData.Persons.Find(SelectedPerson);
+            Person selectedPerson = _schoolData.Persons.Find(SelectedUser);
             if (selectedPerson != null)
             {
                 // Update base info
@@ -523,7 +590,7 @@ namespace MySchoolYear.ViewModel
                 if (validInput.Valid)
                 {
                     // Update the Person data
-                    Person selectedPerson = _schoolData.Persons.Find(SelectedPerson);
+                    Person selectedPerson = _schoolData.Persons.Find(SelectedUser);
                     selectedPerson.phoneNumber = Phone;
                     selectedPerson.email = Email;
                     selectedPerson.birthdate = Birthdate;
@@ -614,7 +681,7 @@ namespace MySchoolYear.ViewModel
         private void DeleteUser()
         {
             // Get the selected person's data
-            Person selectedPerson = _schoolData.Persons.Find(SelectedPerson);
+            Person selectedPerson = _schoolData.Persons.Find(SelectedUser);
 
             // As this is a serious action, request a confirmation from the user
             bool confirmation = _messageBoxService.ShowMessage("האם אתה בטוח שברצונך למחוק את " + selectedPerson.firstName + " " + selectedPerson.lastName,

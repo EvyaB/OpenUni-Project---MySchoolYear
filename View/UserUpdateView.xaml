@@ -21,7 +21,7 @@
             <Grid Grid.Column="0" HorizontalAlignment="Center" >
                 <Grid.Resources >
                     <Style TargetType="Border" >
-                        <Setter Property="Padding" Value="0,40" />
+                        <Setter Property="Padding" Value="0,30,0,20" />
                     </Style>
                 </Grid.Resources>
                 <Grid.ColumnDefinitions>
@@ -33,37 +33,46 @@
                     <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
+                    <RowDefinition/>
                 </Grid.RowDefinitions>
 
                 <Border Grid.Row="0" Grid.Column="0">
-                    <TextBlock Text="בחר משתמש:" />
+                    <TextBlock Text="סוג משתמש:" />
                 </Border>
                 <Border Grid.Row="0" Grid.Column="1">
-                    <ComboBox ItemsSource="{Binding Path=AvailableUsers}" SelectedValuePath="Key" DisplayMemberPath="Value" 
-                              SelectedValue="{Binding Path=SelectedPerson, Mode=TwoWay}" 
-                              Width="165" Margin="5,0,0,-6"/>
+                    <ComboBox ItemsSource="{Binding Path=AvailableUserTypes}" SelectedValue="{Binding Path=SelectedUserType, Mode=TwoWay}"
+                              Width="165" Margin="5,0,0,0"/>
                 </Border>
 
                 <Border Grid.Row="1" Grid.Column="0">
-                    <TextBlock Text="טלפון:"/>
+                    <TextBlock Text="בחר משתמש:" />
                 </Border>
                 <Border Grid.Row="1" Grid.Column="1">
-                    <TextBox Width="165" MaxLength="12" Text="{Binding Path=Phone}" 
-                         DataObject.Pasting="IsPhoneFieldPasteAllowed" PreviewTextInput="IsPhoneFieldPreviewAllowed" Height="Auto" Margin="2,0,2,-7"/>
+                    <ComboBox ItemsSource="{Binding Path=AvailableUsers}" SelectedValuePath="Key" DisplayMemberPath="Value" 
+                              SelectedValue="{Binding Path=SelectedUser, Mode=TwoWay}" 
+                              Width="165" Margin="5,0,0,0"/>
                 </Border>
 
                 <Border Grid.Row="2" Grid.Column="0">
-                    <TextBlock Text="מייל:"/>
+                    <TextBlock Text="טלפון:"/>
                 </Border>
                 <Border Grid.Row="2" Grid.Column="1">
-                    <TextBox Width="165" MaxLength="50" Text="{Binding Path=Email}" Height="Auto" Margin="2,0,2,-6" />
+                    <TextBox Width="165" MaxLength="12" Text="{Binding Path=Phone}" 
+                         DataObject.Pasting="IsPhoneFieldPasteAllowed" PreviewTextInput="IsPhoneFieldPreviewAllowed" Height="Auto" Margin="5,0,0,0"/>
                 </Border>
 
                 <Border Grid.Row="3" Grid.Column="0">
-                    <TextBlock Text="יום הולדת:"/>
+                    <TextBlock Text="מייל:"/>
                 </Border>
                 <Border Grid.Row="3" Grid.Column="1">
-                    <DatePicker Width="165" Height="50" SelectedDate="{Binding Path=Birthdate}" Margin="2,0,2,-10"/>
+                    <TextBox Width="165" MaxLength="50" Text="{Binding Path=Email}" Height="Auto" Margin="5,0,0,0" />
+                </Border>
+
+                <Border Grid.Row="4" Grid.Column="0">
+                    <TextBlock Text="יום הולדת:"/>
+                </Border>
+                <Border Grid.Row="4" Grid.Column="1">
+                    <DatePicker Width="165" Height="50" SelectedDate="{Binding Path=Birthdate}" Margin="5,0,0,0"/>
                 </Border>
             </Grid>
 

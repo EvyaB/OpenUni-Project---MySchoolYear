@@ -242,6 +242,7 @@
     <Compile Include="ViewModel\NewPasswordViewModel.cs" />
     <Compile Include="ViewModel\UserUpdateViewModel.cs" />
     <Compile Include="ViewModel\UserCreationViewModel.cs" />
+    <Compile Include="ViewModel\Utilities\ObservableDictionary.cs" />
     <Compile Include="View\NewPasswordWindow.xaml.cs">
       <DependentUpon>NewPasswordWindow.xaml</DependentUpon>
     </Compile>
