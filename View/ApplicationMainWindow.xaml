@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:MySchoolYear.View"
         xmlns:viewModels="clr-namespace:MySchoolYear.ViewModel"
         mc:Ignorable="d"
+        x:Name="TheMainApplicationWindow"
         Title="MySchoolYear" Height="600" Width="800"
         Background = "{StaticResource WindowBackgroundBrush}">
     <Window.Resources>
@@ -18,6 +19,9 @@
         <DataTemplate DataType="{x:Type viewModels:SchoolManagementViewModel}">
             <local:SchoolManagementView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModels:RoomManagementViewModel}">
+            <local:RoomManagementView />
+        </DataTemplate>
         <DataTemplate DataType="{x:Type viewModels:UserCreationViewModel}">
             <local:UserCreationView />
         </DataTemplate>
@@ -28,18 +32,22 @@
 
     <DockPanel>
         <Border DockPanel.Dock="Right" BorderBrush="Black" BorderThickness="0,0,1,0">
-            <ItemsControl ItemsSource="{Binding ScreensViewModels}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Button Content="{Binding ScreenName}"
+            <Grid>
+                <ItemsControl ItemsSource="{Binding ScreensViewModels}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button Content="{Binding ScreenName}"
                                 FontSize="16"
                                 FontWeight="Medium"
                                 Command="{Binding DataContext.ChangeScreenCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
                                 CommandParameter="{Binding }"
                                 Margin="2,5"/>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <Button VerticalAlignment="Bottom" Content="התנתק" Background="{StaticResource DangerousActionColorBrush}"
+                        Command="{Binding Path=LogoutCommand}" CommandParameter="{Binding ElementName=TheMainApplicationWindow}"/>
+            </Grid>
         </Border>
         
         <ContentControl Content="{Binding CurrentScreenViewModel}" />

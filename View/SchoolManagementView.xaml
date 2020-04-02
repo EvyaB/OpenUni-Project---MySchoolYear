@@ -60,7 +60,8 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Height="40" FontSize="20" Background="#FFE04848" Content="התחל שנה חדשה" Width="200" Command="{Binding Path=PrepareNewYearCommand}"/>
+            <Button Grid.Column="0" Height="40" Width="200" FontSize="20" Background="{StaticResource DangerousActionColorBrush}" 
+                    Content="התחל שנה חדשה" Command="{Binding Path=PrepareNewYearCommand}"/>
             <Button Grid.Column="1" Height="40" FontSize="20" Content="עדכן" Width="200" Command="{Binding Path=SaveChangesCommand}"/>
         </Grid>
     </StackPanel>

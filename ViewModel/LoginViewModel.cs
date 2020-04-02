@@ -32,7 +32,7 @@ namespace MySchoolYear.ViewModel
                 {
                     _loginCommand = new RelayCommand(
                         p => AttemptLoginCommand(p),
-                        p => p is IHavePassword);
+                        p => p is IHavePassword && p is IClosableScreen);
                 }
 
                 return _loginCommand;
@@ -52,11 +52,13 @@ namespace MySchoolYear.ViewModel
         /// <summary>
         /// Try to login with the input username and password.
         /// </summary>
-        /// <param name="parameter">IHavePassword object that contains the SecureString input password</param>
+        /// <param name="parameter">IHavePassword object that contains the SecureString input password, and that is also IClosableScreen</param>
         private void AttemptLoginCommand(object parameter)
         {
             SecureString password = (parameter as IHavePassword).SecurePassword;
             var validInput = CheckLoginInputValidity(Username, password);
+
+            IClosableScreen thisScreen = (parameter as IClosableScreen);
             
             if (validInput.Valid)
             {
@@ -65,28 +67,22 @@ namespace MySchoolYear.ViewModel
                 var unsecuredPassword = password.Unsecure();
 
                 // Search for the user in the DB.
-                User myAccount = _mySchoolModel.Users.SingleOrDefault(user => user.username == Username && user.password == unsecuredPassword);
+                User connectedAccount = _mySchoolModel.Users.SingleOrDefault(user => user.username == Username && user.password == unsecuredPassword);
 
                 // If the user is found, connect as it and open the application.
-                if (myAccount != null && !myAccount.isDisabled)
+                if (connectedAccount != null && !connectedAccount.isDisabled)
                 {
                     // Ask the user to change his password before continuing
-                    if (myAccount.hasToChangePassword)
+                    if (connectedAccount.hasToChangePassword)
                     {
                         NewPasswordWindow newPasswordDialog = new NewPasswordWindow();
-                        NewPasswordViewModel newPasswordDialogVM = new NewPasswordViewModel(_mySchoolModel, myAccount);
+                        NewPasswordViewModel newPasswordDialogVM = new NewPasswordViewModel(_mySchoolModel, connectedAccount);
                         newPasswordDialog.DataContext = newPasswordDialogVM;
                         newPasswordDialog.ShowDialog();
                     }
 
-                    // Launch the application main window
-                    ApplicationMainWindow appMainWindow = new ApplicationMainWindow();
-                    ApplicationViewModel context = new ApplicationViewModel(myAccount.Person.Single(), _messageBoxService);
-                    appMainWindow.DataContext = context;
-                    appMainWindow.Show();
-
-                    // Close this Login Window 
-                    Application.Current.MainWindow.Close();
+                    // Launch the application main window with the connected user account
+                    SwitchToTheMainApplication(thisScreen, connectedAccount.Person.Single());
                 }
                 // Report incorrect user credentials error.
                 else
@@ -99,6 +95,17 @@ namespace MySchoolYear.ViewModel
             {
                 _messageBoxService.ShowMessage(validInput.ErrorReport, "Login Failed!", MessageType.OK_MESSAGE, MessagePurpose.ERROR);
             }
+        }
+
+        private void SwitchToTheMainApplication(IClosableScreen thisLoginScreen, Person connectedUser)
+        {
+            ApplicationMainWindow appMainWindow = new ApplicationMainWindow();
+            ApplicationViewModel context = new ApplicationViewModel(connectedUser, _messageBoxService);
+            appMainWindow.DataContext = context;
+            appMainWindow.Show();
+
+            // Close this Login Window 
+            thisLoginScreen.CloseScreen();
         }
 
         /// <summary>

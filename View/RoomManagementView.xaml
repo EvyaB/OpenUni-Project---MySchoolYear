@@ -1,0 +1,25 @@
+﻿<UserControl x:Class="MySchoolYear.View.RoomManagementView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MySchoolYear.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="560" d:DesignWidth="650"
+             Background = "{StaticResource WindowBackgroundBrush}">
+    <DockPanel>
+        <TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center" Text="עדכון משתמשים" Style="{StaticResource MainTitleText}"/>
+
+        <DataGrid DockPanel.Dock="Right" AutoGenerateColumns="True" IsReadOnly="True" ItemsSource="{Binding Path=TableData}"
+                  SelectionMode="Single" SelectionUnit="FullRow" SelectedValue="{Binding Path=SelectedRow}"
+                  HorizontalAlignment="Center" VerticalAlignment="Top"
+                  FlowDirection="RightToLeft" RowHeaderWidth="0" ColumnHeaderStyle="{StaticResource ColumnHeaderMainStyle}"
+                  AlternatingRowBackground="#FFE0E3E3" HorizontalGridLinesBrush="Black" VerticalGridLinesBrush="Black" Margin="10,0,0,0">
+        </DataGrid>
+
+
+        <StackPanel DockPanel.Dock="Left" Width="250">
+            <TextBox Text="{Binding Path=RoomName, Mode=TwoWay}" />
+        </StackPanel>
+    </DockPanel>
+</UserControl>

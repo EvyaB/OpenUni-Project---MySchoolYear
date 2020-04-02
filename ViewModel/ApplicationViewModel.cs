@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 using MySchoolYear.Model;
+using MySchoolYear.View;
+using MySchoolYear.View.Utilities;
 using MySchoolYear.ViewModel.Utilities;
 
 namespace MySchoolYear.ViewModel
@@ -16,6 +19,9 @@ namespace MySchoolYear.ViewModel
         #region Fields
         private ICommand _changeScreenCommand;
         private ICommand _updateScreensCommand;
+        private ICommand _logoutCommand;
+
+        private IMessageBoxService _messageBoxService;
 
         private IScreenViewModel _currentScreenViewModel;
         private List<IScreenViewModel> _screenViewModels;
@@ -50,6 +56,21 @@ namespace MySchoolYear.ViewModel
             }
         }
 
+        public ICommand LogoutCommand
+        { 
+            get
+            {
+                if (_logoutCommand == null)
+                {
+                    _logoutCommand = new RelayCommand(
+                        p => LogoutUser(p as IClosableScreen),
+                        p => p is IClosableScreen);
+                }
+
+                return _logoutCommand;
+            }
+        }
+
         public List<IScreenViewModel> ScreensViewModels
         {
             get
@@ -81,13 +102,19 @@ namespace MySchoolYear.ViewModel
         #region Constructors
         public ApplicationViewModel(Person connectedUser, IMessageBoxService messageBoxService)
         {
+            _messageBoxService = messageBoxService;
+
             // Create a list of all possible screens
             List<IScreenViewModel> allScreens = new List<IScreenViewModel>();
             allScreens.Add(new SchoolInfoViewModel(connectedUser));
             allScreens.Add(new StudentGradesViewModel(connectedUser));
+            
             allScreens.Add(new SchoolManagementViewModel(connectedUser, UpdateScreensCommand));
+            allScreens.Add(new RoomManagementViewModel(connectedUser, UpdateScreensCommand));
+
             allScreens.Add(new UserCreationViewModel(connectedUser, UpdateScreensCommand, messageBoxService));
             allScreens.Add(new UserUpdateViewModel(connectedUser, UpdateScreensCommand, messageBoxService));
+            
 
             // Use only the screens that are relevent to the current user
             foreach (IScreenViewModel screen in allScreens)
@@ -127,6 +154,22 @@ namespace MySchoolYear.ViewModel
             {
                 viewModel.Initialize();
             }
+        }
+
+        /// <summary>
+        /// Closes the application and returns to the login menu
+        /// </summary>
+        /// <param name="thisApplicationScreen">ICloseableScreen object to close the application</param>
+        private void LogoutUser(IClosableScreen thisApplicationScreen)
+        {
+            // Launch the login window
+            LoginWindow appLoginWindow = new LoginWindow();
+            LoginViewModel context = new LoginViewModel(_messageBoxService);
+            appLoginWindow.DataContext = context;
+            appLoginWindow.Show();
+
+            // Close this Window 
+            thisApplicationScreen.CloseScreen();
         }
         #endregion
     }

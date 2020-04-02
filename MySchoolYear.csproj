@@ -240,6 +240,7 @@
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\ApplicationViewModel.cs" />
     <Compile Include="ViewModel\NewPasswordViewModel.cs" />
+    <Compile Include="ViewModel\RoomManagementViewModel.cs" />
     <Compile Include="ViewModel\UserUpdateViewModel.cs" />
     <Compile Include="ViewModel\UserCreationViewModel.cs" />
     <Compile Include="ViewModel\Utilities\ObservableDictionary.cs" />
@@ -250,12 +251,16 @@
     <Compile Include="ViewModel\SchoolManagementViewModel.cs" />
     <Compile Include="ViewModel\StudentGradesViewModel.cs" />
     <Compile Include="ViewModel\Utilities\BaseViewModel.cs" />
+    <Compile Include="View\RoomManagementView.xaml.cs">
+      <DependentUpon>RoomManagementView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\UserUpdateView.xaml.cs">
       <DependentUpon>UserUpdateView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\UserCreationView.xaml.cs">
       <DependentUpon>UserCreationView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Utilities\IClosableScreen.cs" />
     <Compile Include="View\Utilities\IDialogWindow.cs" />
     <Compile Include="View\Utilities\IHavePassword.cs" />
     <Compile Include="ViewModel\Utilities\IScreenViewModel.cs" />
@@ -305,6 +310,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\ApplicationMainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\RoomManagementView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
