@@ -76,15 +76,8 @@
     </Style>
 
     <Style x:Key="BorderedItem" TargetType="ListViewItem">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="ListViewItem">
-                    <Border Name="Border" BorderBrush="LightGray" BorderThickness="1">
-                        <ContentPresenter />
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
+        <Setter Property="BorderBrush" Value="LightGray" />
+        <Setter Property="BorderThickness" Value="1" />
     </Style>
 
     <Style TargetType="TextBlock" x:Key="TextBlockPossibleError">

@@ -97,8 +97,8 @@ namespace MySchoolYear.ViewModel
 
                     // Show this student's grades
                     Grades = _currentStudent.Scores.Select(score =>
-                    new Grade() { CourseName = score.Course.courseName, Score = score.score, TeacherNotes = score.notes })
-                    .ToList();
+                        new Grade() { CourseName = score.Course.courseName, Score = score.score, TeacherNotes = score.notes })
+                        .ToList();
                 }
             }
         }
@@ -171,7 +171,7 @@ namespace MySchoolYear.ViewModel
                 else if (ConnectedUser.isTeacher && ConnectedUser.Teacher.classID != null)
                 {
                     // An homeroom teacher can see the grades of all of his students
-                    Students.AddRange(ConnectedUser.Teacher.Class.Students.Where(student => !student.Person.User.isDisabled == false));
+                    Students.AddRange(ConnectedUser.Teacher.Class.Students.Where(student => student.Person.User.isDisabled == false));
                     CanViewDifferentStudents = true;
                 }
                 else if (ConnectedUser.isParent)
