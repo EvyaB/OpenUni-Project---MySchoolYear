@@ -685,15 +685,14 @@ namespace MySchoolYear.ViewModel
 
             // As this is a serious action, request a confirmation from the user
             bool confirmation = _messageBoxService.ShowMessage("האם אתה בטוח שברצונך למחוק את " + selectedPerson.firstName + " " + selectedPerson.lastName,
-                                                                "מחיקת משתמש", MessageType.YES_NO_MESSAGE, MessagePurpose.INFORMATION);
-            if (confirmation)
+                                                                "מחיקת משתמש", MessageType.ACCEPT_CANCEL_MESSAGE, MessagePurpose.INFORMATION);
+            if (confirmation == true)
             {
                 selectedPerson.User.isDisabled = true;
                 _messageBoxService.ShowMessage("נמחק המשתמש " + selectedPerson.firstName + " " + selectedPerson.lastName + "!",
                         "הצלחה!", MessageType.OK_MESSAGE, MessagePurpose.INFORMATION);
                 _refreshDataCommand.Execute(null);
             }
-
         }
 
         /// <summary>

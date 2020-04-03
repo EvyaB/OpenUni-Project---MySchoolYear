@@ -65,15 +65,21 @@ namespace MySchoolYear.ViewModel.Utilities
 		bool RemoveWithNotification(TKey key)
 		{
 			TValue value;
-			if (dictionary.TryGetValue(key, out value) && dictionary.Remove(key))
-			{
-				CollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove,
-					new KeyValuePair<TKey, TValue>(key, value)));
-				PropertyChanged(this, new PropertyChangedEventArgs("Count"));
-				PropertyChanged(this, new PropertyChangedEventArgs("Keys"));
-				PropertyChanged(this, new PropertyChangedEventArgs("Values"));
+			bool canFindValue = dictionary.TryGetValue(key, out value);
 
-				return true;
+			if (canFindValue)
+			{
+				int itemIndex = dictionary.ToList().IndexOf(new KeyValuePair<TKey, TValue>(key, value));
+				if (dictionary.Remove(key))
+				{
+					CollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove,
+						new KeyValuePair<TKey, TValue>(key, value), itemIndex));
+					PropertyChanged(this, new PropertyChangedEventArgs("Count"));
+					PropertyChanged(this, new PropertyChangedEventArgs("Keys"));
+					PropertyChanged(this, new PropertyChangedEventArgs("Values"));
+
+					return true;
+				}
 			}
 
 			return false;
