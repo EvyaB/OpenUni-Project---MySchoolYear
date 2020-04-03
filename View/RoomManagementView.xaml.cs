@@ -24,5 +24,10 @@ namespace MySchoolYear.View
         {
             InitializeComponent();
         }
+
+        private void ComboBox_Error(object sender, ValidationErrorEventArgs e)
+        {
+            string x = e.Error.ErrorContent.ToString();
+        }
     }
 }

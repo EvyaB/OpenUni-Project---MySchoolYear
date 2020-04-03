@@ -63,7 +63,7 @@ namespace MySchoolYear.ViewModel
 
         private Nullable<int> _previousRoomClass;
 
-        private const int NO_ASSIGNED_CLASS = 1;
+        private const int NO_ASSIGNED_CLASS = -1;
         #endregion
 
         #region Properties / Commands
@@ -225,6 +225,7 @@ namespace MySchoolYear.ViewModel
             if (HasRequiredPermissions)
             {
                 _schoolData = new SchoolEntities();
+                AvailableClasses = new ObservableDictionary<int, string>();
             }
 
         }
@@ -237,7 +238,7 @@ namespace MySchoolYear.ViewModel
             RoomsTableData = new ObservableCollection<RoomData>(_schoolData.Rooms.AsEnumerable().Select(room => ModelRoomToRoomData(room)).ToList());
 
             // Create the basic list of available classes
-            AvailableClasses = new ObservableDictionary<int, string>();
+            AvailableClasses.Clear();
 
             // Add a 'No class' option, as not all rooms are assigned to a specific class
             AvailableClasses.Add(NO_ASSIGNED_CLASS, "אין כיתה משויכת");
@@ -247,6 +248,9 @@ namespace MySchoolYear.ViewModel
                 .ForEach(schoolClass => AvailableClasses.Add(schoolClass.classID, schoolClass.className));
 
             SelectedClass = NO_ASSIGNED_CLASS;
+
+            // For some reason, after re-initializing this view, the SelectedClass is not updated properly in the view unless called again
+            OnPropertyChanged("SelectedClass"); 
         }
 
         /// <summary>
@@ -415,7 +419,9 @@ namespace MySchoolYear.ViewModel
                     if (previousClass != null && previousClass.roomID != SelectedClass)
                     {
                         previousClass.roomID = null;
-                        previousClass = null;
+
+                        // Clear the previous room property (as it was removed anyway)
+                        this._previousRoomClass = null;
                     }
 
                     // Add the room to the selected class

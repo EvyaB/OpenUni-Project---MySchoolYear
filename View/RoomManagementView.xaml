@@ -52,7 +52,8 @@
                 </Border>
                 <Border Grid.Row="1" Grid.Column="1" >
                     <ComboBox ItemsSource="{Binding Path=AvailableClasses, Mode=TwoWay}"
-                              SelectedValuePath="Key" DisplayMemberPath="Value" SelectedValue="{Binding Path=SelectedClass, Mode=TwoWay}"  />
+                              SelectedValuePath="Key" DisplayMemberPath="Value" SelectedValue="{Binding Path=SelectedClass, Mode=TwoWay}"/>
+
                 </Border>
 
                 <Border Grid.Row="2" Grid.Column="0">
