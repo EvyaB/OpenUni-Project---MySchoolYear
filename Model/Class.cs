@@ -27,7 +27,6 @@ namespace MySchoolYear.Model
         public int classID { get; set; }
         public Nullable<int> roomID { get; set; }
         public string className { get; set; }
-        public int classSize { get; set; }
     
         public virtual Room Room { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

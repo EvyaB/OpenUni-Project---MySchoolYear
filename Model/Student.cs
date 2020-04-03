@@ -21,7 +21,7 @@ namespace MySchoolYear.Model
         }
     
         public int studentID { get; set; }
-        public int classID { get; set; }
+        public Nullable<int> classID { get; set; }
         public int absencesCounter { get; set; }
         public Nullable<int> parentID { get; set; }
     

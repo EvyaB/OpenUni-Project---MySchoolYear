@@ -31,7 +31,7 @@ namespace MySchoolYear.ViewModel
         public bool HasRequiredPermissions { get; }
         public string ScreenName { get { return "צור משתמש"; } }
 
-        // Buisness Logic Properties
+        // Business Logic Properties
         public bool CanCreateSecretaries { get; private set; }
         public string Username { get; set; }
         public string FirstName { get; set; }

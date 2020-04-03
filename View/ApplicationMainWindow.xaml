@@ -19,6 +19,9 @@
         <DataTemplate DataType="{x:Type viewModels:SchoolManagementViewModel}">
             <local:SchoolManagementView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModels:ClassManagementViewModel}">
+            <local:ClassManagementView />
+        </DataTemplate>
         <DataTemplate DataType="{x:Type viewModels:RoomManagementViewModel}">
             <local:RoomManagementView />
         </DataTemplate>

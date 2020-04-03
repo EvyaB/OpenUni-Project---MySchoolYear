@@ -34,7 +34,7 @@ namespace MySchoolYear.ViewModel
         public bool HasRequiredPermissions { get; }
         public string ScreenName { get { return "ניהול בית הספר"; } }
 
-        // Buisness Logic Properties
+        // Business Logic Properties
         public string SchoolName
         {
             get

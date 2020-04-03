@@ -18,9 +18,9 @@ namespace MySchoolYear.View
     /// <summary>
     /// Interaction logic for RoomManagementView.xaml
     /// </summary>
-    public partial class RoomManagementView : UserControl
+    public partial class ClassManagementView : UserControl
     {
-        public RoomManagementView()
+        public ClassManagementView()
         {
             InitializeComponent();
         }

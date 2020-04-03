@@ -240,6 +240,7 @@
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\ApplicationViewModel.cs" />
     <Compile Include="ViewModel\NewPasswordViewModel.cs" />
+    <Compile Include="ViewModel\ClassManagementViewModel.cs" />
     <Compile Include="ViewModel\RoomManagementViewModel.cs" />
     <Compile Include="ViewModel\UserUpdateViewModel.cs" />
     <Compile Include="ViewModel\UserCreationViewModel.cs" />
@@ -251,6 +252,9 @@
     <Compile Include="ViewModel\SchoolManagementViewModel.cs" />
     <Compile Include="ViewModel\StudentGradesViewModel.cs" />
     <Compile Include="ViewModel\Utilities\BaseViewModel.cs" />
+    <Compile Include="View\ClassManagementView.xaml.cs">
+      <DependentUpon>ClassManagementView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\RoomManagementView.xaml.cs">
       <DependentUpon>RoomManagementView.xaml</DependentUpon>
     </Compile>
@@ -312,6 +316,10 @@
     <Page Include="View\ApplicationMainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ClassManagementView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\RoomManagementView.xaml">
       <SubType>Designer</SubType>

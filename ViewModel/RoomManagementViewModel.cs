@@ -72,7 +72,7 @@ namespace MySchoolYear.ViewModel
         public bool HasRequiredPermissions { get; }
         public string ScreenName { get { return "ניהול חדרים"; } }
 
-        // Buisness Logic Properties
+        // Business Logic Properties
         public ObservableCollection<RoomData> RoomsTableData 
         { 
             get
@@ -295,7 +295,7 @@ namespace MySchoolYear.ViewModel
         }
 
         /// <summary>
-        /// Choose a specific room and prepare to edit it.
+        /// Choose a specific room and view its information.
         /// </summary>
         /// <param name="selectedRoom">The room's data</param>
         private void UseSelectedRoom(RoomData selectedRoom)
@@ -482,7 +482,5 @@ namespace MySchoolYear.ViewModel
         }
 
         #endregion
-
-
     }
 }

@@ -49,7 +49,7 @@ namespace MySchoolYear.ViewModel
         public bool HasRequiredPermissions { get; }
         public string ScreenName { get { return "עדכון משתמשים"; } }
 
-        // Buisness Logic Properties
+        // Business Logic Properties
         public bool CanEditManagement { get; private set; }
         public string Phone 
         { 

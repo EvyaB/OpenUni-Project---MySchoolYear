@@ -12,7 +12,6 @@
           <Property Name="classID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="roomID" Type="int" />
           <Property Name="className" Type="nvarchar" MaxLength="16" />
-          <Property Name="classSize" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Courses">
           <Key>
@@ -112,7 +111,7 @@
             <PropertyRef Name="studentID" />
           </Key>
           <Property Name="studentID" Type="int" Nullable="false" />
-          <Property Name="classID" Type="int" Nullable="false" />
+          <Property Name="classID" Type="int" />
           <Property Name="absencesCounter" Type="int" Nullable="false" />
           <Property Name="parentID" Type="int" />
         </EntityType>
@@ -137,7 +136,7 @@
           <Property Name="isDisabled" Type="bit" Nullable="false" />
           <Property Name="hasToChangePassword" Type="bit" Nullable="false" />
         </EntityType>
-        <Association Name="FK_Classes_ToRooms">
+        <Association Name="FK_Classrooms_ToRooms">
           <End Role="Rooms" Type="Self.Rooms" Multiplicity="0..1" />
           <End Role="Classes" Type="Self.Classes" Multiplicity="*" />
           <ReferentialConstraint>
@@ -294,7 +293,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Students_ToClasses">
-          <End Role="Classes" Type="Self.Classes" Multiplicity="1" />
+          <End Role="Classes" Type="Self.Classes" Multiplicity="0..1" />
           <End Role="Students" Type="Self.Students" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Classes">
@@ -414,7 +413,7 @@
           <EntitySet Name="Students" EntityType="Self.Students" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Teachers" EntityType="Self.Teachers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_Classes_ToRooms" Association="Self.FK_Classes_ToRooms">
+          <AssociationSet Name="FK_Classrooms_ToRooms" Association="Self.FK_Classrooms_ToRooms">
             <End Role="Rooms" EntitySet="Rooms" />
             <End Role="Classes" EntitySet="Classes" />
           </AssociationSet>
@@ -514,7 +513,6 @@
           <Property Name="classID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="roomID" Type="Int32" />
           <Property Name="className" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
-          <Property Name="classSize" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Room" Relationship="Self.FK_Classes_ToRooms" FromRole="Classes" ToRole="Rooms" />
           <NavigationProperty Name="Events" Relationship="Self.FK_Events_ToClasses" FromRole="Classes" ToRole="Events" />
           <NavigationProperty Name="Lessons" Relationship="Self.FK_Lessons_ToClasses" FromRole="Classes" ToRole="Lessons" />
@@ -646,7 +644,7 @@
             <PropertyRef Name="studentID" />
           </Key>
           <Property Name="studentID" Type="Int32" Nullable="false" />
-          <Property Name="classID" Type="Int32" Nullable="false" />
+          <Property Name="classID" Type="Int32" />
           <Property Name="absencesCounter" Type="Int32" Nullable="false" />
           <Property Name="parentID" Type="Int32" />
           <NavigationProperty Name="Class" Relationship="Self.FK_Students_ToClasses" FromRole="Students" ToRole="Classes" />
@@ -732,7 +730,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Students_ToClasses">
-          <End Role="Classes" Type="Self.Class" Multiplicity="1" />
+          <End Role="Classes" Type="Self.Class" Multiplicity="0..1" />
           <End Role="Students" Type="Self.Student" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Classes">
@@ -1061,7 +1059,6 @@
                 <ScalarProperty Name="classID" ColumnName="classID" />
                 <ScalarProperty Name="roomID" ColumnName="roomID" />
                 <ScalarProperty Name="className" ColumnName="className" />
-                <ScalarProperty Name="classSize" ColumnName="classSize" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
