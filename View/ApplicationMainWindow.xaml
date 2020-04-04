@@ -16,6 +16,9 @@
         <DataTemplate DataType="{x:Type viewModels:StudentGradesViewModel}">
             <local:StudentGradesView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModels:WeeklyScheduleViewModel}">
+            <local:WeeklyScheduleView />
+        </DataTemplate>
         <DataTemplate DataType="{x:Type viewModels:SchoolManagementViewModel}">
             <local:SchoolManagementView />
         </DataTemplate>

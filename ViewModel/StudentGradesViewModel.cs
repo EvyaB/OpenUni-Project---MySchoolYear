@@ -57,7 +57,11 @@ namespace MySchoolYear.ViewModel
                     if (_grades != null && _grades.Count > 0)
                     {
                         AverageGrade =  Math.Round(_grades.Average(x => x.Score), 1);
-                    } 
+                    }
+                    else
+                    {
+                        AverageGrade = 0;
+                    }
                 }
             }
         }

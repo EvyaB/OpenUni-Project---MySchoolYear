@@ -108,7 +108,8 @@ namespace MySchoolYear.ViewModel
             List<IScreenViewModel> allScreens = new List<IScreenViewModel>();
             allScreens.Add(new SchoolInfoViewModel(connectedUser));
             allScreens.Add(new StudentGradesViewModel(connectedUser));
-            
+            allScreens.Add(new WeeklyScheduleViewModel(connectedUser));
+
             allScreens.Add(new SchoolManagementViewModel(connectedUser, UpdateScreensCommand));
 
             allScreens.Add(new ClassManagementViewModel(connectedUser, UpdateScreensCommand, messageBoxService));
