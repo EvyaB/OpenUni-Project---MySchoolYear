@@ -251,7 +251,7 @@ namespace MySchoolYear.ViewModel
         }
 
         /// <summary>
-        /// Create a new class with the current data
+        /// Create a new school class with the current data
         /// </summary>
         public ICommand CreateNewClassCommand
         {

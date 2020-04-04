@@ -237,6 +237,7 @@
     <Compile Include="Model\User.cs">
       <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\CourseManagementViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\ApplicationViewModel.cs" />
     <Compile Include="ViewModel\NewPasswordViewModel.cs" />
@@ -254,6 +255,9 @@
     <Compile Include="ViewModel\Utilities\BaseViewModel.cs" />
     <Compile Include="View\ClassManagementView.xaml.cs">
       <DependentUpon>ClassManagementView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\CourseManagementView.xaml.cs">
+      <DependentUpon>CourseManagementView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\RoomManagementView.xaml.cs">
       <DependentUpon>RoomManagementView.xaml</DependentUpon>
@@ -318,6 +322,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\ClassManagementView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\CourseManagementView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

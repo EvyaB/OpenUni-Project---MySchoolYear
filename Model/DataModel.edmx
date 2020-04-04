@@ -121,7 +121,7 @@
           </Key>
           <Property Name="teacherID" Type="int" Nullable="false" />
           <Property Name="classID" Type="int" />
-          <Property Name="firstCourseID" Type="int" Nullable="false" />
+          <Property Name="firstCourseID" Type="int" />
           <Property Name="secondCourseID" Type="int" />
           <Property Name="thirdCourseID" Type="int" />
           <Property Name="fourthCourseID" Type="int" />
@@ -341,7 +341,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Teachers_ToCourses_1">
-          <End Role="Courses" Type="Self.Courses" Multiplicity="1" />
+          <End Role="Courses" Type="Self.Courses" Multiplicity="0..1" />
           <End Role="Teachers" Type="Self.Teachers" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Courses">
@@ -658,12 +658,12 @@
           </Key>
           <Property Name="teacherID" Type="Int32" Nullable="false" />
           <Property Name="classID" Type="Int32" />
-          <Property Name="firstCourseID" Type="Int32" Nullable="false" />
+          <Property Name="firstCourseID" Type="Int32" />
           <Property Name="secondCourseID" Type="Int32" />
           <Property Name="thirdCourseID" Type="Int32" />
           <Property Name="fourthCourseID" Type="Int32" />
           <NavigationProperty Name="Class" Relationship="Self.FK_Teachers_ToClasses" FromRole="Teachers" ToRole="Classes" />
-          <NavigationProperty Name="FirstCourse" Relationship="Self.FK_Teachers_ToCourses_1" FromRole="Teachers" ToRole="Courses" />
+          <NavigationProperty Name="FirstCourse" Relationship="schoolModel.FK_Teachers_ToCourses_1" FromRole="Teachers" ToRole="Courses" />
           <NavigationProperty Name="SecondCourse" Relationship="Self.FK_Teachers_ToCourses_2" FromRole="Teachers" ToRole="Courses" />
           <NavigationProperty Name="ThirdCourse" Relationship="Self.FK_Teachers_ToCourses_3" FromRole="Teachers" ToRole="Courses" />
           <NavigationProperty Name="FourthCourse" Relationship="Self.FK_Teachers_ToCourses_4" FromRole="Teachers" ToRole="Courses" />
@@ -778,7 +778,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Teachers_ToCourses_1">
-          <End Role="Courses" Type="schoolModel.Course" Multiplicity="1" />
+          <End Role="Courses" Type="schoolModel.Course" Multiplicity="0..1" />
           <End Role="Teachers" Type="Self.Teacher" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Courses">

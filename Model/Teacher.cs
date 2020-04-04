@@ -22,7 +22,7 @@ namespace MySchoolYear.Model
     
         public int teacherID { get; set; }
         public Nullable<int> classID { get; set; }
-        public int firstCourseID { get; set; }
+        public Nullable<int> firstCourseID { get; set; }
         public Nullable<int> secondCourseID { get; set; }
         public Nullable<int> thirdCourseID { get; set; }
         public Nullable<int> fourthCourseID { get; set; }
