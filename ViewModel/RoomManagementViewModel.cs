@@ -347,9 +347,8 @@ namespace MySchoolYear.ViewModel
             }
             else
             {
-                // Get the room that is going to be edited and the related class (if any)
+                // Get the room that is going to be deleted
                 Room selectedRoom = _schoolData.Rooms.Find(SelectedRoom.ID);
-                
 
                 // As this is a serious action, request a confirmation from the user
                 bool confirmation = _messageBoxService.ShowMessage("האם אתה בטוח שברצונך למחוק את חדר " + selectedRoom.roomName + "?",

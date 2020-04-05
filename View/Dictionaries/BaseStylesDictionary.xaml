@@ -29,8 +29,7 @@
 
     <SolidColorBrush x:Key="DangerousActionColorBrush" Color="#FF7A1919" />
     <BooleanToVisibilityConverter x:Key="BoolToVis" />
-    <utils:InverseBooleanConverter x:Key="BoolInvert" />
-    <!--#endregion-->
+<!--#endregion-->
 <!--#region Default Control Styles-->    
     <Style TargetType="Label">
         <Setter Property="Foreground" Value="Black"/>
@@ -112,5 +111,5 @@
     <Style TargetType="Grid">
         <Setter Property="FlowDirection" Value="RightToLeft"/>
     </Style>
-    <!--#endregion-->
+<!--#endregion-->
 </ResourceDictionary>

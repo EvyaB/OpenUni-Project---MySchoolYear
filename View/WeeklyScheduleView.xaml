@@ -38,7 +38,10 @@
                                 <StackPanel>
                                     <TextBlock Text="{Binding C0.CourseName}" FontWeight="Bold" HorizontalAlignment="Center"/>
                                     <TextBlock Text="{Binding C0.TeacherName}" FontSize="12" HorizontalAlignment="Center"/>
-                                    <TextBlock Text="{Binding C0.RoomName}" FontSize="12" HorizontalAlignment="Center"/>
+                                    <DockPanel>
+                                        <TextBlock Text="{Binding C0.ClassName}" FontSize="12" DockPanel.Dock="Right"/>
+                                        <TextBlock Text="{Binding C0.RoomName}" FontSize="12" DockPanel.Dock="Left"/>
+                                    </DockPanel>
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
@@ -49,7 +52,10 @@
                                 <StackPanel>
                                     <TextBlock Text="{Binding C1.CourseName}" FontWeight="Bold" HorizontalAlignment="Center"/>
                                     <TextBlock Text="{Binding C1.TeacherName}" FontSize="12" HorizontalAlignment="Center"/>
-                                    <TextBlock Text="{Binding C1.RoomName}" FontSize="12" HorizontalAlignment="Center"/>
+                                    <DockPanel>
+                                        <TextBlock Text="{Binding C1.ClassName}" FontSize="12" DockPanel.Dock="Right"/>
+                                        <TextBlock Text="{Binding C1.RoomName}" FontSize="12" DockPanel.Dock="Left"/>
+                                    </DockPanel>
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
@@ -60,7 +66,10 @@
                                 <StackPanel>
                                     <TextBlock Text="{Binding C2.CourseName}" FontWeight="Bold" HorizontalAlignment="Center"/>
                                     <TextBlock Text="{Binding C2.TeacherName}" FontSize="12" HorizontalAlignment="Center"/>
-                                    <TextBlock Text="{Binding C2.RoomName}" FontSize="12" HorizontalAlignment="Center"/>
+                                    <DockPanel>
+                                        <TextBlock Text="{Binding C2.ClassName}" FontSize="12" DockPanel.Dock="Right"/>
+                                        <TextBlock Text="{Binding C2.RoomName}" FontSize="12" DockPanel.Dock="Left"/>
+                                    </DockPanel>
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
@@ -71,7 +80,10 @@
                                 <StackPanel>
                                     <TextBlock Text="{Binding C3.CourseName}" FontWeight="Bold" HorizontalAlignment="Center"/>
                                     <TextBlock Text="{Binding C3.TeacherName}" FontSize="12" HorizontalAlignment="Center"/>
-                                    <TextBlock Text="{Binding C3.RoomName}" FontSize="12" HorizontalAlignment="Center"/>
+                                    <DockPanel>
+                                        <TextBlock Text="{Binding C3.ClassName}" FontSize="12" DockPanel.Dock="Right"/>
+                                        <TextBlock Text="{Binding C3.RoomName}" FontSize="12" DockPanel.Dock="Left"/>
+                                    </DockPanel>
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
@@ -82,7 +94,10 @@
                                 <StackPanel>
                                     <TextBlock Text="{Binding C4.CourseName}" FontWeight="Bold" HorizontalAlignment="Center"/>
                                     <TextBlock Text="{Binding C4.TeacherName}" FontSize="12" HorizontalAlignment="Center"/>
-                                    <TextBlock Text="{Binding C4.RoomName}" FontSize="12" HorizontalAlignment="Center"/>
+                                    <DockPanel>
+                                        <TextBlock Text="{Binding C4.ClassName}" FontSize="12" DockPanel.Dock="Right"/>
+                                        <TextBlock Text="{Binding C4.RoomName}" FontSize="12" DockPanel.Dock="Left"/>
+                                    </DockPanel>
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
@@ -93,7 +108,10 @@
                                 <StackPanel>
                                     <TextBlock Text="{Binding C5.CourseName}" FontWeight="Bold" HorizontalAlignment="Center"/>
                                     <TextBlock Text="{Binding C5.TeacherName}" FontSize="12" HorizontalAlignment="Center"/>
-                                    <TextBlock Text="{Binding C5.RoomName}" FontSize="12" HorizontalAlignment="Center"/>
+                                    <DockPanel>
+                                        <TextBlock Text="{Binding C5.ClassName}" FontSize="12" DockPanel.Dock="Right"/>
+                                        <TextBlock Text="{Binding C5.RoomName}" FontSize="12" DockPanel.Dock="Left"/>
+                                    </DockPanel>
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>

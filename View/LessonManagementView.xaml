@@ -24,9 +24,10 @@
                   ScrollViewer.HorizontalScrollBarVisibility="Hidden" AutoGenerateColumns="False" IsReadOnly="True" FlowDirection="RightToLeft"
                   VerticalAlignment="Top" HorizontalContentAlignment="Center" RowHeaderWidth ="0" Margin="0,5,0,0" >
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="כיתה" Binding="{Binding Path=ClassName}" Width="70" HeaderStyle="{StaticResource ColumnHeaderMainStyle}"/>
-                    <DataGridTextColumn Header="מקצוע" Binding="{Binding Path=CourseName}" Width="70" HeaderStyle="{StaticResource ColumnHeaderMainStyle}"/>
-                    <DataGridTextColumn Header="מורה" Binding="{Binding Path=TeacherName}" Width="70" HeaderStyle="{StaticResource ColumnHeaderMainStyle}"/>
+                    <DataGridTextColumn Header="כיתה" Binding="{Binding Path=ClassName}" Width="35" HeaderStyle="{StaticResource ColumnHeaderMainStyle}"/>
+                    <DataGridTextColumn Header="מקצוע" Binding="{Binding Path=CourseName}" Width="90" HeaderStyle="{StaticResource ColumnHeaderMainStyle}"/>
+                    <DataGridTextColumn Header="מורה" Binding="{Binding Path=TeacherName}" Width="90" HeaderStyle="{StaticResource ColumnHeaderMainStyle}"/>
+                    <DataGridTextColumn Header="חדר" Binding="{Binding Path=RoomName}" Width="70" HeaderStyle="{StaticResource ColumnHeaderMainStyle}"/>
                 </DataGrid.Columns>
             </DataGrid>
         </StackPanel>
@@ -35,14 +36,15 @@
             <Grid Margin="0,20,0,0" Width="400" >
                 <Grid.Resources >
                     <Style TargetType="Border" >
-                        <Setter Property="Padding" Value="0,10" />
+                        <Setter Property="Padding" Value="5,10,0,10" />
                     </Style>
                 </Grid.Resources>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.5*"/>
+                    <ColumnDefinition Width="0.3*"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
+                    <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
@@ -57,7 +59,7 @@
                     <TextBlock Text="כיתה:" Style="{StaticResource BasicText}"/>
                 </Border>
                 <Border Grid.Row="0" Grid.Column="1" >
-                    <ComboBox ItemsSource="{Binding Path=AvailableClasses}" IsEnabled="{Binding SearchingByClass, Converter={StaticResource BoolInvert}}"
+                    <ComboBox ItemsSource="{Binding Path=AvailableClasses}"
                               SelectedValuePath="Key" DisplayMemberPath="Value" SelectedValue="{Binding Path=SelectedClass, Mode=TwoWay}" Width="200"/>
                 </Border>
 
@@ -65,7 +67,7 @@
                     <TextBlock Text="מקצוע:" Style="{StaticResource BasicText}"/>
                 </Border>
                 <Border Grid.Row="1" Grid.Column="1" >
-                    <ComboBox ItemsSource="{Binding Path=AvailableCourses}" IsEnabled="{Binding SearchingByCourse, Converter={StaticResource BoolInvert}}"
+                    <ComboBox ItemsSource="{Binding Path=AvailableCourses}"
                               SelectedValuePath="Key" DisplayMemberPath="Value" SelectedValue="{Binding Path=SelectedCourse, Mode=TwoWay}" Width="200"/>
                 </Border>
 
@@ -73,79 +75,87 @@
                     <TextBlock Text="מורה:" Style="{StaticResource BasicText}"/>
                 </Border>
                 <Border Grid.Row="2" Grid.Column="1" >
-                    <ComboBox ItemsSource="{Binding Path=AvailableTeachers}" IsEnabled="{Binding SearchingByTeacher, Converter={StaticResource BoolInvert}}"
+                    <ComboBox ItemsSource="{Binding Path=AvailableTeachers}"
                               SelectedValuePath="Key" DisplayMemberPath="Value" SelectedValue="{Binding Path=SelectedTeacher, Mode=TwoWay}" Width="200"/>
                 </Border>
 
                 <Border Grid.Row="3" Grid.Column="0">
+                    <TextBlock Text="חדר:" Style="{StaticResource BasicText}"/>
+                </Border>
+                <Border Grid.Row="3" Grid.Column="1" >
+                    <ComboBox ItemsSource="{Binding Path=AvailableRooms}"
+                              SelectedValuePath="Key" DisplayMemberPath="Value" SelectedValue="{Binding Path=SelectedRoom, Mode=TwoWay}" Width="200"/>
+                </Border>
+
+                <Border Grid.Row="4" Grid.Column="0">
                     <TextBlock  Text="מפגש ראשון:" Style="{StaticResource BasicText}"/>
                 </Border>
-                <Border Grid.Row="3" Grid.Column="1">
-                    <StackPanel Orientation="Horizontal">
+                <Border Grid.Row="4" Grid.Column="1">
+                    <StackPanel Orientation="Horizontal" Margin="5,0,0,0">
                         <TextBlock Text="יום:" Style="{StaticResource BasicText}"/>
-                        <ComboBox ItemsSource="{Binding Path=AvailableDays}" Width="100"
+                        <ComboBox ItemsSource="{Binding Path=AvailableDays}" Width="90"
                                   SelectedValuePath="Key" DisplayMemberPath="Value" SelectedValue="{Binding Path=LessonFirstDay, Mode=TwoWay}" Margin="2,0,0,0"/>
 
                         <TextBlock Text="שעה:" Style="{StaticResource BasicText}" Margin="5,0,0,0"/>
-                        <ComboBox ItemsSource="{Binding Path=AvailableHours}" Width="100"
+                        <ComboBox ItemsSource="{Binding Path=AvailableHours}" Width="90"
                                   SelectedValuePath="Key" DisplayMemberPath="Value" SelectedValue="{Binding Path=LessonFirstHour, Mode=TwoWay}" Margin="2,0,0,0"/>
                     </StackPanel>
                 </Border>
 
-                <Border Grid.Row="4" Grid.Column="0">
+                <Border Grid.Row="5" Grid.Column="0">
                     <TextBlock  Text="מפגש שני:" Style="{StaticResource BasicText}"/>
                 </Border>
-                <Border Grid.Row="4" Grid.Column="1">
-                    <StackPanel Orientation="Horizontal">
+                <Border Grid.Row="5" Grid.Column="1">
+                    <StackPanel Orientation="Horizontal" Margin="5,0,0,0">
                         <TextBlock Text="יום:" Style="{StaticResource BasicText}"/>
-                        <ComboBox ItemsSource="{Binding Path=AvailableDays}" Width="100"
+                        <ComboBox ItemsSource="{Binding Path=AvailableDays}" Width="90"
                                   SelectedValuePath="Key" DisplayMemberPath="Value" SelectedValue="{Binding Path=LessonSecondDay, Mode=TwoWay}" Margin="2,0,0,0"/>
 
                         <TextBlock Text="שעה:" Style="{StaticResource BasicText}" Margin="5,0,0,0"/>
-                        <ComboBox ItemsSource="{Binding Path=AvailableHours}" Width="100"
+                        <ComboBox ItemsSource="{Binding Path=AvailableHours}" Width="90"
                                   SelectedValuePath="Key" DisplayMemberPath="Value" SelectedValue="{Binding Path=LessonSecondHour, Mode=TwoWay}" Margin="2,0,0,0"/>
                     </StackPanel>
                 </Border>
 
-                <Border Grid.Row="5" Grid.Column="0">
+                <Border Grid.Row="6" Grid.Column="0">
                     <TextBlock  Text="מפגש שלישי:" Style="{StaticResource BasicText}"/>
                 </Border>
-                <Border Grid.Row="5" Grid.Column="1">
-                    <StackPanel Orientation="Horizontal">
+                <Border Grid.Row="6" Grid.Column="1">
+                    <StackPanel Orientation="Horizontal" Margin="5,0,0,0">
                         <TextBlock Text="יום:" Style="{StaticResource BasicText}"/>
-                        <ComboBox ItemsSource="{Binding Path=AvailableDays}" Width="100"
+                        <ComboBox ItemsSource="{Binding Path=AvailableDays}" Width="90"
                                   SelectedValuePath="Key" DisplayMemberPath="Value" SelectedValue="{Binding Path=LessonThirdDay, Mode=TwoWay}" Margin="2,0,0,0"/>
 
                         <TextBlock Text="שעה:" Style="{StaticResource BasicText}" Margin="5,0,0,0"/>
-                        <ComboBox ItemsSource="{Binding Path=AvailableHours}" Width="100"
+                        <ComboBox ItemsSource="{Binding Path=AvailableHours}" Width="90"
                                   SelectedValuePath="Key" DisplayMemberPath="Value" SelectedValue="{Binding Path=LessonThirdHour, Mode=TwoWay}" Margin="2,0,0,0"/>
                     </StackPanel>
                 </Border>
 
-                <Border Grid.Row="6" Grid.Column="0">
+                <Border Grid.Row="7" Grid.Column="0">
                     <TextBlock  Text="מפגש שישי:" Style="{StaticResource BasicText}"/>
                 </Border>
-                <Border Grid.Row="6" Grid.Column="1">
-                    <StackPanel Orientation="Horizontal">
+                <Border Grid.Row="7" Grid.Column="1">
+                    <StackPanel Orientation="Horizontal" Margin="5,0,0,0">
                         <TextBlock Text="יום:" Style="{StaticResource BasicText}"/>
-                        <ComboBox ItemsSource="{Binding Path=AvailableDays}" Width="100"
+                        <ComboBox ItemsSource="{Binding Path=AvailableDays}" Width="90"
                                   SelectedValuePath="Key" DisplayMemberPath="Value" SelectedValue="{Binding Path=LessonFourthDay, Mode=TwoWay}" Margin="2,0,0,0"/>
 
                         <TextBlock Text="שעה:" Style="{StaticResource BasicText}" Margin="5,0,0,0"/>
-                        <ComboBox ItemsSource="{Binding Path=AvailableHours}" Width="100"
+                        <ComboBox ItemsSource="{Binding Path=AvailableHours}" Width="90"
                                   SelectedValuePath="Key" DisplayMemberPath="Value" SelectedValue="{Binding Path=LessonFourthHour, Mode=TwoWay}" Margin="2,0,0,0"/>
                     </StackPanel>
                 </Border>
 
-                <Border Grid.Row="7" Grid.Column="0">
-                    <Button Content="מחק" Background="{StaticResource DangerousActionColorBrush}" Command="{Binding DeleteLessonCommand}" />
-                </Border>
-                <Border Grid.Row="7" Grid.Column="1" >
-                    <Button Content="עדכן" Command="{Binding UpdateLessonCommand}"/>
+                <Border Grid.Row="8" Grid.Column="1" >
+                    <Button Content="עדכן" Command="{Binding UpdateLessonCommand}" Margin="0,0,150,2"/>
                 </Border>
             </Grid>
 
-            <Button Content="צור חדר חדש" Command="{Binding CreateNewLessonCommand}" Margin="0,20,0,0"/>
+            <StackPanel Orientation="Horizontal">
+                <Button Content="מחק" Background="{StaticResource DangerousActionColorBrush}" Command="{Binding DeleteLessonCommand}" />
+                <Button Content="צור שיעור חדש" Command="{Binding CreateNewLessonCommand}" Margin="50,0,0,0"/>
+            </StackPanel>
         </StackPanel>
     </DockPanel>
 </UserControl>

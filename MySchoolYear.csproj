@@ -294,7 +294,6 @@
     <Compile Include="View\StudentGradesView.xaml.cs">
       <DependentUpon>StudentGradesView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Utilities\InverseBooleanConverter.cs" />
     <Compile Include="View\Utilities\WPFMessageBoxService.cs" />
     <Compile Include="ViewModel\Utilities\IMessageBoxService.cs" />
     <Compile Include="View\Utilities\PasswordBoxMonitor.cs" />

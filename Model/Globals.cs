@@ -24,7 +24,7 @@ namespace MySchoolYear.Model
         public const string USER_TYPE_PRINCIPAL = "מנהלים";
 
         public readonly static string[] HOUR_NAMES = { "ראשונה", "שנייה", "שלישית", "רביעית", "חמישית", "שישית", "שביעית", "שמינית", "תשיעית", "עשירית" };
-        public readonly static string[] DAY_NAMES = { "ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שבת" };
+        public readonly static string[] DAY_NAMES = { "ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי" };
         #endregion
 
         #region Assistant Methods

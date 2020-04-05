@@ -19,11 +19,13 @@ namespace MySchoolYear.ViewModel
             public string CourseName { get; set; }
             public string TeacherName { get; set; }
             public string RoomName { get; set; }
+            public string ClassName { get; set; }
 
             public LessonData(Lesson lesson)
             {
                 CourseName = lesson.Course.courseName;
                 TeacherName = lesson.Teacher.Person.firstName + " " + lesson.Teacher.Person.lastName;
+                ClassName = "כיתה " + lesson.Class.className;
 
                 // A room name is optional
                 if (lesson.Room != null)
@@ -250,19 +252,19 @@ namespace MySchoolYear.ViewModel
             // Each lesson has upto 4 meetings in the week - add each one, but note that only the first is assured (the others are nullable)
             if (isValidLesson(lesson.firstLessonHour, lesson.firstLessonDay))
             {
-                schedule.ActualSchedule[lesson.firstLessonHour, lesson.firstLessonDay] = new LessonData(lesson);
+                schedule.ActualSchedule[lesson.firstLessonDay, lesson.firstLessonHour] = new LessonData(lesson);
             }
             if(isValidLesson(lesson.secondLessonHour, lesson.secondLessonDay))
             {
-                schedule.ActualSchedule[lesson.secondLessonHour.Value, lesson.secondLessonDay.Value] = new LessonData(lesson);
+                schedule.ActualSchedule[lesson.secondLessonDay.Value, lesson.secondLessonHour.Value] = new LessonData(lesson);
             }
             if (isValidLesson(lesson.thirdLessonHour, lesson.thirdLessonDay))
             {
-                schedule.ActualSchedule[lesson.thirdLessonHour.Value, lesson.thirdLessonDay.Value] = new LessonData(lesson);
+                schedule.ActualSchedule[lesson.thirdLessonDay.Value, lesson.thirdLessonHour.Value] = new LessonData(lesson);
             }
             if (isValidLesson(lesson.fourthLessonHour, lesson.fourthLessonDay))
             {
-                schedule.ActualSchedule[lesson.fourthLessonHour.Value, lesson.fourthLessonDay.Value] = new LessonData(lesson);
+                schedule.ActualSchedule[lesson.fourthLessonDay.Value, lesson.fourthLessonHour.Value] = new LessonData(lesson);
             }
         }
 

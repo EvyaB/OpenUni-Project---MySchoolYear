@@ -22,23 +22,25 @@ namespace MySchoolYear.ViewModel
             public string ClassName { get; set; }
             public string CourseName { get; set; }
             public string TeacherName { get; set; }
+            public string RoomName { get; set; }
             public int ClassID { get; set; }
             public int CourseID { get; set; }
             public int TeacherID { get; set; }
+            public Nullable<int> RoomID { get; set; }
 
-            public List<LessonTimes> LessonMeetingTimes { get; set; }
+            public LessonTimes LessonMeetingTimes { get; set; }
         }
 
         public class LessonTimes
         {
-            public string DayFirstLesson { get; set; }
-            public string HourFirstLesson { get; set; }
-            public string DaySecondLesson { get; set; }
-            public string HourSecondLesson { get; set; }
-            public string DayThirdLesson { get; set; }
-            public string HourThirdLesson { get; set; }
-            public string DayFourthLesson { get; set; }
-            public string HourFourthLesson { get; set; }
+            public Nullable<int> DayFirst { get; set; }
+            public Nullable<int> HourFirst { get; set; }
+            public Nullable<int> DaySecond { get; set; }
+            public Nullable<int> HourSecond { get; set; }
+            public Nullable<int> DayThird { get; set; }
+            public Nullable<int> HourThird { get; set; }
+            public Nullable<int> DayFourth { get; set; }
+            public Nullable<int> HourFourth { get; set; }
         }
         #endregion
 
@@ -51,22 +53,39 @@ namespace MySchoolYear.ViewModel
         private SchoolEntities _schoolData;
         private IMessageBoxService _messageBoxService;
 
-        private LessonData _selectedLesson;
         private bool _searchingByClass;
         private bool _searchingByCourse;
         private bool _searchingByTeacher;
+        private int _selectedSearchChoiceID;
+        
+        private LessonData _selectedLesson;
+
         private int _selectedClassID;
         private int _selectedCourseID;
         private int _selectedTeacherID;
-        private int _selectedSearchChoiceID;
+        private int _selectedRoomID;
 
+        private ObservableDictionary<int, string> _availableSearchChoices;
         public ObservableCollection<LessonData> _lessonsTableData;
+
         private ObservableDictionary<int, string> _availableClasses;
         private ObservableDictionary<int, string> _availableCourses;
         private ObservableDictionary<int, string> _availableTeachers;
-        private ObservableDictionary<int, string> _availableSearchChoices;
+        private ObservableDictionary<int, string> _availableRooms;
 
-        private const int NO_ASSIGNED = -1;
+        private ObservableDictionary<int, string> _availableDays;
+        private ObservableDictionary<int, string> _availableHours;
+
+        private int _lessonFirstDay;
+        private int _lessonSecondDay;
+        private int _lessonThirdDay;
+        private int _lessonFourthDay;
+        private int _lessonFirstHour;
+        private int _lessonSecondHour;
+        private int _lessonThirdHour;
+        private int _lessonFourthHour;
+
+        private const int NOT_ASSIGNED = -1;
         #endregion
 
         #region Properties / Commands
@@ -119,6 +138,7 @@ namespace MySchoolYear.ViewModel
                 if (_searchingByClass != value)
                 {
                     _searchingByClass = value;
+                    UseSelectedSearchCategory();
                     OnPropertyChanged("SearchingByClass");
                 }
             }
@@ -134,6 +154,7 @@ namespace MySchoolYear.ViewModel
                 if (_searchingByCourse != value)
                 {
                     _searchingByCourse = value;
+                    UseSelectedSearchCategory();
                     OnPropertyChanged("SearchingByCourse");
                 }
             }
@@ -149,6 +170,7 @@ namespace MySchoolYear.ViewModel
                 if (_searchingByTeacher != value)
                 {
                     _searchingByTeacher = value;
+                    UseSelectedSearchCategory();
                     OnPropertyChanged("SearchingByTeacher");
                 }
             }
@@ -270,10 +292,196 @@ namespace MySchoolYear.ViewModel
             }
             set
             {
-                if (_selectedSearchChoiceID != value)
+                // The ID value might not change when we switched categories (e.g choosing first item in different categories)
+                // so update everytime the 'set' is called
+                _selectedSearchChoiceID = value;
+                UseSelectedSearchChoice();
+                OnPropertyChanged("SelectedSearchChoice");
+            }
+        }
+
+        public ObservableDictionary<int, string> AvailableRooms
+        {
+            get
+            {
+                return _availableRooms;
+            }
+            set
+            {
+                if (_availableRooms != value)
                 {
-                    _selectedSearchChoiceID = value;
-                    OnPropertyChanged("SelectedSearchChoice");
+                    _availableRooms = value;
+                    OnPropertyChanged("AvailableRooms");
+                }
+            }
+        }
+        public int SelectedRoom
+        {
+            get
+            {
+                return _selectedRoomID;
+            }
+            set
+            {
+                if (_selectedRoomID != value)
+                {
+                    _selectedRoomID = value;
+                    OnPropertyChanged("SelectedRoom");
+                }
+            }
+        }
+
+        public ObservableDictionary<int, string> AvailableDays
+        {
+            get
+            {
+                return _availableDays;
+            }
+            set
+            {
+                if (_availableDays != value)
+                {
+                    _availableDays = value;
+                    OnPropertyChanged("AvailableDays");
+                }
+            }
+        }
+
+
+        public ObservableDictionary<int, string> AvailableHours
+        {
+            get
+            {
+                return _availableHours;
+            }
+            set
+            {
+                if (_availableHours != value)
+                {
+                    _availableHours = value;
+                    OnPropertyChanged("AvailableHours");
+                }
+            }
+        }
+
+        public int LessonFirstDay
+        { 
+            get
+            {
+                return _lessonFirstDay;
+            }
+            set
+            {
+                if (_lessonFirstDay != value)
+                {
+                    _lessonFirstDay = value;
+                    OnPropertyChanged("LessonFirstDay");
+                }
+            }
+        }
+        public int LessonSecondDay
+        {
+            get
+            {
+                return _lessonSecondDay;
+            }
+            set
+            {
+                if (_lessonSecondDay != value)
+                {
+                    _lessonSecondDay = value;
+                    OnPropertyChanged("LessonSecondDay");
+                }
+            }
+        }
+        public int LessonThirdDay
+        {
+            get
+            {
+                return _lessonThirdDay;
+            }
+            set
+            {
+                if (_lessonThirdDay != value)
+                {
+                    _lessonThirdDay = value;
+                    OnPropertyChanged("LessonThirdDay");
+                }
+            }
+        }
+        public int LessonFourthDay
+        {
+            get
+            {
+                return _lessonFourthDay;
+            }
+            set
+            {
+                if (_lessonFourthDay != value)
+                {
+                    _lessonFourthDay = value;
+                    OnPropertyChanged("LessonFourthDay");
+                }
+            }
+        }
+
+        public int LessonFirstHour
+        {
+            get
+            {
+                return _lessonFirstHour;
+            }
+            set
+            {
+                if (_lessonFirstHour != value)
+                {
+                    _lessonFirstHour = value;
+                    OnPropertyChanged("LessonFirstHour");
+                }
+            }
+        }
+        public int LessonSecondHour
+        {
+            get
+            {
+                return _lessonSecondHour;
+            }
+            set
+            {
+                if (_lessonSecondHour != value)
+                {
+                    _lessonSecondHour = value;
+                    OnPropertyChanged("LessonSecondHour");
+                }
+            }
+        }
+        public int LessonThirdHour
+        {
+            get
+            {
+                return _lessonThirdHour;
+            }
+            set
+            {
+                if (_lessonThirdHour != value)
+                {
+                    _lessonThirdHour = value;
+                    OnPropertyChanged("LessonThirdHour");
+                }
+            }
+        }
+        public int LessonFourthHour
+        {
+            get
+            {
+                return _lessonFourthHour;
+            }
+            set
+            {
+                if (_lessonFourthHour != value)
+                {
+                    _lessonFourthHour = value;
+                    OnPropertyChanged("LessonFourthHour");
                 }
             }
         }
@@ -336,32 +544,77 @@ namespace MySchoolYear.ViewModel
             if (HasRequiredPermissions)
             {
                 _schoolData = new SchoolEntities();
+                AvailableSearchChoices = new ObservableDictionary<int, string>();
+                LessonsTableData = new ObservableCollection<LessonData>();
                 AvailableClasses = new ObservableDictionary<int, string>();
-            }
+                AvailableCourses = new ObservableDictionary<int, string>();
+                AvailableTeachers = new ObservableDictionary<int, string>();
+                AvailableRooms = new ObservableDictionary<int, string>();
 
+                // Fill up days and hour lists (allow 'no meeting' choice with the NOT_ASSIGNED value)
+                AvailableDays = new ObservableDictionary<int, string>();
+                AvailableDays.Add(NOT_ASSIGNED, "ללא");
+                for (int i=0; i < Globals.DAY_NAMES.Length; i++)
+                {
+                    // Count days as 1 to N rather than 0 to N-1
+                    AvailableDays.Add(i + 1, Globals.DAY_NAMES[i]);
+                }
+                AvailableHours = new ObservableDictionary<int, string>();
+                AvailableHours.Add(NOT_ASSIGNED, "ללא");
+                for (int i = 0; i < Globals.HOUR_NAMES.Length; i++)
+                {
+                    // Count hours as 1 to N rather than 0 to N-1
+                    AvailableHours.Add(i + 1, Globals.HOUR_NAMES[i]);
+                }
+            }
         }
         #endregion
 
         #region Methods
         public void Initialize()
         {
-            // Get the list of existing rooms
-            LessonsTableData = new ObservableCollection<LessonData>(_schoolData.Lessons.AsEnumerable().Select(lesson => ModelLessonToLessonData(lesson)).ToList());
+            ResetData();
 
-            //// Create the basic list of available classes
-            //AvailableClasses.Clear();
+            // Create the lists of possible classes, courses, teachers
+            _schoolData.Classes.ToList().ForEach(schoolClass => AvailableClasses.Add(schoolClass.classID, schoolClass.className));
+            _schoolData.Courses.ToList().ForEach(course => AvailableCourses.Add(course.courseID, course.courseName));
+            _schoolData.Teachers.Where(teacher => !teacher.Person.User.isDisabled).ToList()
+                .ForEach(teacher => AvailableTeachers.Add(teacher.teacherID, teacher.Person.firstName + " " + teacher.Person.lastName));
 
-            //// Add a 'No class' option, as not all rooms are assigned to a specific class
-            //AvailableClasses.Add(NO_ASSIGNED, "אין כיתה משויכת");
+            // Initialize the rooms list. Note that a room is optional and therefore has a NOT_ASSIGNED option
+            AvailableRooms.Add(NOT_ASSIGNED, "ללא");
+            _schoolData.Rooms.ToList().ForEach(room => AvailableRooms.Add(room.roomID, room.roomName));
 
-            //// Create the list of classes that don't have an homeroom already
-            //_schoolData.Classes.Where(schoolClass => schoolClass.roomID == null).ToList()
-            //    .ForEach(schoolClass => AvailableClasses.Add(schoolClass.classID, schoolClass.className));
+            SearchingByClass = true;
 
-            //SelectedClass = NO_ASSIGNED;
+            // For some reason, after re-initializing this view, the selections are not updated properly in the view unless called again
+            OnPropertyChanged("SelectedClass");
+            OnPropertyChanged("SelectedCourse");
+            OnPropertyChanged("SelectedTeacher");
+            OnPropertyChanged("SelectedRoom");
+        }
 
-            //// For some reason, after re-initializing this view, the SelectedClass is not updated properly in the view unless called again
-            //OnPropertyChanged("SelectedClass"); 
+        /// <summary>
+        /// Assistant method that clears all the ViewModel properties
+        /// </summary>
+        private void ResetData()
+        {
+            AvailableSearchChoices.Clear();
+            LessonsTableData.Clear();
+            AvailableClasses.Clear();
+            AvailableCourses.Clear();
+            AvailableTeachers.Clear();
+            AvailableRooms.Clear();
+            SelectedLesson = null;
+            SelectedSearchChoice = NOT_ASSIGNED;
+            LessonFirstDay = NOT_ASSIGNED;
+            LessonSecondDay = NOT_ASSIGNED;
+            LessonThirdDay = NOT_ASSIGNED;
+            LessonFourthDay = NOT_ASSIGNED;
+            LessonFirstHour = NOT_ASSIGNED;
+            LessonSecondHour = NOT_ASSIGNED;
+            LessonThirdHour = NOT_ASSIGNED;
+            LessonFourthHour = NOT_ASSIGNED;
         }
 
         /// <summary>
@@ -372,37 +625,102 @@ namespace MySchoolYear.ViewModel
         private LessonData ModelLessonToLessonData(Lesson lesson)
         {
             LessonData lessonData = new LessonData();
+            
+            // Get the IDs
             lessonData.ID = lesson.lessonID;
-            //lessonData.ClassName = lesson.roomName;
+            lessonData.ClassID = lesson.classID;
+            lessonData.CourseID = lesson.courseID;
+            lessonData.TeacherID = lesson.teacherID;
+            lessonData.RoomID = lesson.roomID;
 
-            //// Check if the room has an homeroom class
-            //if (lesson.Classes != null && lesson.Classes.Count > 0)
-            //{
-            //    lessonData.HomeroomClassID = lesson.Classes.Single().classID;
-            //    lessonData.TeacherName = lesson.Classes.Single().className;
-            //}
+            // Get the names
+            lessonData.ClassName = lesson.Class.className;
+            lessonData.CourseName = lesson.Course.courseName;
+            lessonData.TeacherName = lesson.Teacher.Person.firstName + " " + lesson.Teacher.Person.lastName;
 
-            //// Check if the room has lessons associated with it
-            //if (lesson.Lessons != null && lesson.Lessons.Count > 0)
-            //{
-            //    lessonData.LessonMeetingTimes = lesson.Lessons.Select(lesson => new LessonTimes()
-            //        {
-            //            LessonID = lesson.lessonID,
-            //            ClassID = lesson.classID,
-            //            ClassName = lesson.Class.className,
-            //            CourseName = lesson.Course.courseName,
-            //            DayFirstLesson = Globals.ConvertDayNumberToName(lesson.firstLessonDay),
-            //            DaySecondLesson = Globals.ConvertDayNumberToName(lesson.secondLessonDay),
-            //            DayThirdLesson = Globals.ConvertDayNumberToName(lesson.thirdLessonDay),
-            //            DayFourthLesson = Globals.ConvertDayNumberToName(lesson.fourthLessonDay),
-            //            HourFirstLesson = Globals.ConvertHourNumberToName(lesson.firstLessonHour),
-            //            HourSecondLesson = Globals.ConvertHourNumberToName(lesson.secondLessonHour),
-            //            HourThirdLesson = Globals.ConvertHourNumberToName(lesson.thirdLessonHour),
-            //            HourFourthLesson = Globals.ConvertHourNumberToName(lesson.fourthLessonHour)
-            //        }).ToList();
-            //}
+            if (lessonData.RoomID != null)
+            {
+                lessonData.RoomName = lesson.Room.roomName;
+            }
+
+            // Get the lesson meeting times
+            lessonData.LessonMeetingTimes = new LessonTimes()
+            {
+                DayFirst = lesson.firstLessonDay,
+                DaySecond = lesson.secondLessonDay,
+                DayThird = lesson.thirdLessonDay,
+                DayFourth = lesson.fourthLessonDay,
+                HourFirst = lesson.firstLessonHour,
+                HourSecond = lesson.secondLessonHour,
+                HourThird = lesson.thirdLessonHour,
+                HourFourth = lesson.fourthLessonHour
+            };
 
             return lessonData;
+        }
+
+        /// <summary>
+        /// Updates the AvailableSearchChoices list with the options per the search category
+        /// </summary>
+        private void UseSelectedSearchCategory()
+        {
+            // Check which category the search choice is from, and fill the LessonsTableData with the relevent lessons
+            if (SearchingByClass)
+            {
+                // Find the class that was chosen, and get its lessons
+                AvailableSearchChoices = AvailableClasses;
+            }
+            else if (SearchingByCourse)
+            {
+                // Find the course that was chosen, and get its lessons
+                AvailableSearchChoices = AvailableCourses;
+            }
+            else if (SearchingByTeacher)
+            {
+                AvailableSearchChoices = AvailableTeachers;
+            }
+            else
+            {
+                throw new ArgumentException("Couldn't use search category - unknown category type");
+            }
+
+            SelectedSearchChoice = AvailableSearchChoices.First().Key;
+        }
+
+        /// <summary>
+        /// Updates the LessonsTableData with the lessons of the SelectedSearchChoice 
+        /// </summary>
+        private void UseSelectedSearchChoice()
+        {
+            if (SelectedSearchChoice != NOT_ASSIGNED)
+            {
+                // Clean lessons table before adding items to it
+                LessonsTableData.Clear();
+
+                // Check which category the search choice is from, and fill the LessonsTableData with the relevent lessons
+                if (SearchingByClass)
+                {
+                    // Find the class that was chosen, and get its lessons
+                    _schoolData.Classes.Find(SelectedSearchChoice).Lessons.ToList().
+                        ForEach(lesson => LessonsTableData.Add(ModelLessonToLessonData(lesson)));
+                }
+                else if (SearchingByCourse)
+                {
+                    // Find the course that was chosen, and get its lessons
+                    _schoolData.Courses.Find(SelectedSearchChoice).Lessons.ToList().
+                        ForEach(lesson => LessonsTableData.Add(ModelLessonToLessonData(lesson)));
+                }
+                else if (SearchingByTeacher)
+                {
+                    // Find the teacher that was chosen, and get his/hers lessons
+                    _schoolData.Teachers.Find(SelectedSearchChoice).Lessons.ToList().
+                        ForEach(lesson => LessonsTableData.Add(ModelLessonToLessonData(lesson)));
+                }
+                else
+                {
+                    // Unknown search category - don't show any lesson
+                }
+            }
         }
 
         /// <summary>
@@ -411,38 +729,39 @@ namespace MySchoolYear.ViewModel
         /// <param name="selectedLesson">The lesson's data</param>
         private void UseSelectedLesson(LessonData selectedLesson)
         {
-            //// Cleanup previous selections
-            //SelectedClass = NO_ASSIGNED;
-            //RoomName = string.Empty;
-            //LessonsInSelectedRoom = new ObservableCollection<LessonTimes>();
+            // Update the properties per the selected lesson
+            if (selectedLesson != null)
+            {
+                SelectedClass = selectedLesson.ClassID;
+                SelectedCourse = selectedLesson.CourseID;
+                SelectedTeacher = selectedLesson.TeacherID;
+                SelectedRoom = (selectedLesson.RoomID != null) ? selectedLesson.RoomID.Value : NOT_ASSIGNED;
 
-            //// Remove the previous room choice's class from the available classes list (as it is already assigned to that room)
-            //if (_previousLessonClass != null)
-            //{
-            //    AvailableClasses.Remove(_previousLessonClass.Value);
-            //}
+                LessonFirstDay = (selectedLesson.LessonMeetingTimes.DayFirst != null) ? selectedLesson.LessonMeetingTimes.DayFirst.Value : NOT_ASSIGNED;
+                LessonSecondDay = (selectedLesson.LessonMeetingTimes.DaySecond != null) ? selectedLesson.LessonMeetingTimes.DaySecond.Value : NOT_ASSIGNED;
+                LessonThirdDay = (selectedLesson.LessonMeetingTimes.DayThird != null) ? selectedLesson.LessonMeetingTimes.DayThird.Value : NOT_ASSIGNED;
+                LessonFourthDay = (selectedLesson.LessonMeetingTimes.DayFourth != null) ? selectedLesson.LessonMeetingTimes.DayFourth.Value : NOT_ASSIGNED;
 
-            //// Update the properties per the selected room
-            //if (selectedLesson != null)
-            //{
-            //    RoomName = selectedLesson.ClassName;
+                LessonFirstHour = (selectedLesson.LessonMeetingTimes.HourFirst != null) ? selectedLesson.LessonMeetingTimes.HourFirst.Value : NOT_ASSIGNED;
+                LessonSecondHour = (selectedLesson.LessonMeetingTimes.HourSecond != null) ? selectedLesson.LessonMeetingTimes.HourSecond.Value : NOT_ASSIGNED;
+                LessonThirdHour = (selectedLesson.LessonMeetingTimes.HourThird != null) ? selectedLesson.LessonMeetingTimes.HourThird.Value : NOT_ASSIGNED;
+                LessonFourthHour = (selectedLesson.LessonMeetingTimes.HourFourth != null) ? selectedLesson.LessonMeetingTimes.HourFourth.Value : NOT_ASSIGNED;
+            }
+            else
+            {
+                // No lesson was selected -> Reset the properties
+                SelectedRoom = NOT_ASSIGNED;
 
-            //    // If the room has an homeroom, add it first to the available classes list
-            //    if (selectedLesson.HomeroomClassID != null)
-            //    {
-            //        AvailableClasses.Add(selectedLesson.HomeroomClassID.Value, selectedLesson.TeacherName);
-            //        SelectedClass = selectedLesson.HomeroomClassID.Value;
-            //    }
+                LessonFirstDay = NOT_ASSIGNED;
+                LessonSecondDay = NOT_ASSIGNED;
+                LessonThirdDay = NOT_ASSIGNED;
+                LessonFourthDay = NOT_ASSIGNED;
 
-            //    // Save this room class ID so it can be removed from the available classes when we select another room
-            //    _previousLessonClass = selectedLesson.HomeroomClassID;
-
-            //    // Create the list of lessons in the current room
-            //    if (selectedLesson.LessonMeetingTimes != null)
-            //    {
-            //        LessonsInSelectedRoom = new ObservableCollection<LessonTimes>(selectedLesson.LessonMeetingTimes);
-            //    }
-            //}
+                LessonFirstDay = NOT_ASSIGNED;
+                LessonSecondDay = NOT_ASSIGNED;
+                LessonThirdDay = NOT_ASSIGNED;
+                LessonFourthDay = NOT_ASSIGNED;
+            }
         }
 
         /// <summary>
@@ -450,46 +769,32 @@ namespace MySchoolYear.ViewModel
         /// </summary>
         private void DeleteSelectedLesson()
         {
-            //// Check that a room was selected
-            //if (SelectedRoom == null)
-            //{
-            //    _messageBoxService.ShowMessage("אנא בחר חדר קודם כל.",
-            //                                   "נכשל במחיקת חדר", MessageType.OK_MESSAGE, MessagePurpose.ERROR);
-            //}
-            //else
-            //{
-            //    // Get the room that is going to be edited and the related class (if any)
-            //    Room selectedRoom = _schoolData.Rooms.Find(SelectedRoom.ID);
-                
+            // Check that a room was selected
+            if (SelectedLesson == null)
+            {
+                _messageBoxService.ShowMessage("אנא בחר חדר קודם כל.",
+                                               "נכשל במחיקת חדר", MessageType.OK_MESSAGE, MessagePurpose.ERROR);
+            }
+            else
+            {
+                // Get the lesson that is going to be deleted
+                Lesson selectedLesson = _schoolData.Lessons.Find(SelectedLesson.ID);
 
-            //    // As this is a serious action, request a confirmation from the user
-            //    bool confirmation = _messageBoxService.ShowMessage("האם אתה בטוח שברצונך למחוק את חדר " + selectedRoom.roomName + "?",
-            //                                                        "מחיקת חדר!", MessageType.ACCEPT_CANCEL_MESSAGE, MessagePurpose.INFORMATION);
-            //    if (confirmation == true)
-            //    {
-            //        // Remove the room from any associated class
-            //        Class previousClass = _schoolData.Classes.Where(schoolClass => schoolClass.roomID == selectedRoom.roomID).FirstOrDefault();
-            //        if (previousClass != null)
-            //        {
-            //            previousClass.roomID = null;
-            //        }
-                    
-            //        // Clear the previous room property (as it was removed anyway)
-            //        this._previousLessonClass = null;
+                // As this is a serious action, request a confirmation from the user
+                bool confirmation = _messageBoxService.ShowMessage("האם אתה בטוח שברצונך למחוק את השיעור?",
+                                                                    "מחיקת שיעור!", MessageType.ACCEPT_CANCEL_MESSAGE, MessagePurpose.INFORMATION);
+                if (confirmation == true)
+                {
+                    // Remove the lesson
+                    _schoolData.Lessons.Remove(selectedLesson);
 
-            //        // Remove the room from any associated lessons
-            //        _schoolData.Lessons.Where(lesson => lesson.roomID == selectedRoom.roomID).ToList().ForEach(lesson => lesson.roomID = null);
-
-            //        // Delete the room itself
-            //        _schoolData.Rooms.Remove(selectedRoom);
-
-            //        // Save and report changes
-            //        _schoolData.SaveChanges();
-            //        _messageBoxService.ShowMessage("החדר " + selectedRoom.roomName + " נמחק בהצלחה!",
-            //                "מחיקת חדר!", MessageType.OK_MESSAGE, MessagePurpose.INFORMATION);
-            //        _refreshDataCommand.Execute(null);
-            //    }
-            //}
+                    // Save and report changes
+                    _schoolData.SaveChanges();
+                    _messageBoxService.ShowMessage("השיעור נמחק בהצלחה!",
+                            "מחיקת שיעור!", MessageType.OK_MESSAGE, MessagePurpose.INFORMATION);
+                    _refreshDataCommand.Execute(null);
+                }
+            }
         }
 
         /// <summary>
@@ -497,61 +802,48 @@ namespace MySchoolYear.ViewModel
         /// </summary>
         private void UpdateSelectedLesson()
         {
-            //// Check that a room was selected
-            //if (SelectedRoom == null)
-            //{
-            //    _messageBoxService.ShowMessage("אנא בחר חדר קודם כל.",
-            //                                   "נכשל בעדכון חדר", MessageType.OK_MESSAGE, MessagePurpose.ERROR);
-            //}
-            //else
-            //{
-            //    // Get the room that is going to be edited and the related class (if any)
-            //    Room selectedRoom = _schoolData.Rooms.Find(SelectedRoom.ID);
-            //    Class previousClass = _schoolData.Classes.Where(schoolClass=>schoolClass.roomID == selectedRoom.roomID).FirstOrDefault();
-            //    Class selectedClass = _schoolData.Classes.Find(SelectedClass);
+            // Check that a room was selected
+            if (SelectedLesson == null)
+            {
+                _messageBoxService.ShowMessage("אנא בחר שיעור קודם כל.",
+                                               "נכשל בעדכון שיעור", MessageType.OK_MESSAGE, MessagePurpose.ERROR);
+            }
+            // Check that at least one meeting time has been set (otherwise the lesson is meaningless
+            else if (LessonFirstDay == NOT_ASSIGNED || LessonFirstHour == NOT_ASSIGNED)
+            {
+                _messageBoxService.ShowMessage("אנא הזן יום ושעה למפגש הראשון מהשיעור.",
+                                               "נכשל בעדכון שיעור", MessageType.OK_MESSAGE, MessagePurpose.ERROR);
+            }
+            else
+            {
+                // Get the lesson that is going to be edited
+                Lesson selectedLesson = _schoolData.Lessons.Find(SelectedLesson.ID);
 
-            //    // Check that the room's new name is unique
-            //    if (_schoolData.Rooms.Where(room => room.roomID != selectedRoom.roomID && room.roomName == RoomName).Any())
-            //    {
-            //        _messageBoxService.ShowMessage("שם החדר תפוס כבר! אנא תן שם חדש", "נכשל בעדכון חדר", MessageType.OK_MESSAGE, MessagePurpose.ERROR);
-            //    }
-            //    // Check that the room selected class doesn't have another room already
-            //    else if (SelectedClass != NO_ASSIGNED && selectedClass.roomID != null && selectedClass.roomID != selectedRoom.roomID)
-            //    {
-            //        _messageBoxService.ShowMessage("לכיתה שנבחרה יש כבר חדר אם. בטל את הבחירה או עדכן את הכיתה קודם.",
-            //                                       "נכשל בעדכון חדר", MessageType.OK_MESSAGE, MessagePurpose.ERROR);
-            //    }
-            //    else
-            //    {
-            //        // Update the room's data
-            //        selectedRoom.roomName = RoomName;
+                // Update the room's data
+                selectedLesson.classID = SelectedClass;
+                selectedLesson.courseID = SelectedCourse;
+                selectedLesson.teacherID = SelectedTeacher;
+                selectedLesson.roomID = (SelectedRoom != NOT_ASSIGNED) ? (int?)SelectedRoom : null;
 
-            //        // Remove the room from its previous class (assuming it has changed)
-            //        if (previousClass != null && previousClass.roomID != SelectedClass)
-            //        {
-            //            previousClass.roomID = null;
+                // Get lesson meeting times. Note that at least one meeting is required, and so the first meeting day&hour are not nullable
+                selectedLesson.firstLessonDay = Convert.ToByte(LessonFirstDay);
+                selectedLesson.firstLessonHour = Convert.ToByte(LessonFirstHour);
+                selectedLesson.secondLessonDay = (LessonSecondDay != NOT_ASSIGNED) ? Convert.ToByte(LessonSecondDay) : (byte?)null;
+                selectedLesson.secondLessonHour = (LessonSecondHour != NOT_ASSIGNED) ? Convert.ToByte(LessonSecondHour) : (byte?)null;
+                selectedLesson.thirdLessonDay = (LessonThirdDay != NOT_ASSIGNED) ? Convert.ToByte(LessonThirdDay) : (byte?)null;
+                selectedLesson.thirdLessonHour = (LessonThirdHour != NOT_ASSIGNED) ? Convert.ToByte(LessonThirdHour) : (byte?)null;
+                selectedLesson.fourthLessonDay = (LessonFourthDay != NOT_ASSIGNED) ? Convert.ToByte(LessonFourthDay) : (byte?)null;
+                selectedLesson.fourthLessonHour = (LessonFourthHour != NOT_ASSIGNED) ? Convert.ToByte(LessonFourthHour) : (byte?)null;
 
-            //            // Clear the previous room property (as it was removed anyway)
-            //            this._previousLessonClass = null;
-            //        }
+                // Update the model
+                _schoolData.SaveChanges();
 
-            //        // Add the room to the selected class
-            //        if (SelectedClass != NO_ASSIGNED)
-            //        {
-            //            // Update class to use this room's ID
-            //            selectedClass.roomID = selectedRoom.roomID; 
-            //        }
+                // Report action success
+                _messageBoxService.ShowMessage("השיעור עודכן בהצלחה!", "עודכן שיעור", MessageType.OK_MESSAGE, MessagePurpose.INFORMATION);
 
-            //        // Update the model
-            //        _schoolData.SaveChanges();
-
-            //        // Report action success
-            //        _messageBoxService.ShowMessage("החדר " + RoomName + " עודכן בהצלחה!", "עודכן חדר", MessageType.OK_MESSAGE, MessagePurpose.INFORMATION);
-
-            //        // Update data in all screens
-            //        _refreshDataCommand.Execute(null);
-            //    }
-            //}
+                // Update data in all screens
+                _refreshDataCommand.Execute(null);
+            }
         }
         
         /// <summary>
@@ -559,37 +851,56 @@ namespace MySchoolYear.ViewModel
         /// </summary>
         private void CreateNewLesson()
         {
-            //// Check that the room's name is unique
-            //if (_schoolData.Rooms.Where(room => room.roomName == RoomName).Any())
-            //{
-            //    _messageBoxService.ShowMessage("שם החדר תפוס כבר! אנא תן שם חדש", "נכשל ביצירת חדר", MessageType.OK_MESSAGE, MessagePurpose.ERROR);
-            //}
-            //// Check that the room selected class doesn't have another room already
-            //else if (SelectedClass != NO_ASSIGNED && _schoolData.Classes.Find(SelectedClass).roomID != null)
-            //{
-            //    _messageBoxService.ShowMessage("לכיתה שנבחרה יש כבר חדר אם. בטל את הבחירה או עדכן את הכיתה קודם.",
-            //                                   "נכשל ביצירת חדר", MessageType.OK_MESSAGE, MessagePurpose.ERROR);
-            //}
-            //else
-            //{
-            //    // Create a new room
-            //    Room newRoom = new Room() { roomName = RoomName };
-            //    _schoolData.Rooms.Add(newRoom);
-            //    _schoolData.SaveChanges();
+            // Check that the lesson has a class associated with it
+            if (_schoolData.Classes.Find(SelectedClass) == null)
+            {
+                _messageBoxService.ShowMessage("אנא בחר כיתה תקינה", "נכשל ביצירת שיעור", MessageType.OK_MESSAGE, MessagePurpose.ERROR);
+            }
+            // Check that the lesson has a course associated with it
+            else if (_schoolData.Courses.Find(SelectedCourse) == null)
+            {
+                _messageBoxService.ShowMessage("אנא בחר מקצוע תקין", "נכשל ביצירת שיעור", MessageType.OK_MESSAGE, MessagePurpose.ERROR);
+            }
+            // Check that the lesson has a teacher associated with it
+            else if (_schoolData.Teachers.Find(SelectedTeacher) == null)
+            {
+                _messageBoxService.ShowMessage("אנא בחר מורה תקין", "נכשל ביצירת שיעור", MessageType.OK_MESSAGE, MessagePurpose.ERROR);
+            }
+            // Check that at least one meeting time has been set (otherwise the lesson is meaningless
+            else if (LessonFirstDay == NOT_ASSIGNED || LessonFirstHour == NOT_ASSIGNED)
+            {
+                _messageBoxService.ShowMessage("אנא הזן יום ושעה למפגש הראשון מהשיעור.",
+                                               "נכשל ביצירת שיעור", MessageType.OK_MESSAGE, MessagePurpose.ERROR);
+            }
+            else
+            {
+                // Create a new Lesson
+                Lesson newLesson = new Lesson();
+                newLesson.classID = SelectedClass;
+                newLesson.courseID = SelectedCourse;
+                newLesson.teacherID = SelectedTeacher;
+                newLesson.roomID = (SelectedRoom != NOT_ASSIGNED) ? (int?)SelectedRoom : null;
 
-            //    // If a class was selected, update it too
-            //    if (SelectedClass != NO_ASSIGNED)
-            //    {
-            //        _schoolData.Classes.Find(SelectedClass).roomID = newRoom.roomID;
-            //        _schoolData.SaveChanges();
-            //    }
+                // Get lesson meeting times. Note that at least one meeting is required, and so the first meeting day&hour are not nullable
+                newLesson.firstLessonDay = Convert.ToByte(LessonFirstDay);
+                newLesson.firstLessonHour = Convert.ToByte(LessonFirstHour);
+                newLesson.secondLessonDay = (LessonSecondDay != NOT_ASSIGNED) ? Convert.ToByte(LessonSecondDay) : (byte?)null;
+                newLesson.secondLessonHour = (LessonSecondHour != NOT_ASSIGNED) ? Convert.ToByte(LessonSecondHour) : (byte?)null;
+                newLesson.thirdLessonDay = (LessonThirdDay != NOT_ASSIGNED) ? Convert.ToByte(LessonThirdDay) : (byte?)null;
+                newLesson.thirdLessonHour = (LessonThirdHour != NOT_ASSIGNED) ? Convert.ToByte(LessonThirdHour) : (byte?)null;
+                newLesson.fourthLessonDay = (LessonFourthDay != NOT_ASSIGNED) ? Convert.ToByte(LessonFourthDay) : (byte?)null;
+                newLesson.fourthLessonHour = (LessonFourthHour != NOT_ASSIGNED) ? Convert.ToByte(LessonFourthHour) : (byte?)null;
 
-            //    // Report action success
-            //    _messageBoxService.ShowMessage("החדר " + RoomName + " נוצר בהצלחה!", "נוצר חדר", MessageType.OK_MESSAGE, MessagePurpose.INFORMATION);
+                // Save the new lesson
+                _schoolData.Lessons.Add(newLesson);
+                _schoolData.SaveChanges();
 
-            //    // Update data in all screens
-            //    _refreshDataCommand.Execute(null);
-            //}
+                // Report action success
+                _messageBoxService.ShowMessage("השיעור נוצר בהצלחה!", "נוצר שיעור", MessageType.OK_MESSAGE, MessagePurpose.INFORMATION);
+
+                // Update data in all screens
+                _refreshDataCommand.Execute(null);
+            }
         }
 
         #endregion
