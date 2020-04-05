@@ -31,6 +31,9 @@
         <DataTemplate DataType="{x:Type viewModels:CourseManagementViewModel}">
             <local:CourseManagementView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModels:LessonManagementViewModel}">
+            <local:LessonManagementView />
+        </DataTemplate>
         <DataTemplate DataType="{x:Type viewModels:UserCreationViewModel}">
             <local:UserCreationView />
         </DataTemplate>

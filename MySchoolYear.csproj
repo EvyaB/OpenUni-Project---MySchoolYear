@@ -245,6 +245,7 @@
     <Compile Include="ViewModel\ApplicationViewModel.cs" />
     <Compile Include="ViewModel\NewPasswordViewModel.cs" />
     <Compile Include="ViewModel\ClassManagementViewModel.cs" />
+    <Compile Include="ViewModel\LessonManagementViewModel.cs" />
     <Compile Include="ViewModel\RoomManagementViewModel.cs" />
     <Compile Include="ViewModel\UserUpdateViewModel.cs" />
     <Compile Include="ViewModel\UserCreationViewModel.cs" />
@@ -262,6 +263,9 @@
     </Compile>
     <Compile Include="View\CourseManagementView.xaml.cs">
       <DependentUpon>CourseManagementView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\LessonManagementView.xaml.cs">
+      <DependentUpon>LessonManagementView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\RoomManagementView.xaml.cs">
       <DependentUpon>RoomManagementView.xaml</DependentUpon>
@@ -290,6 +294,7 @@
     <Compile Include="View\StudentGradesView.xaml.cs">
       <DependentUpon>StudentGradesView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Utilities\InverseBooleanConverter.cs" />
     <Compile Include="View\Utilities\WPFMessageBoxService.cs" />
     <Compile Include="ViewModel\Utilities\IMessageBoxService.cs" />
     <Compile Include="View\Utilities\PasswordBoxMonitor.cs" />
@@ -333,6 +338,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\CourseManagementView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\LessonManagementView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

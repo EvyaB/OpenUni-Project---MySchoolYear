@@ -21,10 +21,6 @@
                 </DataGrid.Columns>
             </DataGrid>
             
-            <TextBlock Margin="0,150,0,0" Text="תלמידים בכיתה:" Style="{StaticResource SecondaryTitleText}" HorizontalAlignment="Center"/>
-            <ListBox ItemsSource="{Binding StudentsInSelectedClass}" Width="200" MaxHeight="200"
-                      VerticalAlignment="Top" HorizontalAlignment="Center" FlowDirection="RightToLeft">
-            </ListBox>
         </StackPanel>
 
         <StackPanel DockPanel.Dock="Left">
