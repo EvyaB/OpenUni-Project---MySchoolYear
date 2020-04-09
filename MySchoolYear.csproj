@@ -109,6 +109,9 @@
     <Reference Include="Microsoft.Extensions.Primitives, Version=3.1.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.Extensions.Primitives.3.1.2\lib\netstandard2.0\Microsoft.Extensions.Primitives.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Xaml.Behaviors, Version=1.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.Xaml.Behaviors.Wpf.1.1.19\lib\net45\Microsoft.Xaml.Behaviors.dll</HintPath>
+    </Reference>
     <Reference Include="MySqlConnector, Version=0.61.0.0, Culture=neutral, PublicKeyToken=d33d3e53aa5f8c92, processorArchitecture=MSIL">
       <HintPath>packages\MySqlConnector.0.61.0\lib\net471\MySqlConnector.dll</HintPath>
     </Reference>
@@ -251,6 +254,10 @@
     <Compile Include="ViewModel\UserCreationViewModel.cs" />
     <Compile Include="ViewModel\Utilities\ObservableDictionary.cs" />
     <Compile Include="ViewModel\WeeklyScheduleViewModel.cs" />
+    <Compile Include="View\CalenderView.xaml.cs">
+      <DependentUpon>CalenderView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModel\CalenderViewModel.cs" />
     <Compile Include="View\NewPasswordWindow.xaml.cs">
       <DependentUpon>NewPasswordWindow.xaml</DependentUpon>
     </Compile>
@@ -300,6 +307,10 @@
     <Compile Include="View\WeeklyScheduleView.xaml.cs">
       <DependentUpon>WeeklyScheduleView.xaml</DependentUpon>
     </Compile>
+    <Page Include="View\CalenderView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\NewPasswordWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -435,6 +446,12 @@
       <DependentUpon>DataModel.edmx</DependentUpon>
       <LastGenOutput>DataModel.cs</LastGenOutput>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Jarloo.Calendar\Jarloo.Calendar.csproj">
+      <Project>{31c3b4a7-504b-4eff-bacc-c8f2ffe5af6f}</Project>
+      <Name>Jarloo.Calendar</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

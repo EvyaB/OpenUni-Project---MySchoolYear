@@ -19,6 +19,9 @@
         <DataTemplate DataType="{x:Type viewModels:WeeklyScheduleViewModel}">
             <local:WeeklyScheduleView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModels:CalenderViewModel}">
+            <local:CalenderView />
+        </DataTemplate>
         <DataTemplate DataType="{x:Type viewModels:SchoolManagementViewModel}">
             <local:SchoolManagementView />
         </DataTemplate>
@@ -52,7 +55,7 @@
                                 FontSize="16"
                                 FontWeight="Medium"
                                 Command="{Binding DataContext.ChangeScreenCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
-                                CommandParameter="{Binding }"
+                                CommandParameter="{Binding}"
                                 Margin="2,5"/>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
