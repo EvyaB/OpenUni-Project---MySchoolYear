@@ -42,6 +42,7 @@ namespace MySchoolYear.ViewModel
         {
             public bool IsPersonSchedule { get; set; }
             public bool IsClassSchedule { get; set; }
+            public bool IsRoomSchedule { get; set; }
             public int ID { get; set; }
             public string Name { get; set; }
             public LessonData[,] ActualSchedule { get; set; }
@@ -87,7 +88,9 @@ namespace MySchoolYear.ViewModel
             {
                 // Check if the input and _selectedSchedule are different
                 if  (_selectedSchedule == null && value != null || _selectedSchedule.ID != value.ID ||
-                    _selectedSchedule.IsClassSchedule != value.IsClassSchedule || _selectedSchedule.IsPersonSchedule != value.IsPersonSchedule)
+                    _selectedSchedule.IsClassSchedule != value.IsClassSchedule ||
+                    _selectedSchedule.IsPersonSchedule != value.IsPersonSchedule ||
+                    _selectedSchedule.IsRoomSchedule != value.IsRoomSchedule)
                 {
                     _selectedSchedule = value;
                     Schedule = _selectedSchedule.ActualSchedule;
@@ -197,6 +200,13 @@ namespace MySchoolYear.ViewModel
                     ScheduleData schedule = CreateTeacherSchedule(teacher);
                     AvailableSchedules.Add(schedule);
                 }
+                
+                // Add every room's schedule
+                foreach (Room room in schoolData.Rooms)
+                {
+                    ScheduleData schedule = CreateRoomSchedule(room);
+                    AvailableSchedules.Add(schedule);
+                }
             }
 
             SelectedSchedule = AvailableSchedules.First();
@@ -215,6 +225,7 @@ namespace MySchoolYear.ViewModel
                 Name = "כיתה " + classData.className,
                 IsClassSchedule = true,
                 IsPersonSchedule = false,
+                IsRoomSchedule = false,
                 ActualSchedule = new LessonData[Globals.DAY_NAMES.Length, Globals.HOUR_NAMES.Length]
             };
             // Add the class's lessons to the schedule
@@ -235,6 +246,7 @@ namespace MySchoolYear.ViewModel
                 Name = teacher.Person.firstName + " " + teacher.Person.lastName,
                 IsClassSchedule = false,
                 IsPersonSchedule = true,
+                IsRoomSchedule = false,
                 ActualSchedule = new LessonData[Globals.DAY_NAMES.Length, Globals.HOUR_NAMES.Length]
             };
             // Add the class's lessons to the schedule
@@ -243,7 +255,28 @@ namespace MySchoolYear.ViewModel
         }
 
         /// <summary>
-        /// Assistant method that adds a lesson to 
+        /// Assistant method that creates the weekly schedule information for a specific room
+        /// </summary>
+        /// <param name="teacher">The room to build on</param>
+        /// <returns>The schedule information</returns>
+        private ScheduleData CreateRoomSchedule(Room room)
+        {
+            ScheduleData roomSchedule = new ScheduleData()
+            {
+                ID = room.roomID,
+                Name = "חדר " + room.roomName,
+                IsClassSchedule = false,
+                IsPersonSchedule = false,
+                IsRoomSchedule = true,
+                ActualSchedule = new LessonData[Globals.DAY_NAMES.Length, Globals.HOUR_NAMES.Length]
+            };
+            // Add the room's lessons to the schedule
+            room.Lessons.ToList().ForEach(lesson => AddLessonToSchedule(lesson, ref roomSchedule));
+            return roomSchedule;
+        }
+
+        /// <summary>
+        /// Assistant method that adds a lesson to a schedule
         /// </summary>
         /// <param name="lesson"></param>
         /// <param name="schedule"></param>
