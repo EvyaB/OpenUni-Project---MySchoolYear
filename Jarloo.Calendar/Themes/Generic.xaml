@@ -96,7 +96,8 @@
                                                     </StackPanel>
                                                     <TextBox IsEnabled="{Binding Enabled}" Text="{Binding Notes, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                                              AcceptsReturn="True" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                                             BorderThickness="0" Background="{x:Null}" Foreground="White" />
+                                                             BorderThickness="0" Background="{x:Null}" Foreground="Black" FontSize="10" 
+                                                             MaxWidth="65"/>
                                                 </StackPanel>
                                             </Border>
                                         </Border>

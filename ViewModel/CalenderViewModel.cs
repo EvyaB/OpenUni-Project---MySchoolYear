@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,16 +16,18 @@ namespace MySchoolYear.ViewModel
     /// </summary>
     public class CalenderViewModel : BaseViewModel, IScreenViewModel
     {
-        #region SubStructs
-        #endregion
-
         #region Fields
         private SchoolEntities _schoolData;
+        private Jarloo.Calendar.Calendar _calender;
 
         private ICommand _updateCalenderCommand;
         private ICommand _updateSelectedDayCommand;
+
         private List<string> _months;
         private string _selectedMonth;
+
+        private List<Event> _selectedDayEvents;
+        private Event _selectedEvent;
         #endregion
 
         #region Properties / Commands
@@ -63,8 +66,39 @@ namespace MySchoolYear.ViewModel
             }
         }
 
+        public List<Event> SelectedDayEvents
+        { 
+            get
+            {
+                return _selectedDayEvents;
+            }
+            set
+            {
+                if (_selectedDayEvents != value)
+                {
+                    _selectedDayEvents = value;
+                    OnPropertyChanged("SelectedDayEvents");
+                }
+            }
+        }
+        public Event SelectedEvent
+        { 
+            get
+            {
+                return _selectedEvent;
+            }
+            set
+            {
+                if (_selectedEvent != value)
+                {
+                    _selectedEvent = value;
+                    OnPropertyChanged("SelectedEvent");
+                }
+            }
+        }
+
         /// <summary>
-        /// Create a new school class with the current data
+        /// Update the calender to show the current selected month's events
         /// </summary>
         public ICommand UpdateCalenderCommand
         {
@@ -79,7 +113,7 @@ namespace MySchoolYear.ViewModel
             }
         }
         /// <summary>
-        /// Create a new school class with the current data
+        /// Display the events of the selected day
         /// </summary>
         public ICommand UpdateSelectedDayCommand
         {
@@ -87,12 +121,11 @@ namespace MySchoolYear.ViewModel
             {
                 if (_updateSelectedDayCommand == null)
                 {
-                    _updateSelectedDayCommand = new RelayCommand(p => UpdateCalender2());
+                    _updateSelectedDayCommand = new RelayCommand(p => GetSelectedDayEvents());
                 }
                 return _updateSelectedDayCommand;
             }
         }
-
         #endregion
 
         #region Constructors
@@ -106,6 +139,7 @@ namespace MySchoolYear.ViewModel
                 _schoolData = new SchoolEntities();
                 _months = new List<string> 
                     { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
+                _selectedDayEvents = new List<Event>();
             }
         }
         #endregion
@@ -124,17 +158,108 @@ namespace MySchoolYear.ViewModel
         private void UpdateCalender(Jarloo.Calendar.Calendar calender)
         {
             DateTime targetDate = new DateTime(DateTime.Now.Year, Months.IndexOf(SelectedMonth) + 1, 1);
-
             calender.BuildCalendar(targetDate);
+
+            // Get a list of relevent events to the current user
+            List<Event> userEvents = GetRelevantEvents(calender.Days[0].DayDate, calender.Days.Last().DayDate);
+
+            // Check over the displayed days and add their events 
+            foreach (Event currentEvent in userEvents)
+            {
+                // Calculate number of day for the currentEvent
+                int dayOffset = (currentEvent.eventDate - calender.Days[0].DayDate).Days;
+
+                // Note the event's title at this day. 
+                // If there are multiple events in the same day, space them out properly
+                if (calender.Days[dayOffset].Notes != string.Empty && calender.Days[dayOffset].Notes != null)
+                {
+                    calender.Days[dayOffset].Notes += ", ";
+                }
+                calender.Days[dayOffset].Notes += currentEvent.name;
+            }
+
+            // Save the calender to use for determining selected day
+            _calender = calender;
         }
 
         /// <summary>
-        /// Update the calender to show data for the selected month
+        /// Create a list with all the events that are relevent to the current connected user and are within specific dates
         /// </summary>
-        /// <param name="calender">The visual calender</param>
-        private void UpdateCalender2()
+        /// <param name="startingDate">The earliest relevent date</param>
+        /// <param name="endDate">The latest relevent date</param>
+        /// <returns></returns>
+        private List<Event> GetRelevantEvents(DateTime startingDate, DateTime endDate)
         {
-            //
+            // Check that the starting date is before the end date (otherwise it is meaningless)
+            if (startingDate > endDate)
+            {
+                throw new ArgumentException("Invalid dates received when searching for events");
+            }
+
+            // Create the minimum query to only get events that are within the specified dates. Only compare dates (without time of day)
+            // Note that LINQ cannot directly use the Date property of a Datetime so we need to use DBFunctions
+            var startDateWithoutTime = startingDate.Date;
+            var endDateWithoutTime = endDate.Date;
+            var eventsQuery = 
+                _schoolData.Events.Where(schoolEvent => (DbFunctions.TruncateTime(schoolEvent.eventDate) >= startDateWithoutTime &&
+                                                         DbFunctions.TruncateTime(schoolEvent.eventDate) <= endDateWithoutTime));
+            var aslist = eventsQuery.ToList();
+
+            // Create a basic list with events that are for the entire school (have no classID)
+            // Using HashSet to make sure the events are unique and not added multiple times
+            HashSet<Event> userEvents = eventsQuery.Where(schoolEvent => schoolEvent.classID == null).ToHashSet();
+
+            // Check the user's permissions and create the list of events accordingly
+            if (ConnectedUser.isStudent)
+            {
+                // Get the events of the student's class
+                userEvents.UnionWith(eventsQuery.Where(schoolEvent =>
+                                                       schoolEvent.classID == ConnectedUser.Student.classID)
+                                                       .ToHashSet());
+            }
+            else if (ConnectedUser.isParent)
+            {
+                // Get all events of the parent's children classes
+                userEvents.UnionWith(eventsQuery.Where(schoolEvent =>
+                                                        ConnectedUser.ChildrenStudents.Any(childStudent => childStudent.classID == schoolEvent.classID))
+                                                        .ToHashSet());
+            }
+            else if (ConnectedUser.isTeacher)
+            {
+                // Show a teacher any event of his own class, as well as any self-submitted events
+                userEvents.UnionWith(eventsQuery.Where(schoolEvent => 
+                                                        (schoolEvent.classID == ConnectedUser.Teacher.classID ||
+                                                        schoolEvent.submitterID == ConnectedUser.personID))
+                                                        .ToHashSet());
+            }
+            else if (ConnectedUser.isSecretary || ConnectedUser.isPrincipal)
+            {
+                // Show every school event
+                userEvents.UnionWith(eventsQuery.ToHashSet());
+            }
+
+            return userEvents.ToList();
+        }
+
+        /// <summary>
+        /// Gather the information of events for the current day
+        /// </summary>
+        private void GetSelectedDayEvents()
+        {
+            // Get the selected day data
+            var selectedDay = _calender.SelectedDay;
+
+            if (selectedDay != null)
+            {
+                // get the events that are in the selected day
+                SelectedDayEvents = GetRelevantEvents(selectedDay.DayDate, selectedDay.DayDate);
+                SelectedEvent = SelectedDayEvents.FirstOrDefault();
+            }
+            else
+            {
+                SelectedDayEvents = new List<Event>();
+                SelectedEvent = null;
+            }
         }
         #endregion
     }

@@ -71,5 +71,7 @@ namespace Jarloo.Calendar
                 if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("DayDate"));
             }
         }
+
+        public int EventsCounter { get; set; }
     }
 }

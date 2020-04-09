@@ -47,7 +47,7 @@ namespace Jarloo.Calendar
                 {
                     _selectedDay = value;
 
-                    if (SelectedDayCommand.CanExecute(null))
+                    if (SelectedDayCommand != null && SelectedDayCommand.CanExecute(null))
                         SelectedDayCommand.Execute(null);
                 }
             }

@@ -31,7 +31,18 @@
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </ComboBox>
-
-        <Jarloo:Calendar x:Name="Calendar" Margin="141,46,0,0" SelectedDayCommand="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.UpdateSelectedDayCommand}"/>
+        <DockPanel Margin="0,50,0,0" FlowDirection="LeftToRight">
+            <StackPanel DockPanel.Dock="Right" MaxWidth="100">
+                <TextBlock Text="פרטי אירוע:" Style="{StaticResource SecondaryTitleText}" Margin="0,50,0,0"/>
+                <ComboBox ItemsSource="{Binding SelectedDayEvents}" DisplayMemberPath="name" SelectedValue="{Binding SelectedEvent}"/>
+                <Label Content="{Binding Path=SelectedEvent.Class.className}" ContentStringFormat="כיתה: {0}"/>
+                <TextBlock Text="{Binding SelectedEvent.eventDate}" TextWrapping="Wrap" Style="{StaticResource BasicText}"/>
+                <TextBlock Text="{Binding SelectedEvent.description}" TextWrapping="Wrap" Style="{StaticResource BasicText}"/>
+            </StackPanel>
+            
+            <Jarloo:Calendar x:Name="Calendar" DockPanel.Dock="Left" 
+                             SelectedDayCommand="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, 
+                                                          Path=DataContext.UpdateSelectedDayCommand}"/>
+        </DockPanel>
     </Grid>
 </UserControl>
