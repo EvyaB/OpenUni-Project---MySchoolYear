@@ -16,12 +16,14 @@ namespace MySchoolYear.Model
     {
         public int eventID { get; set; }
         public int submitterID { get; set; }
-        public Nullable<int> classID { get; set; }
+        public Nullable<int> recipientID { get; set; }
+        public Nullable<int> recipientClassID { get; set; }
         public string name { get; set; }
         public string description { get; set; }
         public System.DateTime eventDate { get; set; }
     
         public virtual Class Class { get; set; }
-        public virtual Person Person { get; set; }
+        public virtual Person Submitter { get; set; }
+        public virtual Person Recipient { get; set; }
     }
 }

@@ -205,30 +205,36 @@ namespace MySchoolYear.ViewModel
                                                          DbFunctions.TruncateTime(schoolEvent.eventDate) <= endDateWithoutTime));
             var aslist = eventsQuery.ToList();
 
-            // Create a basic list with events that are for the entire school (have no classID)
+            // Create a basic list with events that are for the entire school (have no specific recipient ID or class ID),
+            // aswell as the events that were created by the current user, or are meant directly to him/her
             // Using HashSet to make sure the events are unique and not added multiple times
-            HashSet<Event> userEvents = eventsQuery.Where(schoolEvent => schoolEvent.classID == null).ToHashSet();
+            HashSet<Event> userEvents = eventsQuery.Where(schoolEvent => 
+                                                                (schoolEvent.recipientClassID == null && schoolEvent.recipientID == null) ||
+                                                                schoolEvent.submitterID == ConnectedUser.personID ||
+                                                                schoolEvent.recipientID == ConnectedUser.personID)
+                                                                .ToHashSet();
 
             // Check the user's permissions and create the list of events accordingly
             if (ConnectedUser.isStudent)
             {
                 // Get the events of the student's class
                 userEvents.UnionWith(eventsQuery.Where(schoolEvent =>
-                                                       schoolEvent.classID == ConnectedUser.Student.classID)
+                                                       schoolEvent.recipientClassID == ConnectedUser.Student.classID)
                                                        .ToHashSet());
             }
             else if (ConnectedUser.isParent)
             {
                 // Get all events of the parent's children classes
-                userEvents.UnionWith(eventsQuery.Where(schoolEvent =>
-                                                        ConnectedUser.ChildrenStudents.Any(childStudent => childStudent.classID == schoolEvent.classID))
+                userEvents.UnionWith(eventsQuery.Where(schoolEvent => 
+                                                        ConnectedUser.ChildrenStudents.Any(childStudent => 
+                                                                                            childStudent.classID == schoolEvent.recipientClassID))
                                                         .ToHashSet());
             }
             else if (ConnectedUser.isTeacher)
             {
                 // Show a teacher any event of his own class, as well as any self-submitted events
                 userEvents.UnionWith(eventsQuery.Where(schoolEvent => 
-                                                        (schoolEvent.classID == ConnectedUser.Teacher.classID ||
+                                                        (schoolEvent.recipientClassID == ConnectedUser.Teacher.classID ||
                                                         schoolEvent.submitterID == ConnectedUser.personID))
                                                         .ToHashSet());
             }

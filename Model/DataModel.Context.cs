@@ -27,7 +27,6 @@ namespace MySchoolYear.Model
     
         public virtual DbSet<Class> Classes { get; set; }
         public virtual DbSet<Course> Courses { get; set; }
-        public virtual DbSet<Event> Events { get; set; }
         public virtual DbSet<Lesson> Lessons { get; set; }
         public virtual DbSet<Message> Messages { get; set; }
         public virtual DbSet<Person> Persons { get; set; }
@@ -37,5 +36,6 @@ namespace MySchoolYear.Model
         public virtual DbSet<Student> Students { get; set; }
         public virtual DbSet<Teacher> Teachers { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Event> Events { get; set; }
     }
 }

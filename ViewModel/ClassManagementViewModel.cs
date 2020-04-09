@@ -461,8 +461,10 @@ namespace MySchoolYear.ViewModel
                 if (confirmation == true)
                 {
                     // Remove the class from any of its associations (events, students)
-                    _schoolData.Students.Where(student => student.classID == selectedClass.classID).ToList().ForEach(student => student.classID = null);
-                    _schoolData.Events.Where(eventData => eventData.classID == selectedClass.classID).ToList().ForEach(eventData => eventData.classID = null);
+                    _schoolData.Students.Where(student => student.classID == selectedClass.classID)
+                                            .ToList().ForEach(student => student.classID = null);
+                    _schoolData.Events.Where(eventData => eventData.recipientClassID == selectedClass.classID)
+                                            .ToList().ForEach(eventData => eventData.recipientClassID = null);
 
                     // Lessons are meant only for a specific class and are meaningless after a class was removed - delete all lessons for this class
                     var releventLessons = _schoolData.Lessons.Where(lesson => lesson.classID == selectedClass.classID);

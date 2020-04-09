@@ -27,7 +27,8 @@
           </Key>
           <Property Name="eventID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="submitterID" Type="int" Nullable="false" />
-          <Property Name="classID" Type="int" />
+          <Property Name="recipientID" Type="int" />
+          <Property Name="recipientClassID" Type="int" />
           <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="description" Type="nvarchar" MaxLength="250" />
           <Property Name="eventDate" Type="datetime" Nullable="false" />
@@ -156,7 +157,7 @@
               <PropertyRef Name="classID" />
             </Principal>
             <Dependent Role="Events">
-              <PropertyRef Name="classID" />
+              <PropertyRef Name="recipientClassID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -169,6 +170,18 @@
             </Principal>
             <Dependent Role="Events">
               <PropertyRef Name="submitterID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Events_ToRecipientPersons">
+          <End Role="Persons" Type="Self.Persons" Multiplicity="0..1" />
+          <End Role="Events" Type="Self.Events" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Persons">
+              <PropertyRef Name="personID" />
+            </Principal>
+            <Dependent Role="Events">
+              <PropertyRef Name="recipientID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -425,6 +438,10 @@
             <End Role="Persons" EntitySet="Persons" />
             <End Role="Events" EntitySet="Events" />
           </AssociationSet>
+          <AssociationSet Name="FK_Events_ToRecipientPersons" Association="Self.FK_Events_ToRecipientPersons">
+            <End Role="Persons" EntitySet="Persons" />
+            <End Role="Events" EntitySet="Events" />
+          </AssociationSet>
           <AssociationSet Name="FK_Lessons_ToClasses" Association="Self.FK_Lessons_ToClasses">
             <End Role="Classes" EntitySet="Classes" />
             <End Role="Lessons" EntitySet="Lessons" />
@@ -514,11 +531,11 @@
           <Property Name="roomID" Type="Int32" />
           <Property Name="className" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Room" Relationship="Self.FK_Classes_ToRooms" FromRole="Classes" ToRole="Rooms" />
-          <NavigationProperty Name="Events" Relationship="Self.FK_Events_ToClasses" FromRole="Classes" ToRole="Events" />
           <NavigationProperty Name="Lessons" Relationship="Self.FK_Lessons_ToClasses" FromRole="Classes" ToRole="Lessons" />
           <NavigationProperty Name="Messages" Relationship="Self.FK_Messages_ToClasses" FromRole="Classes" ToRole="Messages" />
           <NavigationProperty Name="Students" Relationship="Self.FK_Students_ToClasses" FromRole="Classes" ToRole="Students" />
           <NavigationProperty Name="Teachers" Relationship="Self.FK_Teachers_ToClasses" FromRole="Classes" ToRole="Teachers" />
+          <NavigationProperty Name="Events" Relationship="schoolModel.FK_Events_ToClasses" FromRole="Class" ToRole="Event" />
         </EntityType>
         <EntityType Name="Course">
           <Key>
@@ -533,19 +550,6 @@
           <NavigationProperty Name="Teachers2" Relationship="Self.FK_Teachers_ToCourses_3" FromRole="Courses" ToRole="Teachers" />
           <NavigationProperty Name="Teachers3" Relationship="Self.FK_Teachers_ToCourses_4" FromRole="Courses" ToRole="Teachers" />
           <Property Name="isHomeroomTeacherOnly" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Event">
-          <Key>
-            <PropertyRef Name="eventID" />
-          </Key>
-          <Property Name="eventID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="submitterID" Type="Int32" Nullable="false" />
-          <Property Name="classID" Type="Int32" />
-          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="description" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="eventDate" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="Class" Relationship="Self.FK_Events_ToClasses" FromRole="Events" ToRole="Classes" />
-          <NavigationProperty Name="Person" Relationship="Self.FK_Events_ToPersons" FromRole="Events" ToRole="Persons" />
         </EntityType>
         <EntityType Name="Lesson">
           <Key>
@@ -603,13 +607,14 @@
           <Property Name="isSecretary" Type="Boolean" Nullable="false" />
           <Property Name="isPrincipal" Type="Boolean" Nullable="false" />
           <Property Name="isParent" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Events" Relationship="Self.FK_Events_ToPersons" FromRole="Persons" ToRole="Events" />
           <NavigationProperty Name="SentMessages" Relationship="Self.FK_Messages_ToPersons" FromRole="Persons" ToRole="Messages" />
           <NavigationProperty Name="RecievedMessages" Relationship="Self.FK_Messages_ToPersonsRecipient" FromRole="Persons" ToRole="Messages" />
           <NavigationProperty Name="User" Relationship="Self.FK_Persons_ToUsers" FromRole="Persons" ToRole="Users" />
           <NavigationProperty Name="ChildrenStudents" Relationship="Self.FK_Students_ToParentPersons" FromRole="Persons" ToRole="Students" />
           <NavigationProperty Name="Student" Relationship="Self.FK_Students_ToPersons" FromRole="Persons" ToRole="Students" />
           <NavigationProperty Name="Teacher" Relationship="Self.FK_Teachers_ToPersons" FromRole="Persons" ToRole="Teachers" />
+          <NavigationProperty Name="Events" Relationship="schoolModel.FK_Events_ToPersons" FromRole="Person" ToRole="Event" />
+          <NavigationProperty Name="Events1" Relationship="schoolModel.FK_Events_ToRecipientPersons" FromRole="Person" ToRole="Event" />
         </EntityType>
         <EntityType Name="Room">
           <Key>
@@ -690,18 +695,6 @@
             </Principal>
             <Dependent Role="Classes">
               <PropertyRef Name="roomID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Events_ToClasses">
-          <End Role="Classes" Type="Self.Class" Multiplicity="0..1" />
-          <End Role="Events" Type="Self.Event" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Classes">
-              <PropertyRef Name="classID" />
-            </Principal>
-            <Dependent Role="Events">
-              <PropertyRef Name="classID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -825,18 +818,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Events_ToPersons">
-          <End Role="Persons" Type="Self.Person" Multiplicity="1" />
-          <End Role="Events" Type="Self.Event" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Persons">
-              <PropertyRef Name="personID" />
-            </Principal>
-            <Dependent Role="Events">
-              <PropertyRef Name="submitterID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Lessons_ToRooms">
           <End Role="Rooms" Type="Self.Room" Multiplicity="0..1" />
           <End Role="Lessons" Type="Self.Lesson" Multiplicity="*" />
@@ -948,7 +929,6 @@
         <EntityContainer Name="SchoolEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Classes" EntityType="Self.Class" />
           <EntitySet Name="Courses" EntityType="schoolModel.Course" />
-          <EntitySet Name="Events" EntityType="Self.Event" />
           <EntitySet Name="Lessons" EntityType="Self.Lesson" />
           <EntitySet Name="Messages" EntityType="Self.Message" />
           <EntitySet Name="Persons" EntityType="Self.Person" />
@@ -961,10 +941,6 @@
           <AssociationSet Name="FK_Classes_ToRooms" Association="Self.FK_Classes_ToRooms">
             <End Role="Rooms" EntitySet="Rooms" />
             <End Role="Classes" EntitySet="Classes" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Events_ToClasses" Association="Self.FK_Events_ToClasses">
-            <End Role="Classes" EntitySet="Classes" />
-            <End Role="Events" EntitySet="Events" />
           </AssociationSet>
           <AssociationSet Name="FK_Lessons_ToClasses" Association="Self.FK_Lessons_ToClasses">
             <End Role="Classes" EntitySet="Classes" />
@@ -1006,10 +982,6 @@
             <End Role="Courses" EntitySet="Courses" />
             <End Role="Teachers" EntitySet="Teachers" />
           </AssociationSet>
-          <AssociationSet Name="FK_Events_ToPersons" Association="Self.FK_Events_ToPersons">
-            <End Role="Persons" EntitySet="Persons" />
-            <End Role="Events" EntitySet="Events" />
-          </AssociationSet>
           <AssociationSet Name="FK_Lessons_ToRooms" Association="Self.FK_Lessons_ToRooms">
             <End Role="Rooms" EntitySet="Rooms" />
             <End Role="Lessons" EntitySet="Lessons" />
@@ -1046,7 +1018,71 @@
             <End Role="Students" EntitySet="Students" />
             <End Role="Scores" EntitySet="Scores" />
           </AssociationSet>
+          <EntitySet Name="Events" EntityType="schoolModel.Event" />
+          <AssociationSet Name="FK_Events_ToClasses" Association="schoolModel.FK_Events_ToClasses">
+            <End Role="Class" EntitySet="Classes" />
+            <End Role="Event" EntitySet="Events" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Events_ToPersons" Association="schoolModel.FK_Events_ToPersons">
+            <End Role="Person" EntitySet="Persons" />
+            <End Role="Event" EntitySet="Events" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Events_ToRecipientPersons" Association="schoolModel.FK_Events_ToRecipientPersons">
+            <End Role="Person" EntitySet="Persons" />
+            <End Role="Event" EntitySet="Events" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Event">
+          <Key>
+            <PropertyRef Name="eventID" />
+          </Key>
+          <Property Name="eventID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="submitterID" Type="Int32" Nullable="false" />
+          <Property Name="recipientID" Type="Int32" />
+          <Property Name="recipientClassID" Type="Int32" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="description" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="eventDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Class" Relationship="schoolModel.FK_Events_ToClasses" FromRole="Event" ToRole="Class" />
+          <NavigationProperty Name="Submitter" Relationship="schoolModel.FK_Events_ToPersons" FromRole="Event" ToRole="Person" />
+          <NavigationProperty Name="Recipient" Relationship="schoolModel.FK_Events_ToRecipientPersons" FromRole="Event" ToRole="Person" />
+        </EntityType>
+        <Association Name="FK_Events_ToClasses">
+          <End Type="schoolModel.Class" Role="Class" Multiplicity="0..1" />
+          <End Type="schoolModel.Event" Role="Event" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Class">
+              <PropertyRef Name="classID" />
+            </Principal>
+            <Dependent Role="Event">
+              <PropertyRef Name="recipientClassID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Events_ToPersons">
+          <End Type="schoolModel.Person" Role="Person" Multiplicity="1" />
+          <End Type="schoolModel.Event" Role="Event" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="personID" />
+            </Principal>
+            <Dependent Role="Event">
+              <PropertyRef Name="submitterID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Events_ToRecipientPersons">
+          <End Type="schoolModel.Person" Role="Person" Multiplicity="0..1" />
+          <End Type="schoolModel.Event" Role="Event" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="personID" />
+            </Principal>
+            <Dependent Role="Event">
+              <PropertyRef Name="recipientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1068,18 +1104,6 @@
                 <ScalarProperty Name="isHomeroomTeacherOnly" ColumnName="isHomeroomTeacherOnly" />
                 <ScalarProperty Name="courseID" ColumnName="courseID" />
                 <ScalarProperty Name="courseName" ColumnName="courseName" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Events">
-            <EntityTypeMapping TypeName="schoolModel.Event">
-              <MappingFragment StoreEntitySet="Events">
-                <ScalarProperty Name="eventID" ColumnName="eventID" />
-                <ScalarProperty Name="submitterID" ColumnName="submitterID" />
-                <ScalarProperty Name="classID" ColumnName="classID" />
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="description" ColumnName="description" />
-                <ScalarProperty Name="eventDate" ColumnName="eventDate" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1192,6 +1216,19 @@
                 <ScalarProperty Name="username" ColumnName="username" />
                 <ScalarProperty Name="password" ColumnName="password" />
                 <ScalarProperty Name="isDisabled" ColumnName="isDisabled" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Events">
+            <EntityTypeMapping TypeName="schoolModel.Event">
+              <MappingFragment StoreEntitySet="Events">
+                <ScalarProperty Name="eventDate" ColumnName="eventDate" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="recipientClassID" ColumnName="recipientClassID" />
+                <ScalarProperty Name="recipientID" ColumnName="recipientID" />
+                <ScalarProperty Name="submitterID" ColumnName="submitterID" />
+                <ScalarProperty Name="eventID" ColumnName="eventID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
