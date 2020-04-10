@@ -110,6 +110,7 @@ namespace MySchoolYear.ViewModel
             allScreens.Add(new StudentGradesViewModel(connectedUser));
             allScreens.Add(new WeeklyScheduleViewModel(connectedUser));
             allScreens.Add(new CalenderViewModel(connectedUser));
+            allScreens.Add(new MessagesDisplayViewModel(connectedUser));
 
             allScreens.Add(new SchoolManagementViewModel(connectedUser, UpdateScreensCommand));
 

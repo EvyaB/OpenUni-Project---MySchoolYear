@@ -24,6 +24,7 @@ namespace MySchoolYear.Model
         public bool forEveryone { get; set; }
         public string data { get; set; }
         public System.DateTime date { get; set; }
+        public string title { get; set; }
     
         public virtual Class Class { get; set; }
         public virtual Person SenderPerson { get; set; }

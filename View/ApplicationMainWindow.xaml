@@ -22,6 +22,9 @@
         <DataTemplate DataType="{x:Type viewModels:CalenderViewModel}">
             <local:CalenderView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModels:MessagesDisplayViewModel}">
+            <local:MessagesDisplayView />
+        </DataTemplate>
         <DataTemplate DataType="{x:Type viewModels:SchoolManagementViewModel}">
             <local:SchoolManagementView />
         </DataTemplate>

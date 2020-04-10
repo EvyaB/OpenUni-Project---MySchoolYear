@@ -63,6 +63,7 @@
           <Property Name="forAllTeachers" Type="bit" Nullable="false" />
           <Property Name="forAllStudents" Type="bit" Nullable="false" />
           <Property Name="forEveryone" Type="bit" Nullable="false" />
+          <Property Name="title" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="data" Type="nvarchar" MaxLength="250" Nullable="false" />
           <Property Name="date" Type="date" Nullable="false" />
         </EntityType>
@@ -590,6 +591,7 @@
           <NavigationProperty Name="Class" Relationship="Self.FK_Messages_ToClasses" FromRole="Messages" ToRole="Classes" />
           <NavigationProperty Name="SenderPerson" Relationship="Self.FK_Messages_ToPersons" FromRole="Messages" ToRole="Persons" />
           <NavigationProperty Name="ReceiverPerson" Relationship="Self.FK_Messages_ToPersonsRecipient" FromRole="Messages" ToRole="Persons" />
+          <Property Name="title" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Person">
           <Key>
@@ -1129,6 +1131,7 @@
           <EntitySetMapping Name="Messages">
             <EntityTypeMapping TypeName="schoolModel.Message">
               <MappingFragment StoreEntitySet="Messages">
+                <ScalarProperty Name="title" ColumnName="title" />
                 <ScalarProperty Name="messageID" ColumnName="messageID" />
                 <ScalarProperty Name="senderID" ColumnName="senderID" />
                 <ScalarProperty Name="recipientID" ColumnName="recipientID" />

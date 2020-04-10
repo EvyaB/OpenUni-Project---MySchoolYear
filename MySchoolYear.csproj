@@ -246,6 +246,7 @@
     <Compile Include="ViewModel\CourseManagementViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\ApplicationViewModel.cs" />
+    <Compile Include="ViewModel\MessagesDisplayViewModel.cs" />
     <Compile Include="ViewModel\NewPasswordViewModel.cs" />
     <Compile Include="ViewModel\ClassManagementViewModel.cs" />
     <Compile Include="ViewModel\LessonManagementViewModel.cs" />
@@ -258,6 +259,9 @@
       <DependentUpon>CalenderView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\CalenderViewModel.cs" />
+    <Compile Include="View\MessagesDisplayView.xaml.cs">
+      <DependentUpon>MessagesDisplayView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\NewPasswordWindow.xaml.cs">
       <DependentUpon>NewPasswordWindow.xaml</DependentUpon>
     </Compile>
@@ -308,6 +312,10 @@
       <DependentUpon>WeeklyScheduleView.xaml</DependentUpon>
     </Compile>
     <Page Include="View\CalenderView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MessagesDisplayView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
