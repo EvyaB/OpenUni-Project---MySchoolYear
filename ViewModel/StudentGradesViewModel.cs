@@ -27,6 +27,7 @@ namespace MySchoolYear.ViewModel
         private double _averageGrade;
         private List<Student> _students;
         private ICommand _changeStudentCommand;
+        private string _homeroomTeacher;
         #endregion
 
         #region Properties / Commands
@@ -65,6 +66,7 @@ namespace MySchoolYear.ViewModel
                 }
             }
         }
+
         /// <summary>
         /// The average of the student's grades
         /// </summary>
@@ -83,6 +85,7 @@ namespace MySchoolYear.ViewModel
                 }
             }
         }
+
         /// <summary>
         /// The student whose grades are viewed currently
         /// </summary>
@@ -103,9 +106,22 @@ namespace MySchoolYear.ViewModel
                     Grades = _currentStudent.Scores.Select(score =>
                         new Grade() { CourseName = score.Course.courseName, Score = score.score, TeacherNotes = score.notes })
                         .ToList();
+
+                    // Show this studen't homeroom teacher (if any)
+                    if (_currentStudent.Class.Teachers.Count > 0)
+                    {
+                        HomeroomTeacher = "מחנך: " +
+                                    _currentStudent.Class.Teachers.First().Person.firstName +
+                                    " " + _currentStudent.Class.Teachers.First().Person.lastName;
+                    }
+                    else
+                    {
+                        HomeroomTeacher = string.Empty;
+                    }
                 }
             }
         }
+        
         /// <summary>
         /// All students that the current user can view
         /// </summary>
@@ -124,6 +140,23 @@ namespace MySchoolYear.ViewModel
                 }
             }
         }
+
+        public string HomeroomTeacher
+        {
+            get
+            {
+                return _homeroomTeacher;
+            }
+            set
+            {
+                if (_homeroomTeacher != value)
+                {
+                    _homeroomTeacher = value;
+                    OnPropertyChanged("HomeroomTeacher");
+                }
+            }
+        }
+
         public bool CanViewDifferentStudents { get; private set; }
 
         /// <summary>

@@ -23,6 +23,8 @@
             </ComboBox.ItemTemplate>
         </ComboBox>
 
+        <TextBlock Text="{Binding HomeroomTeacher}" Style="{StaticResource SecondaryTitleText}" HorizontalAlignment="Center"/>
+
         <ListView ItemsSource="{Binding Path=Grades}" IsHitTestVisible="False" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                    Width="600" ItemContainerStyle="{StaticResource BorderedItem}">
             <ListView.View>
