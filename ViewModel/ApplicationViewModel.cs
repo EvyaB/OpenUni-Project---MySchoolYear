@@ -112,15 +112,15 @@ namespace MySchoolYear.ViewModel
             allScreens.Add(new CalenderViewModel(connectedUser));
             allScreens.Add(new MessagesDisplayViewModel(connectedUser));
 
-            allScreens.Add(new SchoolManagementViewModel(connectedUser, UpdateScreensCommand));
-
+            allScreens.Add(new CreateMessageViewModel(connectedUser, UpdateScreensCommand, messageBoxService));
             allScreens.Add(new ClassManagementViewModel(connectedUser, UpdateScreensCommand, messageBoxService));
             allScreens.Add(new RoomManagementViewModel(connectedUser, UpdateScreensCommand, messageBoxService));
             allScreens.Add(new CourseManagementViewModel(connectedUser, UpdateScreensCommand, messageBoxService));
             allScreens.Add(new LessonManagementViewModel(connectedUser, UpdateScreensCommand, messageBoxService));
             allScreens.Add(new UserCreationViewModel(connectedUser, UpdateScreensCommand, messageBoxService));
             allScreens.Add(new UserUpdateViewModel(connectedUser, UpdateScreensCommand, messageBoxService));
-            
+
+            allScreens.Add(new SchoolManagementViewModel(connectedUser, UpdateScreensCommand));
 
             // Use only the screens that are relevent to the current user
             foreach (IScreenViewModel screen in allScreens)

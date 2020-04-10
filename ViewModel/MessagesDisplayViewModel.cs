@@ -85,8 +85,9 @@ namespace MySchoolYear.ViewModel
             }
             if (ConnectedUser.isParent)
             {
-                // User is a parent => gather messages for the class of his children (but not direct messages to them - keeping those private)
-                schoolMessages.Where(message => ConnectedUser.ChildrenStudents.Any(childStudent => childStudent.classID == message.recipientClassID))
+                // Gather messages for the classes of the user's children (but not direct messages to them - keeping those private)
+                schoolMessages.AsEnumerable().Where(message => ConnectedUser.ChildrenStudents.Any(childStudent => 
+                                                                                      childStudent.classID == message.recipientClassID))
                     .ToList().ForEach(message => Messages.Add(ModelMessageToDisplayedMessage(message, MessageRecipientType.Class)));
             }
             if (ConnectedUser.isTeacher)

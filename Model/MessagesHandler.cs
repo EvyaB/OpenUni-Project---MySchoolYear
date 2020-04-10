@@ -25,24 +25,15 @@ namespace MySchoolYear.Model
         /// <summary>
         /// An helper method that creates a simple template of a message 
         /// </summary>
+        /// <param name="title">The title of the message</param>
         /// <param name="text">The actual message content</param>
-        /// <param name="Sender">Info about the sender of the message. If this is null then this is an automatic message</param>
+        /// <param name="senderID">The ID of the sender. If this is null then this is an automatic message</param>
         /// <returns></returns>
-        static private Message CreateBaseMessage(string text, Person Sender=null)
+        static private Message CreateBaseMessage(string title, string text, int? senderID=null)
         {
             Message newMessage = new Message();
 
-            // Is this an automated message (=has specific sender)?
-            if (Sender != null)
-            {
-                newMessage.senderID = Sender.personID;
-            }
-            else
-            {
-                // This is an automated message -> No ID of the sender
-                newMessage.senderID = null;
-            }
-
+            newMessage.senderID = senderID;
             newMessage.recipientID = null;
             newMessage.recipientClassID = null;
 
@@ -51,6 +42,7 @@ namespace MySchoolYear.Model
             newMessage.forAllTeachers = false;
             newMessage.forEveryone = false;
 
+            newMessage.title = title;
             newMessage.data = text;
             newMessage.date = DateTime.Now;
 
@@ -60,7 +52,7 @@ namespace MySchoolYear.Model
         /// <summary>
         /// Save a message to the DB
         /// </summary>
-        static public void CreateMessage(Message newMessage)
+        static public void SaveMessage(Message newMessage)
         {
             _mySchoolDB.Messages.Add(newMessage);
             _mySchoolDB.SaveChanges();
@@ -69,61 +61,81 @@ namespace MySchoolYear.Model
         /// <summary>
         /// Creates a new message to a specific person and saves it
         /// </summary>
-        static public void CreateMessage(string text, Person recipient, Person sender=null)
+        /// <param name="title">The title of the message</param>
+        /// <param name="text">The actual content of the message</param>
+        /// <param name="recipientID">Person ID of the recipient</param>
+        /// <param name="sender">Person ID of the sender. If null, it is an automatic message</param>
+        static public void CreateMessageToPerson(string title, string text, int recipientID, int? sender=null)
         {
-            Message newMessage = CreateBaseMessage(text, sender);
-            newMessage.recipientID = recipient.personID;
-            CreateMessage(newMessage);
+            Message newMessage = CreateBaseMessage(title, text, sender);
+            newMessage.recipientID = recipientID;
+            SaveMessage(newMessage);
         }
 
         /// <summary>
         /// Creates a new message to a specific class and saves it
         /// </summary>
-        static public void CreateMessage(string text, Class recipientClass, Person sender = null)
+        /// <param name="title">The title of the message</param>
+        /// <param name="text">The actual content of the message</param>
+        /// <param name="recipientClassID">Person ID of the recipient</param>
+        /// <param name="senderID">Person ID of the sender. If null, it is an automatic message</param>
+        static public void CreateMessageToClass(string title, string text, int recipientClassID, int? senderID = null)
         {
-            Message newMessage = CreateBaseMessage(text, sender);
-            newMessage.recipientClassID = recipientClass.classID;
-            CreateMessage(newMessage);
+            Message newMessage = CreateBaseMessage(title, text, senderID);
+            newMessage.recipientClassID = recipientClassID;
+            SaveMessage(newMessage);
         }
 
         /// <summary>
         /// Creates a new message to all the teachers and saves it
         /// </summary>
-        static public void CreateMessageToTeachers(string text, Person sender = null)
+        /// <param name="title">The title of the message</param>
+        /// <param name="text">The actual content of the message</param>
+        /// <param name="senderID">Person ID of the sender. If null, it is an automatic message</param>
+        static public void CreateMessageToTeachers(string title, string text, int? senderID = null)
         {
-            Message newMessage = CreateBaseMessage(text, sender);
+            Message newMessage = CreateBaseMessage(title, text, senderID);
             newMessage.forAllTeachers = true;
-            CreateMessage(newMessage);
+            SaveMessage(newMessage);
         }
 
         /// <summary>
         /// Creates a new message to the entire management department and saves it
         /// </summary>
-        static public void CreateMessageToManagemet(string text, Person sender = null)
+        /// <param name="title">The title of the message</param>
+        /// <param name="text">The actual content of the message</param>
+        /// <param name="senderID">Person ID of the sender. If null, it is an automatic message</param>
+        static public void CreateMessageToAllManagement(string title, string text, int? senderID = null)
         {
-            Message newMessage = CreateBaseMessage(text, sender);
+            Message newMessage = CreateBaseMessage(title, text, senderID);
             newMessage.forAllManagement = true;
-            CreateMessage(newMessage);
+            SaveMessage(newMessage);
         }
 
         /// <summary>
         /// Creates a new message to all the students and saves it
         /// </summary>
-        static public void CreateMessageToStudents(string text, Person sender = null)
+        /// <param name="title">The title of the message</param>
+        /// <param name="text">The actual content of the message</param>
+        /// <param name="senderID">Person ID of the sender. If null, it is an automatic message</param>
+        static public void CreateMessageToAllStudents(string title, string text, int? senderID = null)
         {
-            Message newMessage = CreateBaseMessage(text, sender);
+            Message newMessage = CreateBaseMessage(title, text, senderID);
             newMessage.forAllStudents = true;
-            CreateMessage(newMessage);
+            SaveMessage(newMessage);
         }
 
         /// <summary>
         /// Creates a new message to everyone and saves it
         /// </summary>
-        static public void CreateMessageToEveryone(string text, Person sender = null)
+        /// <param name="title">The title of the message</param>
+        /// <param name="text">The actual content of the message</param>
+        /// <param name="senderID">Person ID of the sender. If null, it is an automatic message</param>
+        static public void CreateMessageToEveryone(string title, string text, int? senderID = null)
         {
-            Message newMessage = CreateBaseMessage(text, sender);
+            Message newMessage = CreateBaseMessage(title, text, senderID);
             newMessage.forEveryone = true;
-            CreateMessage(newMessage);
+            SaveMessage(newMessage);
         }
         #endregion
     }
