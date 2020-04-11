@@ -244,6 +244,7 @@
       <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\CourseManagementViewModel.cs" />
+    <Compile Include="ViewModel\EventManagementViewModel.cs" />
     <Compile Include="ViewModel\CreateMessageViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\ApplicationViewModel.cs" />
@@ -260,6 +261,9 @@
       <DependentUpon>CalenderView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\CalenderViewModel.cs" />
+    <Compile Include="View\EventManagementView.xaml.cs">
+      <DependentUpon>EventManagementView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\CreateMessageView.xaml.cs">
       <DependentUpon>CreateMessageView.xaml</DependentUpon>
     </Compile>
@@ -318,6 +322,10 @@
     <Page Include="View\CalenderView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\EventManagementView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\CreateMessageView.xaml">
       <SubType>Designer</SubType>

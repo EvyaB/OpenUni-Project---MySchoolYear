@@ -28,6 +28,9 @@
         <DataTemplate DataType="{x:Type viewModels:CreateMessageViewModel}">
             <local:CreateMessageView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModels:EventManagementViewModel}">
+            <local:EventManagementView />
+        </DataTemplate>
         <DataTemplate DataType="{x:Type viewModels:SchoolManagementViewModel}">
             <local:SchoolManagementView />
         </DataTemplate>
@@ -62,7 +65,7 @@
                                 FontWeight="Medium"
                                 Command="{Binding DataContext.ChangeScreenCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
                                 CommandParameter="{Binding}"
-                                Margin="2,5"/>
+                                Margin="2,2"/>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>

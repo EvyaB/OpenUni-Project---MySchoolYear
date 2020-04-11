@@ -20,8 +20,8 @@ namespace MySchoolYear.Model
             this.SentMessages = new HashSet<Message>();
             this.RecievedMessages = new HashSet<Message>();
             this.ChildrenStudents = new HashSet<Student>();
-            this.Events = new HashSet<Event>();
-            this.Events1 = new HashSet<Event>();
+            this.SubmittedEvents = new HashSet<Event>();
+            this.PersonnalEvents = new HashSet<Event>();
         }
     
         public int personID { get; set; }
@@ -47,8 +47,8 @@ namespace MySchoolYear.Model
         public virtual Student Student { get; set; }
         public virtual Teacher Teacher { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Event> Events { get; set; }
+        public virtual ICollection<Event> SubmittedEvents { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Event> Events1 { get; set; }
+        public virtual ICollection<Event> PersonnalEvents { get; set; }
     }
 }

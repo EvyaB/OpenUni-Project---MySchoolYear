@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace MySchoolYear.View
 {
     /// <summary>
-    /// Interaction logic for CreateMessageView.xaml
+    /// Interaction logic for CreateEventView.xaml
     /// </summary>
-    public partial class CreateMessageView : UserControl
+    public partial class EventManagementView : UserControl
     {
-        public CreateMessageView()
+        public EventManagementView()
         {
             InitializeComponent();
         }

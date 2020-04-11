@@ -42,6 +42,13 @@ namespace MySchoolYear.ViewModel
             public Nullable<int> DayFourth { get; set; }
             public Nullable<int> HourFourth { get; set; }
         }
+
+        private enum SearchCategory
+        {
+            Classes,
+            Courses,
+            Teachers
+        }
         #endregion
 
         #region Fields
@@ -138,8 +145,16 @@ namespace MySchoolYear.ViewModel
                 if (_searchingByClass != value)
                 {
                     _searchingByClass = value;
-                    UseSelectedSearchCategory();
                     OnPropertyChanged("SearchingByClass");
+
+                    if (value == true)
+                    {
+                        // Manually turn off the other search options before using this category, because WPF switches the new choice on before changing the other off,
+                        // causing two options to be on at the same time, and in this case this causes an issue with the selected event
+                        SearchingByCourse = false;
+                        SearchingByTeacher = false;
+                        UseSelectedSearchCategory(SearchCategory.Classes);
+                    }
                 }
             }
         }
@@ -154,8 +169,16 @@ namespace MySchoolYear.ViewModel
                 if (_searchingByCourse != value)
                 {
                     _searchingByCourse = value;
-                    UseSelectedSearchCategory();
                     OnPropertyChanged("SearchingByCourse");
+
+                    if (value == true)
+                    {
+                        // Manually turn off the other search options before using this category, because WPF switches the new choice on before changing the other off,
+                        // causing two options to be on at the same time, and in this case this causes an issue with the selected event
+                        SearchingByClass = false;
+                        SearchingByTeacher = false;
+                        UseSelectedSearchCategory(SearchCategory.Courses);
+                    }
                 }
             }
         }
@@ -170,8 +193,16 @@ namespace MySchoolYear.ViewModel
                 if (_searchingByTeacher != value)
                 {
                     _searchingByTeacher = value;
-                    UseSelectedSearchCategory();
                     OnPropertyChanged("SearchingByTeacher");
+
+                    if (value == true)
+                    {
+                        // Manually turn off the other search options before using this category, because WPF switches the new choice on before changing the other off,
+                        // causing two options to be on at the same time, and in this case this causes an issue with the selected event
+                        SearchingByClass = false;
+                        SearchingByCourse = false;
+                        UseSelectedSearchCategory(SearchCategory.Teachers);
+                    }
                 }
             }
         }
@@ -662,20 +693,21 @@ namespace MySchoolYear.ViewModel
         /// <summary>
         /// Updates the AvailableSearchChoices list with the options per the search category
         /// </summary>
-        private void UseSelectedSearchCategory()
+        /// <param name="category">The category to search by</param>
+        private void UseSelectedSearchCategory(SearchCategory category)
         {
             // Check which category the search choice is from, and fill the LessonsTableData with the relevent lessons
-            if (SearchingByClass)
+            if (category == SearchCategory.Classes)
             {
                 // Find the class that was chosen, and get its lessons
                 AvailableSearchChoices = AvailableClasses;
             }
-            else if (SearchingByCourse)
+            else if (category == SearchCategory.Courses)
             {
                 // Find the course that was chosen, and get its lessons
                 AvailableSearchChoices = AvailableCourses;
             }
-            else if (SearchingByTeacher)
+            else if (category == SearchCategory.Teachers)
             {
                 AvailableSearchChoices = AvailableTeachers;
             }
@@ -802,7 +834,7 @@ namespace MySchoolYear.ViewModel
         /// </summary>
         private void UpdateSelectedLesson()
         {
-            // Check that a room was selected
+            // Check that a lesson was selected
             if (SelectedLesson == null)
             {
                 _messageBoxService.ShowMessage("אנא בחר שיעור קודם כל.",

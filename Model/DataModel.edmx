@@ -615,8 +615,8 @@
           <NavigationProperty Name="ChildrenStudents" Relationship="Self.FK_Students_ToParentPersons" FromRole="Persons" ToRole="Students" />
           <NavigationProperty Name="Student" Relationship="Self.FK_Students_ToPersons" FromRole="Persons" ToRole="Students" />
           <NavigationProperty Name="Teacher" Relationship="Self.FK_Teachers_ToPersons" FromRole="Persons" ToRole="Teachers" />
-          <NavigationProperty Name="Events" Relationship="schoolModel.FK_Events_ToPersons" FromRole="Person" ToRole="Event" />
-          <NavigationProperty Name="Events1" Relationship="schoolModel.FK_Events_ToRecipientPersons" FromRole="Person" ToRole="Event" />
+          <NavigationProperty Name="SubmittedEvents" Relationship="schoolModel.FK_Events_ToPersons" FromRole="Person" ToRole="Event" />
+          <NavigationProperty Name="PersonnalEvents" Relationship="schoolModel.FK_Events_ToRecipientPersons" FromRole="Person" ToRole="Event" />
         </EntityType>
         <EntityType Name="Room">
           <Key>
