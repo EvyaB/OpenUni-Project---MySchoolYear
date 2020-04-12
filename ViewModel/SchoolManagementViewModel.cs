@@ -30,7 +30,7 @@ namespace MySchoolYear.ViewModel
 
         #region Properties / Commands
         // Base Properties
-        public Person ConnectedUser { get; }
+        public Person ConnectedPerson { get; private set; }
         public bool HasRequiredPermissions { get; }
         public string ScreenName { get { return "ניהול בית הספר"; } }
 
@@ -142,20 +142,21 @@ namespace MySchoolYear.ViewModel
         #endregion
 
         #region Constructors
-        public SchoolManagementViewModel(Person connectedUser, ICommand refreshDataCommand)
+        public SchoolManagementViewModel(Person connectedPerson, ICommand refreshDataCommand)
         {
-            if (connectedUser.isPrincipal)
+            if (connectedPerson.isPrincipal)
             {
                 HasRequiredPermissions = true;
-                ConnectedUser = connectedUser;
                 _refreshDataCommand = refreshDataCommand;
             }
         }
         #endregion
 
         #region Methods
-        public void Initialize()
+        public void Initialize(Person connectedPerson)
         {
+            ConnectedPerson = connectedPerson;
+
             if (HasRequiredPermissions)
             {
                 var mySchoolInfo = new SchoolEntities().SchoolInfo;

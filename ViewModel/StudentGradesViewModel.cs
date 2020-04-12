@@ -33,7 +33,7 @@ namespace MySchoolYear.ViewModel
 
         #region Properties / Commands
         // Base Properties
-        public Person ConnectedUser { get; }
+        public Person ConnectedPerson { get; private set; }
         public bool HasRequiredPermissions { get; }
         public string ScreenName { get { return "סיכום לימודים"; } }
         #endregion
@@ -201,12 +201,11 @@ namespace MySchoolYear.ViewModel
         }
 
         #region Constructors
-        public StudentGradesViewModel(Person currentUser)
+        public StudentGradesViewModel(Person connectedPerson)
         {
-            ConnectedUser = currentUser;
 
             // Check if this page is relevent to the user - is a student, parent or homeroom teacher
-            if (currentUser.isStudent || currentUser.isParent || currentUser.isTeacher && currentUser.Teacher.classID != null)
+            if (connectedPerson.isStudent || connectedPerson.isParent || connectedPerson.isTeacher && connectedPerson.Teacher.classID != null)
             {
                 HasRequiredPermissions = true;
             }
@@ -217,30 +216,32 @@ namespace MySchoolYear.ViewModel
         #endregion
 
         #region Methods
-        public void Initialize()
+        public void Initialize(Person connectedPerson)
         {
+            ConnectedPerson = connectedPerson;
+
             if (HasRequiredPermissions)
             {
                 // Reset the students list
                 Students.Clear();
 
                 // Initialize the lists according to the user type
-                if (ConnectedUser.isStudent)
+                if (ConnectedPerson.isStudent)
                 {
                     // A student can only see his own grades
-                    Students.Add(ConnectedUser.Student);
+                    Students.Add(ConnectedPerson.Student);
                     CanViewDifferentStudents = false;
                 }
-                else if (ConnectedUser.isTeacher && ConnectedUser.Teacher.classID != null)
+                else if (ConnectedPerson.isTeacher && ConnectedPerson.Teacher.classID != null)
                 {
                     // An homeroom teacher can see the grades of all of his students
-                    Students.AddRange(ConnectedUser.Teacher.Class.Students.Where(student => student.Person.User.isDisabled == false));
+                    Students.AddRange(ConnectedPerson.Teacher.Class.Students.Where(student => student.Person.User.isDisabled == false));
                     CanViewDifferentStudents = true;
                 }
-                else if (ConnectedUser.isParent)
+                else if (ConnectedPerson.isParent)
                 {
                     // A parent can see the grades of all of his children
-                    Students.AddRange(ConnectedUser.ChildrenStudents.Where(student => student.Person.User.isDisabled == false));
+                    Students.AddRange(ConnectedPerson.ChildrenStudents.Where(student => student.Person.User.isDisabled == false));
                     CanViewDifferentStudents = true;
                 }
 

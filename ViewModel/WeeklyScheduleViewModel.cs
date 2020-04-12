@@ -57,7 +57,7 @@ namespace MySchoolYear.ViewModel
 
         #region Properties / Commands
         // Base Properties
-        public Person ConnectedUser { get; }
+        public Person ConnectedPerson { get; private set; }
         public bool HasRequiredPermissions { get; }
         public string ScreenName { get { return "לוח שעות"; } }
 
@@ -116,27 +116,27 @@ namespace MySchoolYear.ViewModel
         #endregion
 
         #region Constructors
-        public WeeklyScheduleViewModel(Person connectedUser)
+        public WeeklyScheduleViewModel(Person connectedPerson)
         {
             HasRequiredPermissions = true;
-            ConnectedUser = connectedUser;
             AvailableSchedules = new List<ScheduleData>();
         }
         #endregion
 
         #region Methods
-        public void Initialize()
+        public void Initialize(Person connectedPerson)
         {
             // Reset data
+            ConnectedPerson = connectedPerson;
             Schedule = new LessonData[Globals.DAY_NAMES.Length, Globals.HOUR_NAMES.Length];
             AvailableSchedules.Clear();
             
             // Find the currently displayed class, as well as fill the available classes list depending on the connected user
-            if (ConnectedUser.isStudent)
+            if (ConnectedPerson.isStudent)
             {
                 // A student schedule is his class's schedule
                 CanViewDifferentSchedules = false;
-                Class studentClass = ConnectedUser.Student.Class;
+                Class studentClass = ConnectedPerson.Student.Class;
 
                 // Make sure the student is assigned to a class (otherwise he doesn't have a schedule
                 if (studentClass != null)
@@ -147,11 +147,11 @@ namespace MySchoolYear.ViewModel
                     AvailableSchedules.Add(schedule);
                 }
             }
-            else if (ConnectedUser.isParent)
+            else if (ConnectedPerson.isParent)
             {
                 // A parent can see his children's schedules
                 CanViewDifferentSchedules = true;
-                foreach (Student student in ConnectedUser.ChildrenStudents)
+                foreach (Student student in ConnectedPerson.ChildrenStudents)
                 {
                     if (!student.Person.User.isDisabled && student.classID != null)
                     {
@@ -165,23 +165,23 @@ namespace MySchoolYear.ViewModel
                     }
                 }
             }
-            else if (ConnectedUser.isTeacher)
+            else if (ConnectedPerson.isTeacher)
             {
                 // A teacher can just see his own schedule, as well as his classroom's schedule (if he/she has one)
                 CanViewDifferentSchedules = true;
 
                 // Add teacher's own schedule
-                ScheduleData teacherOwnSchedule = CreateTeacherSchedule(ConnectedUser.Teacher);
+                ScheduleData teacherOwnSchedule = CreateTeacherSchedule(ConnectedPerson.Teacher);
                 AvailableSchedules.Add(teacherOwnSchedule);
 
                 // Add an homeroom teacher's class schedule
-                if (ConnectedUser.Teacher.classID != null)
+                if (ConnectedPerson.Teacher.classID != null)
                 {
-                    ScheduleData homeroomTeacherClassSchedule = CreateClassSchedule(ConnectedUser.Teacher.Class);
+                    ScheduleData homeroomTeacherClassSchedule = CreateClassSchedule(ConnectedPerson.Teacher.Class);
                     AvailableSchedules.Add(homeroomTeacherClassSchedule);
                 }
             }
-            else if (ConnectedUser.isPrincipal || ConnectedUser.isSecretary)
+            else if (ConnectedPerson.isPrincipal || ConnectedPerson.isSecretary)
             {
                 // Secretaries and the principal can watch every class's, and every teacher's schedule
                 CanViewDifferentSchedules = true;

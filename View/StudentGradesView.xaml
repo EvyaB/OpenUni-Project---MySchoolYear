@@ -16,8 +16,8 @@
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="{Binding Class.className, StringFormat='כיתה {0}: '}"/>
-                        <TextBlock Text="{Binding Person.firstName}" />
-                        <TextBlock Text="{Binding Person.lastName, StringFormat=' {0} '}" />    
+                        <TextBlock Text="{Binding Person.lastName}" />
+                        <TextBlock Text="{Binding Person.firstName, StringFormat=' {0} '}" />
                     </StackPanel>
                 </DataTemplate>
             </ComboBox.ItemTemplate>

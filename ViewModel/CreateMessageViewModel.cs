@@ -55,7 +55,7 @@ namespace MySchoolYear.ViewModel
 
         #region Properties / Commands
         // Base Properties
-        public Person ConnectedUser { get; }
+        public Person ConnectedPerson { get; private set; }
         public bool HasRequiredPermissions { get; }
         public string ScreenName { get { return "שליחת הודעה"; } }
 
@@ -301,9 +301,8 @@ namespace MySchoolYear.ViewModel
         #endregion
 
         #region Constructors
-        public CreateMessageViewModel(Person connectedUser, ICommand refreshDataCommand, IMessageBoxService messageBoxService)
+        public CreateMessageViewModel(Person connectedPerson, ICommand refreshDataCommand, IMessageBoxService messageBoxService)
         {
-            ConnectedUser = connectedUser;
             _refreshDataCommand = refreshDataCommand;
             _messageBoxService = messageBoxService;
             _schoolData = new SchoolEntities();
@@ -311,12 +310,12 @@ namespace MySchoolYear.ViewModel
             // Set permissions
             HasRequiredPermissions = true;
 
-            if (ConnectedUser.isTeacher || ConnectedUser.isPrincipal || ConnectedUser.isSecretary)
+            if (connectedPerson.isTeacher || connectedPerson.isPrincipal || connectedPerson.isSecretary)
             {
                 CanSendToClass = true;
             }
 
-            if (ConnectedUser.isPrincipal || connectedUser.isSecretary)
+            if (connectedPerson.isPrincipal || connectedPerson.isSecretary)
             {
                 CanSendToEveryone = true;
             }
@@ -324,8 +323,9 @@ namespace MySchoolYear.ViewModel
         #endregion
 
         #region Methods
-        public void Initialize()
+        public void Initialize(Person connectedPerson)
         {
+            ConnectedPerson = connectedPerson;
             ResetAll();
         }
 
@@ -438,29 +438,29 @@ namespace MySchoolYear.ViewModel
                 // Check first the options to send a message to everyone from a specific group
                 if (SendingToStudent && SelectedRecipient == EVERYONE_OPTION)
                 {
-                    MessagesHandler.CreateMessageToAllStudents(MessageTitle, MessageText, ConnectedUser.personID);
+                    MessagesHandler.CreateMessageToAllStudents(MessageTitle, MessageText, ConnectedPerson.personID);
                 }
                 else if (SendingToTeacher && SelectedRecipient == EVERYONE_OPTION)
                 {
-                    MessagesHandler.CreateMessageToTeachers(MessageTitle, MessageText, ConnectedUser.personID);
+                    MessagesHandler.CreateMessageToTeachers(MessageTitle, MessageText, ConnectedPerson.personID);
                 }
                 else if (SendingToManagement && SelectedRecipient == EVERYONE_OPTION)
                 {
-                    MessagesHandler.CreateMessageToAllManagement(MessageTitle, MessageText, ConnectedUser.personID);
+                    MessagesHandler.CreateMessageToAllManagement(MessageTitle, MessageText, ConnectedPerson.personID);
                 }
                 else if (SendingToEveryone)
                 {
-                    MessagesHandler.CreateMessageToEveryone(MessageTitle, MessageText, ConnectedUser.personID);
+                    MessagesHandler.CreateMessageToEveryone(MessageTitle, MessageText, ConnectedPerson.personID);
                 }
                 // Handle messages for a specific class
                 else if (SendingToClass)
                 {
-                    MessagesHandler.CreateMessageToClass(MessageTitle, MessageText, SelectedRecipient, ConnectedUser.personID);
+                    MessagesHandler.CreateMessageToClass(MessageTitle, MessageText, SelectedRecipient, ConnectedPerson.personID);
                 }
                 // All other messages are aimed for a specific person
                 else
                 {
-                    MessagesHandler.CreateMessageToPerson(MessageTitle, MessageText, SelectedRecipient, ConnectedUser.personID);
+                    MessagesHandler.CreateMessageToPerson(MessageTitle, MessageText, SelectedRecipient, ConnectedPerson.personID);
                 }
 
                 // Report success

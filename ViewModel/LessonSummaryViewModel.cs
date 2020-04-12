@@ -43,7 +43,7 @@ namespace MySchoolYear.ViewModel
 
         #region Properties / Commands
         // Base Properties
-        public Person ConnectedUser { get; }
+        public Person ConnectedPerson { get; private set; }
         public bool HasRequiredPermissions { get; }
         public string ScreenName { get { return "הזנת דוח שיעור"; } }
 
@@ -78,7 +78,7 @@ namespace MySchoolYear.ViewModel
 
                     if (_selectedCourse != NOT_ASSIGNED)
                     {
-                        FindClassForCourse(ConnectedUser.Teacher.teacherID, _selectedCourse);
+                        FindClassForCourse(ConnectedPerson.Teacher.teacherID, _selectedCourse);
                     }
                 }
             }
@@ -169,14 +169,13 @@ namespace MySchoolYear.ViewModel
         #endregion
 
         #region Constructors
-        public LessonSummaryViewModel(Person connectedUser, ICommand refreshDataCommand, IMessageBoxService messageBoxService)
+        public LessonSummaryViewModel(Person connectedPerson, ICommand refreshDataCommand, IMessageBoxService messageBoxService)
         {
-            ConnectedUser = connectedUser;
             _refreshDataCommand = refreshDataCommand;
             _messageBoxService = messageBoxService;
 
             // Only teachers can use this
-            if (connectedUser.isTeacher)
+            if (connectedPerson.isTeacher)
             {
                 HasRequiredPermissions = true;
             }
@@ -188,8 +187,10 @@ namespace MySchoolYear.ViewModel
         #endregion
 
         #region Methods
-        public void Initialize()
+        public void Initialize(Person connectedPerson)
         {
+            ConnectedPerson = connectedPerson;
+
             // Initalize all lists
             Courses = new ObservableDictionary<int, string>();
             Classes = new ObservableDictionary<int, string>();
@@ -201,7 +202,7 @@ namespace MySchoolYear.ViewModel
             SelectedClass = NOT_ASSIGNED;
 
             // Get the teacher's data
-            Teacher _teacherInformation = ConnectedUser.Teacher;
+            Teacher _teacherInformation = ConnectedPerson.Teacher;
             if (_teacherInformation != null)
             {
                 // Only gathering courses here -> classes depend on the selected course
@@ -317,7 +318,7 @@ namespace MySchoolYear.ViewModel
 
                 // Create the basic template for the report - lesson date and the reporter information
                 string reportTemplate =
-                    "המורה " + ConnectedUser.firstName + " " + ConnectedUser.lastName +
+                    "המורה " + ConnectedPerson.firstName + " " + ConnectedPerson.lastName +
                     " הזין לך הערות בתאריך " + SelectedDate.ToString("dd/MM/yy") +
                     " לשיעור " + Courses[SelectedCourse] + ":\n";
 
@@ -345,13 +346,13 @@ namespace MySchoolYear.ViewModel
                         }
 
                         // Send a message to the student about the report
-                        MessagesHandler.CreateMessageToPerson("קיבלת הערה בשיעור", report, student.StudentID, ConnectedUser.Teacher.teacherID);
+                        MessagesHandler.CreateMessageToPerson("קיבלת הערה בשיעור", report, student.StudentID, ConnectedPerson.Teacher.teacherID);
 
                         // If the student has any parents, send the report to them too
                         if (studentInfo.parentID.HasValue)
                         {
                             string parentReport = "ילדך " + student.Name + "קיבל את ההערה הבאה בשיעור:\n" + report;
-                            MessagesHandler.CreateMessageToPerson("ילדך קיבל הערה בשיעור", parentReport, studentInfo.parentID.Value, ConnectedUser.Teacher.teacherID);
+                            MessagesHandler.CreateMessageToPerson("ילדך קיבל הערה בשיעור", parentReport, studentInfo.parentID.Value, ConnectedPerson.Teacher.teacherID);
                         }
 
                         didSendAnyReport = true;

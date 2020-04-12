@@ -13,7 +13,7 @@ namespace MySchoolYear.ViewModel.Utilities
     public interface IScreenViewModel
     {
         #region Properties
-        Person ConnectedUser { get; }
+        Person ConnectedPerson { get; }
         bool HasRequiredPermissions { get; }
         string ScreenName { get; }
         #endregion
@@ -22,7 +22,8 @@ namespace MySchoolYear.ViewModel.Utilities
         /// <summary>
         /// Initialize the ViewModel properties
         /// </summary>
-        void Initialize();
+        /// <param name="connectedPerson">The current information about the connected user</param>
+        void Initialize(Person connectedPerson);
         #endregion
     }
 }

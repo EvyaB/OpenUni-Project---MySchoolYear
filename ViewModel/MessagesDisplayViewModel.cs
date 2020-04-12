@@ -44,7 +44,7 @@ namespace MySchoolYear.ViewModel
 
         #region Properties / Commands
         // Base Properties
-        public Person ConnectedUser { get; }
+        public Person ConnectedPerson { get; private set; }
         public bool HasRequiredPermissions { get; }
         public string ScreenName { get { return "הצגת הודעות"; } }
 
@@ -53,17 +53,18 @@ namespace MySchoolYear.ViewModel
         #endregion
 
         #region Constructors
-        public MessagesDisplayViewModel(Person currentUser)
+        public MessagesDisplayViewModel(Person connectedPerson)
         {
-            ConnectedUser = currentUser;
             HasRequiredPermissions = true;
         }
         #endregion
 
         #region Methods
         // Gather the messages that are relevent to the connected user.
-        public void Initialize()
+        public void Initialize(Person connectedPerson)
         {
+            ConnectedPerson = connectedPerson;
+
             // Reset data first
             Messages = new List<DisplayedMessage>();
             var schoolMessages = new SchoolEntities().Messages;
@@ -71,39 +72,39 @@ namespace MySchoolYear.ViewModel
             // Start by gathering the messages that are for everyone in the school or directly to the connected user.
             schoolMessages.Where(message => message.forEveryone).ToList()
                 .ForEach(message => Messages.Add(ModelMessageToDisplayedMessage(message, MessageRecipientType.Everyone)));
-            schoolMessages.Where(message => message.recipientID == ConnectedUser.personID).ToList()
+            schoolMessages.Where(message => message.recipientID == ConnectedPerson.personID).ToList()
                 .ForEach(message => Messages.Add(ModelMessageToDisplayedMessage(message, MessageRecipientType.Direct)));
 
             // Gather messages depending on the user permissions
-            if (ConnectedUser.isStudent)
+            if (ConnectedPerson.isStudent)
             {
                 // User is a student => Gather messages for their class, and messages for all students
-                schoolMessages.Where(message => message.recipientClassID == ConnectedUser.Student.classID)
+                schoolMessages.Where(message => message.recipientClassID == ConnectedPerson.Student.classID)
                     .ToList().ForEach(message => Messages.Add(ModelMessageToDisplayedMessage(message, MessageRecipientType.Class)));
                 schoolMessages.Where(message => message.forAllStudents).ToList()
                     .ForEach(message => Messages.Add(ModelMessageToDisplayedMessage(message, MessageRecipientType.Students)));
             }
-            if (ConnectedUser.isParent)
+            if (ConnectedPerson.isParent)
             {
                 // Gather messages for the classes of the user's children (but not direct messages to them - keeping those private)
-                schoolMessages.AsEnumerable().Where(message => ConnectedUser.ChildrenStudents.Any(childStudent => 
+                schoolMessages.AsEnumerable().Where(message => ConnectedPerson.ChildrenStudents.Any(childStudent => 
                                                                                       childStudent.classID == message.recipientClassID))
                     .ToList().ForEach(message => Messages.Add(ModelMessageToDisplayedMessage(message, MessageRecipientType.Class)));
             }
-            if (ConnectedUser.isTeacher)
+            if (ConnectedPerson.isTeacher)
             {
                 // Gather messages for all teachers
                 schoolMessages.Where(message => message.forAllTeachers).ToList()
                     .ForEach(message => Messages.Add(ModelMessageToDisplayedMessage(message, MessageRecipientType.Teachers)));
 
-                if (ConnectedUser.Teacher.classID != null)
+                if (ConnectedPerson.Teacher.classID != null)
                 {
                     // User is an homeroom teacher - gather messages for his class
-                    schoolMessages.Where(message => ConnectedUser.Teacher.classID == message.recipientClassID).ToList()
+                    schoolMessages.Where(message => ConnectedPerson.Teacher.classID == message.recipientClassID).ToList()
                         .ForEach(message => Messages.Add(ModelMessageToDisplayedMessage(message, MessageRecipientType.Class)));
                 }
             }
-            if (ConnectedUser.isSecretary || ConnectedUser.isPrincipal)
+            if (ConnectedPerson.isSecretary || ConnectedPerson.isPrincipal)
             {
                 // Gather messages for management
                 schoolMessages.Where(message => message.forAllManagement).ToList()

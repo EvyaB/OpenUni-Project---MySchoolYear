@@ -22,7 +22,7 @@ namespace MySchoolYear.ViewModel
         #region Properties
         // Base Properties
         public string ScreenName { get { return "אודות"; } }
-        public Person ConnectedUser { get; }
+        public Person ConnectedPerson { get; private set; }
         public bool HasRequiredPermissions { get; private set; }
 
         // Business Logic Properties
@@ -40,41 +40,16 @@ namespace MySchoolYear.ViewModel
         #endregion
 
         #region Constructors
-        public SchoolInfoViewModel(Person connectedUser)
+        public SchoolInfoViewModel(Person connectedPerson)
         {
             HasRequiredPermissions = true;
-            ConnectedUser = connectedUser;
         }
         #endregion
 
         #region Methods
-
-        /// <summary>
-        /// Calculate the school's average score by calculating each student's average and then the average of the averages.
-        /// </summary>
-        /// <param name="students"></param>
-        /// <returns></returns>
-        private double CalcAverageScore(List<Student> students)
+        public void Initialize(Person connectedPerson)
         {
-            // Calculate the average score of each student, then the sum of averages
-            double scoresSum = 0;
-            int releventStudentsNumber = 0;
-            foreach (Student student in students)
-            {
-                // The student has any scores
-                if (student.Scores != null && student.Scores.Count > 0)
-                {
-                    scoresSum += Math.Round(student.Scores.Average(x => x.score), 1);
-                    releventStudentsNumber++;
-                }
-            }
-
-            // Calculate average
-            return Math.Round(scoresSum / releventStudentsNumber, 1);
-        }
-
-        public void Initialize()
-        {
+            ConnectedPerson = connectedPerson;
             SchoolEntities dbContext = new SchoolEntities();
 
             // School basic information
@@ -106,6 +81,31 @@ namespace MySchoolYear.ViewModel
                 .Select(person => new Secretary() { Name = person.firstName + " " + person.lastName, Phone = person.phoneNumber })
                 .ToList();
         }
+
+        /// <summary>
+        /// Calculate the school's average score by calculating each student's average and then the average of the averages.
+        /// </summary>
+        /// <param name="students"></param>
+        /// <returns></returns>
+        private double CalcAverageScore(List<Student> students)
+        {
+            // Calculate the average score of each student, then the sum of averages
+            double scoresSum = 0;
+            int releventStudentsNumber = 0;
+            foreach (Student student in students)
+            {
+                // The student has any scores
+                if (student.Scores != null && student.Scores.Count > 0)
+                {
+                    scoresSum += Math.Round(student.Scores.Average(x => x.score), 1);
+                    releventStudentsNumber++;
+                }
+            }
+
+            // Calculate average
+            return Math.Round(scoresSum / releventStudentsNumber, 1);
+        }
+
         #endregion
     }
 }

@@ -25,6 +25,8 @@ namespace MySchoolYear.ViewModel
 
         private IScreenViewModel _currentScreenViewModel;
         private List<IScreenViewModel> _screenViewModels;
+
+        private int _connectedPersonID;
         #endregion
 
         #region Properties / Commands
@@ -100,36 +102,37 @@ namespace MySchoolYear.ViewModel
         #endregion
 
         #region Constructors
-        public ApplicationViewModel(Person connectedUser, IMessageBoxService messageBoxService)
+        public ApplicationViewModel(Person connectedPerson, IMessageBoxService messageBoxService)
         {
             _messageBoxService = messageBoxService;
+            _connectedPersonID = connectedPerson.personID;
 
             // Create a list of all possible screens
             List<IScreenViewModel> allScreens = new List<IScreenViewModel>();
-            allScreens.Add(new SchoolInfoViewModel(connectedUser));
-            allScreens.Add(new StudentGradesViewModel(connectedUser));
-            allScreens.Add(new WeeklyScheduleViewModel(connectedUser));
-            allScreens.Add(new CalenderViewModel(connectedUser));
-            allScreens.Add(new MessagesDisplayViewModel(connectedUser));
+            allScreens.Add(new SchoolInfoViewModel(connectedPerson));
+            allScreens.Add(new StudentGradesViewModel(connectedPerson));
+            allScreens.Add(new WeeklyScheduleViewModel(connectedPerson));
+            allScreens.Add(new CalenderViewModel(connectedPerson));
+            allScreens.Add(new MessagesDisplayViewModel(connectedPerson));
 
-            allScreens.Add(new LessonSummaryViewModel(connectedUser, UpdateScreensCommand, messageBoxService));
-            allScreens.Add(new CreateMessageViewModel(connectedUser, UpdateScreensCommand, messageBoxService));
-            allScreens.Add(new EventManagementViewModel(connectedUser, UpdateScreensCommand, messageBoxService));
-            allScreens.Add(new ClassManagementViewModel(connectedUser, UpdateScreensCommand, messageBoxService));
-            allScreens.Add(new RoomManagementViewModel(connectedUser, UpdateScreensCommand, messageBoxService));
-            allScreens.Add(new CourseManagementViewModel(connectedUser, UpdateScreensCommand, messageBoxService));
-            allScreens.Add(new LessonManagementViewModel(connectedUser, UpdateScreensCommand, messageBoxService));
-            allScreens.Add(new UserCreationViewModel(connectedUser, UpdateScreensCommand, messageBoxService));
-            allScreens.Add(new UserUpdateViewModel(connectedUser, UpdateScreensCommand, messageBoxService));
+            allScreens.Add(new LessonSummaryViewModel(connectedPerson, UpdateScreensCommand, messageBoxService));
+            allScreens.Add(new CreateMessageViewModel(connectedPerson, UpdateScreensCommand, messageBoxService));
+            allScreens.Add(new EventManagementViewModel(connectedPerson, UpdateScreensCommand, messageBoxService));
+            allScreens.Add(new ClassManagementViewModel(connectedPerson, UpdateScreensCommand, messageBoxService));
+            allScreens.Add(new RoomManagementViewModel(connectedPerson, UpdateScreensCommand, messageBoxService));
+            allScreens.Add(new CourseManagementViewModel(connectedPerson, UpdateScreensCommand, messageBoxService));
+            allScreens.Add(new LessonManagementViewModel(connectedPerson, UpdateScreensCommand, messageBoxService));
+            allScreens.Add(new UserCreationViewModel(connectedPerson, UpdateScreensCommand, messageBoxService));
+            allScreens.Add(new UserUpdateViewModel(connectedPerson, UpdateScreensCommand, messageBoxService));
 
-            allScreens.Add(new SchoolManagementViewModel(connectedUser, UpdateScreensCommand));
+            allScreens.Add(new SchoolManagementViewModel(connectedPerson, UpdateScreensCommand));
 
             // Use only the screens that are relevent to the current user
             foreach (IScreenViewModel screen in allScreens)
             {
                 if (screen.HasRequiredPermissions)
                 {
-                    screen.Initialize();
+                    screen.Initialize(connectedPerson);
                     ScreensViewModels.Add(screen);
                 }
             }
@@ -158,9 +161,13 @@ namespace MySchoolYear.ViewModel
         /// </summary>
         private void RefreshViewModels()
         {
+            // Get the latest information about the current user
+            SchoolEntities schoolData = new SchoolEntities();
+            Person connectedPerson = schoolData.Persons.Find(_connectedPersonID);
+
             foreach (IScreenViewModel viewModel in ScreensViewModels)
             {
-                viewModel.Initialize();
+                viewModel.Initialize(connectedPerson);
             }
         }
 

@@ -32,7 +32,7 @@ namespace MySchoolYear.ViewModel
 
         #region Properties / Commands
         // Base Properties
-        public Person ConnectedUser { get; }
+        public Person ConnectedPerson { get; private set; }
         public bool HasRequiredPermissions { get; }
         public string ScreenName { get { return "לוח שנה"; } }
 
@@ -129,9 +129,8 @@ namespace MySchoolYear.ViewModel
         #endregion
 
         #region Constructors
-        public CalenderViewModel(Person connectedUser)
+        public CalenderViewModel(Person connectedPerson)
         {
-            ConnectedUser = connectedUser;
             HasRequiredPermissions = true;
 
             if (HasRequiredPermissions)
@@ -145,8 +144,10 @@ namespace MySchoolYear.ViewModel
         #endregion
 
         #region Methods
-        public void Initialize()
+        public void Initialize(Person connectedPerson)
         {
+            ConnectedPerson = connectedPerson;
+
             // Use current month as the default. (Note that DateTime.Now.Month indexes from 1 to 12 and not 0-11)
             SelectedMonth = _months[DateTime.Now.Month - 1];
         }
@@ -210,35 +211,35 @@ namespace MySchoolYear.ViewModel
             // Using HashSet to make sure the events are unique and not added multiple times
             HashSet<Event> userEvents = eventsQuery.Where(schoolEvent => 
                                                                 (schoolEvent.recipientClassID == null && schoolEvent.recipientID == null) ||
-                                                                schoolEvent.submitterID == ConnectedUser.personID ||
-                                                                schoolEvent.recipientID == ConnectedUser.personID)
+                                                                schoolEvent.submitterID == ConnectedPerson.personID ||
+                                                                schoolEvent.recipientID == ConnectedPerson.personID)
                                                                 .ToHashSet();
 
             // Check the user's permissions and create the list of events accordingly
-            if (ConnectedUser.isStudent)
+            if (ConnectedPerson.isStudent)
             {
                 // Get the events of the student's class
                 userEvents.UnionWith(eventsQuery.Where(schoolEvent =>
-                                                       schoolEvent.recipientClassID == ConnectedUser.Student.classID)
+                                                       schoolEvent.recipientClassID == ConnectedPerson.Student.classID)
                                                        .ToHashSet());
             }
-            else if (ConnectedUser.isParent)
+            else if (ConnectedPerson.isParent)
             {
                 // Get all events of the parent's children classes
                 userEvents.UnionWith(eventsQuery.Where(schoolEvent => 
-                                                        ConnectedUser.ChildrenStudents.Any(childStudent => 
+                                                        ConnectedPerson.ChildrenStudents.Any(childStudent => 
                                                                                             childStudent.classID == schoolEvent.recipientClassID))
                                                         .ToHashSet());
             }
-            else if (ConnectedUser.isTeacher)
+            else if (ConnectedPerson.isTeacher)
             {
                 // Show a teacher any event of his own class, as well as any self-submitted events
                 userEvents.UnionWith(eventsQuery.Where(schoolEvent => 
-                                                        (schoolEvent.recipientClassID == ConnectedUser.Teacher.classID ||
-                                                        schoolEvent.submitterID == ConnectedUser.personID))
+                                                        (schoolEvent.recipientClassID == ConnectedPerson.Teacher.classID ||
+                                                        schoolEvent.submitterID == ConnectedPerson.personID))
                                                         .ToHashSet());
             }
-            else if (ConnectedUser.isSecretary || ConnectedUser.isPrincipal)
+            else if (ConnectedPerson.isSecretary || ConnectedPerson.isPrincipal)
             {
                 // Show every school event
                 userEvents.UnionWith(eventsQuery.ToHashSet());

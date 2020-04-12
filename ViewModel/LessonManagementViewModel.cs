@@ -97,7 +97,7 @@ namespace MySchoolYear.ViewModel
 
         #region Properties / Commands
         // Base Properties
-        public Person ConnectedUser { get; }
+        public Person ConnectedPerson { get; private set; }
         public bool HasRequiredPermissions { get; }
         public string ScreenName { get { return "ניהול שיעורים"; } }
 
@@ -565,10 +565,9 @@ namespace MySchoolYear.ViewModel
         #endregion
 
         #region Constructors
-        public LessonManagementViewModel(Person connectedUser, ICommand refreshDataCommand, IMessageBoxService messageBoxService)
+        public LessonManagementViewModel(Person connectedPerson, ICommand refreshDataCommand, IMessageBoxService messageBoxService)
         {
-            ConnectedUser = connectedUser;
-            HasRequiredPermissions = connectedUser.isSecretary || connectedUser.isPrincipal;
+            HasRequiredPermissions = connectedPerson.isSecretary || connectedPerson.isPrincipal;
             _refreshDataCommand = refreshDataCommand;
             _messageBoxService = messageBoxService;
 
@@ -602,8 +601,9 @@ namespace MySchoolYear.ViewModel
         #endregion
 
         #region Methods
-        public void Initialize()
+        public void Initialize(Person connectedPerson)
         {
+            ConnectedPerson = connectedPerson;
             ResetData();
 
             // Create the lists of possible classes, courses, teachers

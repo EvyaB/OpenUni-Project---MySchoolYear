@@ -27,7 +27,7 @@ namespace MySchoolYear.ViewModel
 
         #region Properties / Commands
         // Base Properties
-        public Person ConnectedUser { get; }
+        public Person ConnectedPerson { get; private set; }
         public bool HasRequiredPermissions { get; }
         public string ScreenName { get { return "יצירת משתמשים"; } }
 
@@ -137,18 +137,18 @@ namespace MySchoolYear.ViewModel
         #endregion
 
         #region Constructors
-        public UserCreationViewModel(Person connectedUser, ICommand refreshDataCommand, IMessageBoxService messageBoxService)
+        public UserCreationViewModel(Person connectedPerson, ICommand refreshDataCommand, IMessageBoxService messageBoxService)
         {
             _messageBoxService = messageBoxService;
 
             // Check if the user is part of the management team (and therefor is allowed to create users)
-            if (connectedUser.isSecretary || connectedUser.isPrincipal)
+            if (connectedPerson.isSecretary || connectedPerson.isPrincipal)
             {
                 HasRequiredPermissions = true;
                 _refreshDataCommand = refreshDataCommand;
                 
                 // Only the principal can create management users
-                if (connectedUser.isPrincipal)
+                if (connectedPerson.isPrincipal)
                 {
                     CanCreateSecretaries = true;
                 }
@@ -173,8 +173,10 @@ namespace MySchoolYear.ViewModel
         #endregion
 
         #region Methods
-        public void Initialize()
+        public void Initialize(Person connectedPerson)
         {
+            ConnectedPerson = connectedPerson;
+
             ClearAllViewModelInfo();
 
             if (HasRequiredPermissions)

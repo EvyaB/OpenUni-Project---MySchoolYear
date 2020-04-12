@@ -69,7 +69,7 @@ namespace MySchoolYear.ViewModel
 
         #region Properties / Commands
         // Base Properties
-        public Person ConnectedUser { get; }
+        public Person ConnectedPerson { get; private set; }
         public bool HasRequiredPermissions { get; }
         public string ScreenName { get { return "ניהול אירועים"; } }
 
@@ -430,18 +430,17 @@ namespace MySchoolYear.ViewModel
         #endregion
 
         #region Constructors
-        public EventManagementViewModel(Person connectedUser, ICommand refreshDataCommand, IMessageBoxService messageBoxService)
+        public EventManagementViewModel(Person connectedPerson, ICommand refreshDataCommand, IMessageBoxService messageBoxService)
         {
-            ConnectedUser = connectedUser;
             _refreshDataCommand = refreshDataCommand;
             _messageBoxService = messageBoxService;
 
             // Set permissions
-            if (ConnectedUser.isTeacher || ConnectedUser.isPrincipal || ConnectedUser.isSecretary)
+            if (connectedPerson.isTeacher || connectedPerson.isPrincipal || connectedPerson.isSecretary)
             {
                 HasRequiredPermissions = true;
 
-                if (ConnectedUser.isPrincipal || connectedUser.isSecretary)
+                if (connectedPerson.isPrincipal || connectedPerson.isSecretary)
                 {
                     CanSendToEveryone = true;
                 }
@@ -454,8 +453,9 @@ namespace MySchoolYear.ViewModel
         #endregion
 
         #region Methods
-        public void Initialize()
+        public void Initialize(Person connectedPerson)
         {
+            ConnectedPerson = connectedPerson;
             ResetAll();
         }
 
@@ -685,7 +685,7 @@ namespace MySchoolYear.ViewModel
                     Event selectedEvent = _schoolData.Events.Find(SelectedEvent.ID);
 
                     // Update the event's data
-                    selectedEvent.submitterID = ConnectedUser.personID;
+                    selectedEvent.submitterID = ConnectedPerson.personID;
                     selectedEvent.eventDate = EventDatetime;
                     selectedEvent.name = EventName;
                     selectedEvent.description = EventText;
@@ -726,7 +726,7 @@ namespace MySchoolYear.ViewModel
                     eventDate = EventDatetime,
                     name = EventName,
                     description = EventText,
-                    submitterID = ConnectedUser.personID
+                    submitterID = ConnectedPerson.personID
                 };
                 SetEventRecipients(newEvent);
 

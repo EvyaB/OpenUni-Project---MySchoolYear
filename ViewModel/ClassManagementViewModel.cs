@@ -74,7 +74,7 @@ namespace MySchoolYear.ViewModel
 
         #region Properties / Commands
         // Base Properties
-        public Person ConnectedUser { get; }
+        public Person ConnectedPerson { get; private set; }
         public bool HasRequiredPermissions { get; }
         public string ScreenName { get { return "ניהול כיתות"; } }
 
@@ -268,10 +268,9 @@ namespace MySchoolYear.ViewModel
         #endregion
 
         #region Constructors
-        public ClassManagementViewModel(Person connectedUser, ICommand refreshDataCommand, IMessageBoxService messageBoxService)
+        public ClassManagementViewModel(Person connectedPerson, ICommand refreshDataCommand, IMessageBoxService messageBoxService)
         {
-            ConnectedUser = connectedUser;
-            HasRequiredPermissions = connectedUser.isSecretary || connectedUser.isPrincipal;
+            HasRequiredPermissions = connectedPerson.isSecretary || connectedPerson.isPrincipal;
             _refreshDataCommand = refreshDataCommand;
             _messageBoxService = messageBoxService;
 
@@ -286,8 +285,10 @@ namespace MySchoolYear.ViewModel
         #endregion
 
         #region Methods
-        public void Initialize()
+        public void Initialize(Person connectedPerson)
         {
+            ConnectedPerson = connectedPerson;
+
             // Get the list of existing classes
             ClassesTableData = new ObservableCollection<ClassData>(_schoolData.Classes.AsEnumerable().Select(currClass => ModelClassToClassData(currClass)).ToList());
 
