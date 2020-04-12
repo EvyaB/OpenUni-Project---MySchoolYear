@@ -149,11 +149,14 @@ namespace MySchoolYear.ViewModel
         /// <param name="viewModel">The new ViewModel</param>
         private void ChangeViewModel(IScreenViewModel viewModel)
         {
+            // Make sure the collection of View Models contains this viewModel
             if (!ScreensViewModels.Contains(viewModel))
+            {
                 ScreensViewModels.Add(viewModel);
+            }
 
-            CurrentScreenViewModel = ScreensViewModels
-                .FirstOrDefault(vm => vm == viewModel);
+            // Use the selected view model
+            CurrentScreenViewModel = ScreensViewModels.FirstOrDefault(vm => vm == viewModel);
         }
 
         /// <summary>
