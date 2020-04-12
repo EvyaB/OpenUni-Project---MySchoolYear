@@ -79,6 +79,7 @@ namespace MySchoolYear.ViewModel
         private ObservableDictionary<int, string> _availableCourses;
         private ObservableDictionary<int, string> _availableTeachers;
         private ObservableDictionary<int, string> _availableRooms;
+        private ObservableDictionary<int, string> _teacherAvailableCourses;
 
         private ObservableDictionary<int, string> _availableDays;
         private ObservableDictionary<int, string> _availableHours;
@@ -234,6 +235,9 @@ namespace MySchoolYear.ViewModel
                 {
                     _selectedClassID = value;
                     OnPropertyChanged("SelectedClass");
+
+                    // Update list of possible courses for the selected teacher&class combination
+                    ShowSelectedTeacherCourses();
                 }
             }
         }
@@ -250,6 +254,21 @@ namespace MySchoolYear.ViewModel
                 {
                     _availableCourses = value;
                     OnPropertyChanged("AvailableCourses");
+                }
+            }
+        }
+        public ObservableDictionary<int, string> TeacherAvailableCourses
+        {
+            get
+            {
+                return _teacherAvailableCourses;
+            }
+            set
+            {
+                if (_teacherAvailableCourses != value)
+                {
+                    _teacherAvailableCourses = value;
+                    OnPropertyChanged("TeacherAvailableCourses");
                 }
             }
         }
@@ -296,6 +315,9 @@ namespace MySchoolYear.ViewModel
                 {
                     _selectedTeacherID = value;
                     OnPropertyChanged("SelectedTeacher");
+
+                    // Update list of possible courses for the selected teacher&class combination
+                    ShowSelectedTeacherCourses();
                 }
             }
         }
@@ -580,6 +602,7 @@ namespace MySchoolYear.ViewModel
                 AvailableCourses = new ObservableDictionary<int, string>();
                 AvailableTeachers = new ObservableDictionary<int, string>();
                 AvailableRooms = new ObservableDictionary<int, string>();
+                TeacherAvailableCourses = new ObservableDictionary<int, string>();
 
                 // Fill up days and hour lists (allow 'no meeting' choice with the NOT_ASSIGNED value)
                 AvailableDays = new ObservableDictionary<int, string>();
@@ -638,6 +661,8 @@ namespace MySchoolYear.ViewModel
             AvailableRooms.Clear();
             SelectedLesson = null;
             SelectedSearchChoice = NOT_ASSIGNED;
+            SelectedTeacher = NOT_ASSIGNED;
+            SelectedClass = NOT_ASSIGNED;
             LessonFirstDay = NOT_ASSIGNED;
             LessonSecondDay = NOT_ASSIGNED;
             LessonThirdDay = NOT_ASSIGNED;
@@ -935,6 +960,54 @@ namespace MySchoolYear.ViewModel
             }
         }
 
+        /// <summary>
+        /// Allow choosing only the courses that the selected teacher can teach
+        /// </summary>
+        private void ShowSelectedTeacherCourses()
+        {
+            // Reset the teacher's available courses collection
+            TeacherAvailableCourses.Clear();
+
+            if (SelectedTeacher != NOT_ASSIGNED)
+            {
+                // Get the selected teacher's information
+                Teacher selectedTeacher = _schoolData.Teachers.Find(SelectedTeacher);
+
+                // Gather the teacher courses' information
+                if (selectedTeacher.firstCourseID != null)
+                {
+                    TeacherAvailableCourses.Add(selectedTeacher.firstCourseID.Value, selectedTeacher.FirstCourse.courseName);
+                }
+                if (selectedTeacher.secondCourseID != null)
+                {
+                    TeacherAvailableCourses.Add(selectedTeacher.secondCourseID.Value, selectedTeacher.SecondCourse.courseName);
+                }
+                if (selectedTeacher.thirdCourseID != null)
+                {
+                    TeacherAvailableCourses.Add(selectedTeacher.thirdCourseID.Value, selectedTeacher.ThirdCourse.courseName);
+                }
+                if (selectedTeacher.fourthCourseID != null)
+                {
+                    TeacherAvailableCourses.Add(selectedTeacher.fourthCourseID.Value, selectedTeacher.FourthCourse.courseName);
+                }
+
+                // Homeroom teachers can also teach their homeroom class any homeroom course
+                if (selectedTeacher.classID == SelectedClass)
+                {
+                    foreach (Course course in _schoolData.Courses.Where(course=>course.isHomeroomTeacherOnly))
+                    {
+                        // Make sure the course wasn't added already
+                        if (!TeacherAvailableCourses.ContainsKey(course.courseID))
+                        {
+                            TeacherAvailableCourses.Add(course.courseID, course.courseName);
+                        }
+                    }
+                }
+
+                // For some reason, after re-initializing a collection, a related selection in it is not updated properly in the view unless called explicitly
+                OnPropertyChanged("SelectedCourse");
+            }
+        }
         #endregion
     }
 }

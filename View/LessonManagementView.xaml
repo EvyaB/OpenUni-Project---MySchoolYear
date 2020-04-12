@@ -64,19 +64,19 @@
                 </Border>
 
                 <Border Grid.Row="1" Grid.Column="0">
-                    <TextBlock Text="מקצוע:" Style="{StaticResource BasicText}"/>
+                    <TextBlock Text="מורה:" Style="{StaticResource BasicText}"/>
                 </Border>
                 <Border Grid.Row="1" Grid.Column="1" >
-                    <ComboBox ItemsSource="{Binding Path=AvailableCourses}"
-                              SelectedValuePath="Key" DisplayMemberPath="Value" SelectedValue="{Binding Path=SelectedCourse, Mode=TwoWay}" Width="200"/>
+                    <ComboBox ItemsSource="{Binding Path=AvailableTeachers}"
+                              SelectedValuePath="Key" DisplayMemberPath="Value" SelectedValue="{Binding Path=SelectedTeacher, Mode=TwoWay}" Width="200"/>
                 </Border>
 
                 <Border Grid.Row="2" Grid.Column="0">
-                    <TextBlock Text="מורה:" Style="{StaticResource BasicText}"/>
+                    <TextBlock Text="מקצוע:" Style="{StaticResource BasicText}"/>
                 </Border>
                 <Border Grid.Row="2" Grid.Column="1" >
-                    <ComboBox ItemsSource="{Binding Path=AvailableTeachers}"
-                              SelectedValuePath="Key" DisplayMemberPath="Value" SelectedValue="{Binding Path=SelectedTeacher, Mode=TwoWay}" Width="200"/>
+                    <ComboBox ItemsSource="{Binding Path=TeacherAvailableCourses}"
+                              SelectedValuePath="Key" DisplayMemberPath="Value" SelectedValue="{Binding Path=SelectedCourse, Mode=TwoWay}" Width="200"/>
                 </Border>
 
                 <Border Grid.Row="3" Grid.Column="0">
