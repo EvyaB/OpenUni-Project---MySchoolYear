@@ -35,6 +35,9 @@
                 </GridView>
             </ListView.View>
         </ListView>
+        
+        <TextBlock Text="{Binding Path=Absences, StringFormat='חיסורים:{0}.'}"
+                   Style="{StaticResource SecondaryTitleText}" HorizontalAlignment="Center"/>
 
         <TextBlock Text="{Binding Path=AverageGrade, StringFormat='ממוצע:{0}.'}"
                    Style="{StaticResource SecondaryTitleText}" HorizontalAlignment="Center"/>

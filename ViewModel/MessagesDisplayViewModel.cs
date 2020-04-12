@@ -11,7 +11,7 @@ namespace MySchoolYear.ViewModel
     /// </summary>
     public class MessagesDisplayViewModel : BaseViewModel, IScreenViewModel
     {
-        #region SubStructs
+        #region Sub-Structs
         public class DisplayedMessage
         {
             public string SenderName { get; set; }

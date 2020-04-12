@@ -112,6 +112,7 @@ namespace MySchoolYear.ViewModel
             allScreens.Add(new CalenderViewModel(connectedUser));
             allScreens.Add(new MessagesDisplayViewModel(connectedUser));
 
+            allScreens.Add(new LessonSummaryViewModel(connectedUser, UpdateScreensCommand, messageBoxService));
             allScreens.Add(new CreateMessageViewModel(connectedUser, UpdateScreensCommand, messageBoxService));
             allScreens.Add(new EventManagementViewModel(connectedUser, UpdateScreensCommand, messageBoxService));
             allScreens.Add(new ClassManagementViewModel(connectedUser, UpdateScreensCommand, messageBoxService));

@@ -15,7 +15,7 @@ namespace MySchoolYear.ViewModel
     /// </summary>
     public class CourseManagementViewModel : BaseViewModel, IScreenViewModel
     {
-        #region SubStructs
+        #region Sub-Structs
         public class CourseData
         {
             public int ID { get; set; }

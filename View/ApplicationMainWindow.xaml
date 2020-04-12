@@ -28,6 +28,9 @@
         <DataTemplate DataType="{x:Type viewModels:CreateMessageViewModel}">
             <local:CreateMessageView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModels:LessonSummaryViewModel}">
+            <local:LessonSummaryView />
+        </DataTemplate>
         <DataTemplate DataType="{x:Type viewModels:EventManagementViewModel}">
             <local:EventManagementView />
         </DataTemplate>

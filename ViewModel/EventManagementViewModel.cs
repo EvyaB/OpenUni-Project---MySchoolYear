@@ -13,7 +13,7 @@ namespace MySchoolYear.ViewModel
     /// </summary>
     public class EventManagementViewModel : BaseViewModel, IScreenViewModel
     {
-        #region Substructs
+        #region Sub-Structs
         private enum RecipientTypes
         {
             Students,

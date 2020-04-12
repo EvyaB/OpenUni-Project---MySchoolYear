@@ -246,6 +246,7 @@
     <Compile Include="ViewModel\CourseManagementViewModel.cs" />
     <Compile Include="ViewModel\EventManagementViewModel.cs" />
     <Compile Include="ViewModel\CreateMessageViewModel.cs" />
+    <Compile Include="ViewModel\LessonSummaryViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\ApplicationViewModel.cs" />
     <Compile Include="ViewModel\MessagesDisplayViewModel.cs" />
@@ -266,6 +267,9 @@
     </Compile>
     <Compile Include="View\CreateMessageView.xaml.cs">
       <DependentUpon>CreateMessageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\LessonSummaryView.xaml.cs">
+      <DependentUpon>LessonSummaryView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MessagesDisplayView.xaml.cs">
       <DependentUpon>MessagesDisplayView.xaml</DependentUpon>
@@ -328,6 +332,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\CreateMessageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\LessonSummaryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -13,7 +13,7 @@ namespace MySchoolYear.ViewModel
     /// </summary>
     public class WeeklyScheduleViewModel : BaseViewModel, IScreenViewModel
     {
-        #region SubStructs
+        #region Sub-Structs
         public class LessonData
         {
             public string CourseName { get; set; }

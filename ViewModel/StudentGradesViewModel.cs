@@ -25,6 +25,7 @@ namespace MySchoolYear.ViewModel
         private Student _currentStudent;
         private List<Grade> _grades;
         private double _averageGrade;
+        private int _absences;
         private List<Student> _students;
         private ICommand _changeStudentCommand;
         private string _homeroomTeacher;
@@ -86,6 +87,26 @@ namespace MySchoolYear.ViewModel
             }
         }
 
+
+        /// <summary>
+        /// The number of absences for this student
+        /// </summary>
+        public int Absences
+        {
+            get
+            {
+                return _absences;
+            }
+            set
+            {
+                if (_absences != value)
+                {
+                    _absences = value;
+                    OnPropertyChanged("Absences");
+                }
+            }
+        }
+
         /// <summary>
         /// The student whose grades are viewed currently
         /// </summary>
@@ -106,6 +127,8 @@ namespace MySchoolYear.ViewModel
                     Grades = _currentStudent.Scores.Select(score =>
                         new Grade() { CourseName = score.Course.courseName, Score = score.score, TeacherNotes = score.notes })
                         .ToList();
+
+                    Absences = _currentStudent.absencesCounter;
 
                     // Show this studen't homeroom teacher (if any)
                     if (_currentStudent.Class.Teachers.Count > 0)
@@ -180,7 +203,7 @@ namespace MySchoolYear.ViewModel
         #region Constructors
         public StudentGradesViewModel(Person currentUser)
         {
-            this.ConnectedUser = currentUser;
+            ConnectedUser = currentUser;
 
             // Check if this page is relevent to the user - is a student, parent or homeroom teacher
             if (currentUser.isStudent || currentUser.isParent || currentUser.isTeacher && currentUser.Teacher.classID != null)
@@ -198,6 +221,9 @@ namespace MySchoolYear.ViewModel
         {
             if (HasRequiredPermissions)
             {
+                // Reset the students list
+                Students.Clear();
+
                 // Initialize the lists according to the user type
                 if (ConnectedUser.isStudent)
                 {
