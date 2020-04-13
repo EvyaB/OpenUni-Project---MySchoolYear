@@ -254,6 +254,7 @@
     <Compile Include="ViewModel\ClassManagementViewModel.cs" />
     <Compile Include="ViewModel\LessonManagementViewModel.cs" />
     <Compile Include="ViewModel\RoomManagementViewModel.cs" />
+    <Compile Include="ViewModel\ContactsInfoViewModel.cs" />
     <Compile Include="ViewModel\UserUpdateViewModel.cs" />
     <Compile Include="ViewModel\UserCreationViewModel.cs" />
     <Compile Include="ViewModel\Utilities\ObservableDictionary.cs" />
@@ -292,6 +293,9 @@
     </Compile>
     <Compile Include="View\RoomManagementView.xaml.cs">
       <DependentUpon>RoomManagementView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ContactsInfoView.xaml.cs">
+      <DependentUpon>ContactsInfoView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\UserUpdateView.xaml.cs">
       <DependentUpon>UserUpdateView.xaml</DependentUpon>
@@ -400,6 +404,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\StudentGradesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ContactsInfoView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

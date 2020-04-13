@@ -11,14 +11,6 @@ namespace MySchoolYear.ViewModel
     /// </summary>
     public class SchoolInfoViewModel : BaseViewModel, IScreenViewModel
     {
-        #region Sub-Structs
-        public struct Secretary
-        {
-            public string Name { get; set; }
-            public string Phone { get; set; }
-        }
-        #endregion
-
         #region Properties
         // Base Properties
         public string ScreenName { get { return "אודות"; } }
@@ -33,10 +25,6 @@ namespace MySchoolYear.ViewModel
         public int NumberOfClasses { get; private set; }
         public float ClassAverageSize { get; private set; }
         public double ScoreAverage { get; private set; }
-        public string PrincipalName { get; private set; }
-        public string PrincipalEmail { get; private set; }
-        public List<Secretary> Secretaries { get; set; }
-
         #endregion
 
         #region Constructors
@@ -67,19 +55,6 @@ namespace MySchoolYear.ViewModel
             NumberOfStudents = relevantStudentsQuery.Count();
             ClassAverageSize = NumberOfStudents / NumberOfClasses;
             ScoreAverage = CalcAverageScore(relevantStudentsQuery.ToList());
-
-            // Get the principal information
-            var principal = dbContext.Persons.FirstOrDefault(person => person.isPrincipal && !person.User.isDisabled);
-            if (principal != null)
-            {
-                PrincipalName = principal.firstName + " " + principal.lastName;
-                PrincipalEmail = principal.email;
-            }
-
-            // Get the secretaries information
-            Secretaries = dbContext.Persons.Where(person => person.isSecretary && !person.User.isDisabled).ToList()
-                .Select(person => new Secretary() { Name = person.firstName + " " + person.lastName, Phone = person.phoneNumber })
-                .ToList();
         }
 
         /// <summary>

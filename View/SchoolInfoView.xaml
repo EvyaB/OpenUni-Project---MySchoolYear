@@ -15,7 +15,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         
         <Label Grid.Row="0" Grid.Column="0" Content="{Binding Path=SchoolName}" 
@@ -40,29 +39,6 @@
             <Label Content="{Binding Path=NumberOfClasses}" ContentStringFormat="מספר הכיתות:{0}" />
             <Label Content="{Binding Path=ClassAverageSize}" ContentStringFormat="גודל כיתה ממוצע:{0}" />
             <Label Content="{Binding Path=ScoreAverage}" ContentStringFormat="ממוצע ציונים כללי: {0}" />
-        </StackPanel>
-
-        <StackPanel Grid.Row="2" Grid.Column="0">
-            <TextBlock Text="צור קשר - מזכירות" Style="{StaticResource SecondaryTitleText}"/>
-            <ItemsControl ItemsSource="{Binding Path=Secretaries}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-                            <Label Grid.Column="1" Grid.Row="0" Content="{Binding Path=Name}"/>
-                            <Label Content="{Binding Path=Phone}"/>
-                        </Grid>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </StackPanel>
-        <StackPanel Grid.Row="2" Grid.Column="1">
-            <Label Content="המנהל:" Margin="0,30,0,0"/>
-            <Label Content="{Binding Path=PrincipalName}" />
-            <Label Content="{Binding Path=PrincipalEmail}" />                       
         </StackPanel>
     </Grid>
 </UserControl>
