@@ -215,6 +215,9 @@
       <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Globals.cs" />
+    <Compile Include="Model\Grade.cs">
+      <DependentUpon>DataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\Lesson.cs">
       <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
@@ -231,9 +234,6 @@
     <Compile Include="Model\SchoolInfo.cs">
       <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\Score.cs">
-      <DependentUpon>DataModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Model\Student.cs">
       <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
@@ -246,6 +246,7 @@
     <Compile Include="ViewModel\CourseManagementViewModel.cs" />
     <Compile Include="ViewModel\EventManagementViewModel.cs" />
     <Compile Include="ViewModel\CreateMessageViewModel.cs" />
+    <Compile Include="ViewModel\GradesReportViewModel.cs" />
     <Compile Include="ViewModel\LessonSummaryViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\ApplicationViewModel.cs" />
@@ -268,6 +269,9 @@
     </Compile>
     <Compile Include="View\CreateMessageView.xaml.cs">
       <DependentUpon>CreateMessageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\GradesReportView.xaml.cs">
+      <DependentUpon>GradesReportView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\LessonSummaryView.xaml.cs">
       <DependentUpon>LessonSummaryView.xaml</DependentUpon>
@@ -338,6 +342,10 @@
     <Page Include="View\CreateMessageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\GradesReportView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\LessonSummaryView.xaml">
       <SubType>Designer</SubType>

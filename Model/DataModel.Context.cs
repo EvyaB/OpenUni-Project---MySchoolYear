@@ -32,10 +32,10 @@ namespace MySchoolYear.Model
         public virtual DbSet<Person> Persons { get; set; }
         public virtual DbSet<Room> Rooms { get; set; }
         public virtual DbSet<SchoolInfo> SchoolInfo { get; set; }
-        public virtual DbSet<Score> Scores { get; set; }
         public virtual DbSet<Student> Students { get; set; }
         public virtual DbSet<Teacher> Teachers { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Event> Events { get; set; }
+        public virtual DbSet<Grade> Grades { get; set; }
     }
 }

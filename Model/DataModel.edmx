@@ -33,6 +33,16 @@
           <Property Name="description" Type="nvarchar" MaxLength="250" />
           <Property Name="eventDate" Type="datetime" Nullable="false" />
         </EntityType>
+        <EntityType Name="Grades">
+          <Key>
+            <PropertyRef Name="studentID" />
+            <PropertyRef Name="courseID" />
+          </Key>
+          <Property Name="studentID" Type="int" Nullable="false" />
+          <Property Name="courseID" Type="int" Nullable="false" />
+          <Property Name="score" Type="tinyint" Nullable="false" />
+          <Property Name="notes" Type="nvarchar" MaxLength="150" />
+        </EntityType>
         <EntityType Name="Lessons">
           <Key>
             <PropertyRef Name="lessonID" />
@@ -97,16 +107,6 @@
           </Key>
           <Property Name="key" Type="nvarchar" MaxLength="30" Nullable="false" />
           <Property Name="value" Type="nvarchar" MaxLength="250" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Scores">
-          <Key>
-            <PropertyRef Name="studentID" />
-            <PropertyRef Name="courseID" />
-          </Key>
-          <Property Name="studentID" Type="int" Nullable="false" />
-          <Property Name="courseID" Type="int" Nullable="false" />
-          <Property Name="score" Type="tinyint" Nullable="false" />
-          <Property Name="notes" Type="nvarchar" MaxLength="150" />
         </EntityType>
         <EntityType Name="Students">
           <Key>
@@ -284,24 +284,24 @@
         </Association>
         <Association Name="FK_Scores_ToCourses">
           <End Role="Courses" Type="Self.Courses" Multiplicity="1" />
-          <End Role="Scores" Type="Self.Scores" Multiplicity="*" />
+          <End Role="Grades" Type="Self.Grades" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Courses">
               <PropertyRef Name="courseID" />
             </Principal>
-            <Dependent Role="Scores">
+            <Dependent Role="Grades">
               <PropertyRef Name="courseID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Scores_ToStudents">
           <End Role="Students" Type="Self.Students" Multiplicity="1" />
-          <End Role="Scores" Type="Self.Scores" Multiplicity="*" />
+          <End Role="Grades" Type="Self.Grades" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Students">
               <PropertyRef Name="studentID" />
             </Principal>
-            <Dependent Role="Scores">
+            <Dependent Role="Grades">
               <PropertyRef Name="studentID" />
             </Dependent>
           </ReferentialConstraint>
@@ -418,12 +418,12 @@
           <EntitySet Name="Classes" EntityType="Self.Classes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Courses" EntityType="Self.Courses" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Events" EntityType="Self.Events" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Grades" EntityType="Self.Grades" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Lessons" EntityType="Self.Lessons" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Messages" EntityType="Self.Messages" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Persons" EntityType="Self.Persons" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Rooms" EntityType="Self.Rooms" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SchoolInfo" EntityType="Self.SchoolInfo" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Scores" EntityType="Self.Scores" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Students" EntityType="Self.Students" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Teachers" EntityType="Self.Teachers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
@@ -477,11 +477,11 @@
           </AssociationSet>
           <AssociationSet Name="FK_Scores_ToCourses" Association="Self.FK_Scores_ToCourses">
             <End Role="Courses" EntitySet="Courses" />
-            <End Role="Scores" EntitySet="Scores" />
+            <End Role="Grades" EntitySet="Grades" />
           </AssociationSet>
           <AssociationSet Name="FK_Scores_ToStudents" Association="Self.FK_Scores_ToStudents">
             <End Role="Students" EntitySet="Students" />
-            <End Role="Scores" EntitySet="Scores" />
+            <End Role="Grades" EntitySet="Grades" />
           </AssociationSet>
           <AssociationSet Name="FK_Students_ToClasses" Association="Self.FK_Students_ToClasses">
             <End Role="Classes" EntitySet="Classes" />
@@ -545,12 +545,12 @@
           <Property Name="courseID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="courseName" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Lessons" Relationship="Self.FK_Lessons_ToCourses" FromRole="Courses" ToRole="Lessons" />
-          <NavigationProperty Name="Scores" Relationship="Self.FK_Scores_ToCourses" FromRole="Courses" ToRole="Scores" />
           <NavigationProperty Name="Teachers" Relationship="Self.FK_Teachers_ToCourses_1" FromRole="Courses" ToRole="Teachers" />
           <NavigationProperty Name="Teachers1" Relationship="Self.FK_Teachers_ToCourses_2" FromRole="Courses" ToRole="Teachers" />
           <NavigationProperty Name="Teachers2" Relationship="Self.FK_Teachers_ToCourses_3" FromRole="Courses" ToRole="Teachers" />
           <NavigationProperty Name="Teachers3" Relationship="Self.FK_Teachers_ToCourses_4" FromRole="Courses" ToRole="Teachers" />
           <Property Name="isHomeroomTeacherOnly" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Grades" Relationship="schoolModel.FK_Scores_ToCourses" FromRole="Course" ToRole="Grade" />
         </EntityType>
         <EntityType Name="Lesson">
           <Key>
@@ -634,18 +634,6 @@
           <Property Name="key" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="value" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
         </EntityType>
-        <EntityType Name="Score">
-          <Key>
-            <PropertyRef Name="studentID" />
-            <PropertyRef Name="courseID" />
-          </Key>
-          <Property Name="studentID" Type="Int32" Nullable="false" />
-          <Property Name="courseID" Type="Int32" Nullable="false" />
-          <Property Name="score" Type="Byte" Nullable="false" />
-          <Property Name="notes" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Course" Relationship="Self.FK_Scores_ToCourses" FromRole="Scores" ToRole="Courses" />
-          <NavigationProperty Name="Student" Relationship="Self.FK_Scores_ToStudents" FromRole="Scores" ToRole="Students" />
-        </EntityType>
         <EntityType Name="Student">
           <Key>
             <PropertyRef Name="studentID" />
@@ -657,7 +645,7 @@
           <NavigationProperty Name="Class" Relationship="Self.FK_Students_ToClasses" FromRole="Students" ToRole="Classes" />
           <NavigationProperty Name="ParentPerson" Relationship="Self.FK_Students_ToParentPersons" FromRole="Students" ToRole="Persons" />
           <NavigationProperty Name="Person" Relationship="Self.FK_Students_ToPersons" FromRole="Students" ToRole="Persons" />
-          <NavigationProperty Name="Scores" Relationship="Self.FK_Scores_ToStudents" FromRole="Students" ToRole="Scores" />
+          <NavigationProperty Name="Grades" Relationship="schoolModel.FK_Scores_ToStudents" FromRole="Student" ToRole="Grade" />
         </EntityType>
         <EntityType Name="Teacher">
           <Key>
@@ -756,18 +744,6 @@
               <PropertyRef Name="courseID" />
             </Principal>
             <Dependent Role="Lessons">
-              <PropertyRef Name="courseID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Scores_ToCourses">
-          <End Role="Courses" Type="schoolModel.Course" Multiplicity="1" />
-          <End Role="Scores" Type="Self.Score" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Courses">
-              <PropertyRef Name="courseID" />
-            </Principal>
-            <Dependent Role="Scores">
               <PropertyRef Name="courseID" />
             </Dependent>
           </ReferentialConstraint>
@@ -916,18 +892,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Scores_ToStudents">
-          <End Role="Students" Type="Self.Student" Multiplicity="1" />
-          <End Role="Scores" Type="Self.Score" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Students">
-              <PropertyRef Name="studentID" />
-            </Principal>
-            <Dependent Role="Scores">
-              <PropertyRef Name="studentID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="SchoolEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Classes" EntityType="Self.Class" />
           <EntitySet Name="Courses" EntityType="schoolModel.Course" />
@@ -936,7 +900,6 @@
           <EntitySet Name="Persons" EntityType="Self.Person" />
           <EntitySet Name="Rooms" EntityType="Self.Room" />
           <EntitySet Name="SchoolInfo" EntityType="Self.SchoolInfo" />
-          <EntitySet Name="Scores" EntityType="Self.Score" />
           <EntitySet Name="Students" EntityType="Self.Student" />
           <EntitySet Name="Teachers" EntityType="Self.Teacher" />
           <EntitySet Name="Users" EntityType="Self.User" />
@@ -963,10 +926,6 @@
           <AssociationSet Name="FK_Lessons_ToCourses" Association="Self.FK_Lessons_ToCourses">
             <End Role="Courses" EntitySet="Courses" />
             <End Role="Lessons" EntitySet="Lessons" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Scores_ToCourses" Association="Self.FK_Scores_ToCourses">
-            <End Role="Courses" EntitySet="Courses" />
-            <End Role="Scores" EntitySet="Scores" />
           </AssociationSet>
           <AssociationSet Name="FK_Teachers_ToCourses_1" Association="Self.FK_Teachers_ToCourses_1">
             <End Role="Courses" EntitySet="Courses" />
@@ -1016,10 +975,6 @@
             <End Role="Persons" EntitySet="Persons" />
             <End Role="Teachers" EntitySet="Teachers" />
           </AssociationSet>
-          <AssociationSet Name="FK_Scores_ToStudents" Association="Self.FK_Scores_ToStudents">
-            <End Role="Students" EntitySet="Students" />
-            <End Role="Scores" EntitySet="Scores" />
-          </AssociationSet>
           <EntitySet Name="Events" EntityType="schoolModel.Event" />
           <AssociationSet Name="FK_Events_ToClasses" Association="schoolModel.FK_Events_ToClasses">
             <End Role="Class" EntitySet="Classes" />
@@ -1032,6 +987,15 @@
           <AssociationSet Name="FK_Events_ToRecipientPersons" Association="schoolModel.FK_Events_ToRecipientPersons">
             <End Role="Person" EntitySet="Persons" />
             <End Role="Event" EntitySet="Events" />
+          </AssociationSet>
+          <EntitySet Name="Grades" EntityType="schoolModel.Grade" />
+          <AssociationSet Name="FK_Scores_ToCourses" Association="schoolModel.FK_Scores_ToCourses">
+            <End Role="Course" EntitySet="Courses" />
+            <End Role="Grade" EntitySet="Grades" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Scores_ToStudents" Association="schoolModel.FK_Scores_ToStudents">
+            <End Role="Student" EntitySet="Students" />
+            <End Role="Grade" EntitySet="Grades" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Event">
@@ -1082,6 +1046,42 @@
             </Principal>
             <Dependent Role="Event">
               <PropertyRef Name="recipientID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Grade">
+          <Key>
+            <PropertyRef Name="studentID" />
+            <PropertyRef Name="courseID" />
+          </Key>
+          <Property Name="studentID" Type="Int32" Nullable="false" />
+          <Property Name="courseID" Type="Int32" Nullable="false" />
+          <Property Name="score" Type="Byte" Nullable="false" />
+          <Property Name="notes" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Course" Relationship="schoolModel.FK_Scores_ToCourses" FromRole="Grade" ToRole="Course" />
+          <NavigationProperty Name="Student" Relationship="schoolModel.FK_Scores_ToStudents" FromRole="Grade" ToRole="Student" />
+        </EntityType>
+        <Association Name="FK_Scores_ToCourses">
+          <End Type="schoolModel.Course" Role="Course" Multiplicity="1" />
+          <End Type="schoolModel.Grade" Role="Grade" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Course">
+              <PropertyRef Name="courseID" />
+            </Principal>
+            <Dependent Role="Grade">
+              <PropertyRef Name="courseID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Scores_ToStudents">
+          <End Type="schoolModel.Student" Role="Student" Multiplicity="1" />
+          <End Type="schoolModel.Grade" Role="Grade" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="studentID" />
+            </Principal>
+            <Dependent Role="Grade">
+              <PropertyRef Name="studentID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1179,16 +1179,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Scores">
-            <EntityTypeMapping TypeName="schoolModel.Score">
-              <MappingFragment StoreEntitySet="Scores">
-                <ScalarProperty Name="studentID" ColumnName="studentID" />
-                <ScalarProperty Name="courseID" ColumnName="courseID" />
-                <ScalarProperty Name="score" ColumnName="score" />
-                <ScalarProperty Name="notes" ColumnName="notes" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Students">
             <EntityTypeMapping TypeName="schoolModel.Student">
               <MappingFragment StoreEntitySet="Students">
@@ -1232,6 +1222,16 @@
                 <ScalarProperty Name="recipientID" ColumnName="recipientID" />
                 <ScalarProperty Name="submitterID" ColumnName="submitterID" />
                 <ScalarProperty Name="eventID" ColumnName="eventID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Grades">
+            <EntityTypeMapping TypeName="schoolModel.Grade">
+              <MappingFragment StoreEntitySet="Grades">
+                <ScalarProperty Name="notes" ColumnName="notes" />
+                <ScalarProperty Name="score" ColumnName="score" />
+                <ScalarProperty Name="courseID" ColumnName="courseID" />
+                <ScalarProperty Name="studentID" ColumnName="studentID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

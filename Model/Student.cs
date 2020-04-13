@@ -17,7 +17,7 @@ namespace MySchoolYear.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Student()
         {
-            this.Scores = new HashSet<Score>();
+            this.Grades = new HashSet<Grade>();
         }
     
         public int studentID { get; set; }
@@ -29,6 +29,6 @@ namespace MySchoolYear.Model
         public virtual Person ParentPerson { get; set; }
         public virtual Person Person { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Score> Scores { get; set; }
+        public virtual ICollection<Grade> Grades { get; set; }
     }
 }

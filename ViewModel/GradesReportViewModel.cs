@@ -9,23 +9,27 @@ using MySchoolYear.ViewModel.Utilities;
 namespace MySchoolYear.ViewModel
 {
     /// <summary>
-    /// Allows a teacher to report missing students in his lesson and other notes about them, and automatically sending them a message about it
+    /// Allows a teacher to set the grades of his students in a specific class & course
     /// </summary>
-    public class LessonSummaryViewModel : BaseViewModel, IScreenViewModel
+    public class GradesReportViewModel : BaseViewModel, IScreenViewModel
     {
         #region Sub-Structs
-        public class StudentAtLesson
+        public class GradedStudent
         {
             public int StudentID { get; set; }
             public string Name { get; set; }
-            public bool WasMissing { get; set; }
+            public int Score { get; set; }
             public string Notes { get; set; }
+
+            // These properties are used to check for changes
+            public int OriginalScore { get; set; }
+            public string OriginalNotes { get; set; }
         }
         #endregion
 
         #region Fields
         private ICommand _refreshDataCommand;
-        private ICommand _reportLessonCommand;
+        private ICommand _updateGradesCommand;
 
         private IMessageBoxService _messageBoxService;
         private SchoolEntities _schoolData;
@@ -34,9 +38,8 @@ namespace MySchoolYear.ViewModel
         private ObservableDictionary<int, string> _courses;
         private int _selectedClass;
         private int _selectedCourse;
-        private DateTime _selectedDate;
 
-        private ObservableCollection<StudentAtLesson> _studentsInLesson;
+        private ObservableCollection<GradedStudent> _studentGrades;
 
         private const int NOT_ASSIGNED = -1;
         #endregion
@@ -45,7 +48,7 @@ namespace MySchoolYear.ViewModel
         // Base Properties
         public Person ConnectedPerson { get; private set; }
         public bool HasRequiredPermissions { get; }
-        public string ScreenName { get { return "הזנת דוח שיעור"; } }
+        public string ScreenName { get { return "הזנת ציונים"; } }
 
         // Business Logic Properties / Commands
         public ObservableDictionary<int, string> Courses
@@ -106,70 +109,48 @@ namespace MySchoolYear.ViewModel
             }
             set
             {
-                if (_selectedClass != value)
-                {
-                    _selectedClass = value;
-                    OnPropertyChanged("SelectedClass");
+                // We might re-use the class when changing courses, so allow reselecting it
+                _selectedClass = value;
+                OnPropertyChanged("SelectedClass");
 
-                    if (_selectedClass != NOT_ASSIGNED)
-                    {
-                        FindClassStudents(_selectedClass);
-                    }
-                }
+                FindClassStudents(_selectedClass);
             }
         }
 
-        public DateTime SelectedDate
-        { 
-            get
-            {
-                return _selectedDate;
-            }
-            set
-            {
-                // Get the only the date value, without specific time
-                if (_selectedDate != value.Date)
-                {
-                    _selectedDate = value.Date;
-                    OnPropertyChanged("SelectedDate");
-                }
-            }
-        }
-
-        public ObservableCollection<StudentAtLesson> StudentsInLesson
+        public ObservableCollection<GradedStudent> StudentsGrades
         {
             get 
             {
-                return _studentsInLesson;
+                return _studentGrades;
             }
             set
             {
-                if (_studentsInLesson != value)
+                if (_studentGrades != value)
                 {
-                    _studentsInLesson = value;
-                    OnPropertyChanged("StudentsInLesson");
+                    _studentGrades = value;
+                    OnPropertyChanged("StudentsGrades");
                 }
             }
         }
 
         /// <summary>
-        /// Send the lesson report
+        /// Update the grades of the students in the currently selected class & course combination
         /// </summary>
-        public ICommand ReportLessonCommand
+        public ICommand UpdateGradesCommand
         {
             get
             {
-                if (_reportLessonCommand == null)
+                if (_updateGradesCommand == null)
                 {
-                    _reportLessonCommand = new RelayCommand(p => ReportLesson());
+                    _updateGradesCommand = new RelayCommand(p => UpdateGrades());
                 }
-                return _reportLessonCommand;
+                return _updateGradesCommand;
             }
         }
         #endregion
 
         #region Constructors
-        public LessonSummaryViewModel(Person connectedPerson, ICommand refreshDataCommand, IMessageBoxService messageBoxService)
+        public GradesReportViewModel(Person connectedPerson, ICommand refreshDataCommand, IMessageBoxService messageBoxService)
         {
             _refreshDataCommand = refreshDataCommand;
             _messageBoxService = messageBoxService;
@@ -194,10 +175,9 @@ namespace MySchoolYear.ViewModel
             // Initalize all lists
             Courses = new ObservableDictionary<int, string>();
             Classes = new ObservableDictionary<int, string>();
-            StudentsInLesson = new ObservableCollection<StudentAtLesson>();
+            StudentsGrades = new ObservableCollection<GradedStudent>();
             _schoolData = new SchoolEntities();
 
-            SelectedDate = DateTime.Now;
             SelectedCourse = NOT_ASSIGNED;
             SelectedClass = NOT_ASSIGNED;
 
@@ -294,22 +274,56 @@ namespace MySchoolYear.ViewModel
         /// <param name="classID">The ID of the class</param>
         private void FindClassStudents(int classID)
         {
-            // Gather all students from a class
-            StudentsInLesson = 
-                new ObservableCollection<StudentAtLesson>(_schoolData.Classes.Find(classID).Students.Where(student => !student.Person.User.isDisabled)
-                .Select(student => new StudentAtLesson()
-                {
-                    StudentID = student.studentID,
-                    Name =student.Person.firstName + " " + student.Person.lastName,
-                    WasMissing = false,
-                    Notes = string.Empty
-                }));
+            if (classID != NOT_ASSIGNED)
+            {
+                // Gather all students from a class
+                StudentsGrades =
+                    new ObservableCollection<GradedStudent>(_schoolData.Classes.Find(classID).Students.Where(student => !student.Person.User.isDisabled)
+                        .Select(student => ModelStudentToGradedStudent(student, SelectedCourse)));
+            }
+            else
+            {
+                // No class selected - just clear the students list
+                StudentsGrades = new ObservableCollection<GradedStudent>();
+            }
         }
 
         /// <summary>
-        /// Report each student at the selected lesson that was missing and/or has notes added to him, if any
+        /// Converts the Model's student class into the local GradedStudent class for the selected course
         /// </summary>
-        private void ReportLesson()
+        /// <param name="student">The student to convert</param>
+        /// <param name="courseID">The ID of the course to grade the student on</param>
+        /// <returns>A GradedStudent version of this student</returns>
+        private GradedStudent ModelStudentToGradedStudent(Student student, int courseID)
+        {
+            GradedStudent gradedStudent = new GradedStudent();
+
+            gradedStudent.StudentID = student.studentID;
+            gradedStudent.Name = student.Person.firstName + " " + student.Person.lastName;
+
+            // Get the student's current grade for this course (if he was graded already)
+            Grade currentGrade = _schoolData.Grades.Find(student.studentID, courseID);
+            if (currentGrade != null)
+            {
+                gradedStudent.Score = currentGrade.score;
+                gradedStudent.Notes = currentGrade.notes;
+            }
+            else
+            {
+                gradedStudent.Score = Globals.GRADE_NO_VALUE;
+                gradedStudent.Notes = string.Empty;
+            }
+
+            gradedStudent.OriginalScore = gradedStudent.Score;
+            gradedStudent.OriginalNotes = gradedStudent.Notes;
+
+            return gradedStudent;
+        }
+
+        /// <summary>
+        /// Update the score for each student of the selected class & course combination.
+        /// </summary>
+        private void UpdateGrades()
         {
             // Check if the report is possible (class&course were selected)
             if (SelectedClass != NOT_ASSIGNED && SelectedCourse != NOT_ASSIGNED)
@@ -319,47 +333,44 @@ namespace MySchoolYear.ViewModel
                 // Create the basic template for the report - lesson date and the reporter information
                 string reportTemplate =
                     "המורה " + ConnectedPerson.firstName + " " + ConnectedPerson.lastName +
-                    " הזין לך הערות בתאריך " + SelectedDate.ToString("dd/MM/yy") +
-                    " לשיעור " + Courses[SelectedCourse] + ":\n";
+                    " הזין לך ציון במקצוע " + Courses[SelectedCourse] + ":\n";
 
                 // Go over every student, and look for any that was reported by the teacher
-                foreach (StudentAtLesson student in StudentsInLesson)
+                foreach (GradedStudent student in StudentsGrades)
                 {
-                    if (student.WasMissing || student.Notes != string.Empty)
+                    // Update the grade for this student if it has changed
+                    if (student.Score != student.OriginalScore || student.Notes != student.OriginalNotes)
                     {
                         // Get the student's full information
                         Student studentInfo = _schoolData.Students.Find(student.StudentID);
 
-                        // Create a report
-                        string report = reportTemplate;
+                        // Report the grade
+                        Grade grade = new Grade() { studentID = studentInfo.studentID, courseID = SelectedCourse, score = Convert.ToByte(student.Score) };
+                        string gradeReport = reportTemplate;
+                        gradeReport += "ציון: " + student.Score + "\n";
 
-                        if (student.WasMissing)
-                        {
-                            report += "החסרת מהשיעור.\n";
-
-                            // Add an absences count for the student
-                            studentInfo.absencesCounter = studentInfo.absencesCounter + 1;
-                        }
                         if (student.Notes != string.Empty)
                         {
-                            report += student.Notes + "\n";
+                            gradeReport += "הערות: " + student.Notes + "\n";
+                            grade.notes = student.Notes;
                         }
 
-                        // Send a message to the student about the report
-                        MessagesHandler.CreateMessageToPerson("קיבלת הערה בשיעור", report, student.StudentID, ConnectedPerson.Teacher.teacherID);
+                        // Save the grade, and send a message to the student about it
+                        _schoolData.Grades.Add(grade);
+                        MessagesHandler.CreateMessageToPerson("קיבלת ציון", gradeReport, student.StudentID, ConnectedPerson.Teacher.teacherID);
 
-                        // If the student has any parents, send the report to them too
+                        // If the student has any parents, send a message to them too
                         if (studentInfo.parentID.HasValue)
                         {
-                            string parentReport = "ילדך " + student.Name + " קיבל את ההערה הבאה בשיעור:\n" + report;
-                            MessagesHandler.CreateMessageToPerson("ילדך קיבל הערה בשיעור", parentReport, studentInfo.parentID.Value, ConnectedPerson.Teacher.teacherID);
+                            string parentReport = "ילדך " + student.Name + " קיבל ציון:\n" + gradeReport;
+                            MessagesHandler.CreateMessageToPerson("ילדך קיבל ציון", parentReport, studentInfo.parentID.Value, ConnectedPerson.Teacher.teacherID);
                         }
 
                         didSendAnyReport = true;
                     }
                 }
 
-                // Check if any report was required, and update accordingly
+                // Check if any student was report was required, and update accordingly
                 if (didSendAnyReport)
                 {
                     _schoolData.SaveChanges();
@@ -367,13 +378,13 @@ namespace MySchoolYear.ViewModel
                 }
 
                 // Report action success to the teacher
-                string resultMessage = "הוזן דוח שיעור למקצוע " + Courses[SelectedCourse] + " לכיתה " + Classes[SelectedClass];
-                _messageBoxService.ShowMessage("הוזן דוח שיעור", resultMessage, MessageType.OK_MESSAGE);
+                string resultMessage = "הוזנו ציונים למקצוע " + Courses[SelectedCourse] + " לכיתה " + Classes[SelectedClass];
+                _messageBoxService.ShowMessage("הוזנו ציונים", resultMessage, MessageType.OK_MESSAGE);
             }
             else
             {
                 // No class or course selected. Cannot send a report
-                _messageBoxService.ShowMessage("נכשל בשליחת דוח", "מקצוע או כיתה לא נבחרו. אנא בחר קודם לפני שליחת הדוח", 
+                _messageBoxService.ShowMessage("נכשל בהזנת ציונים", "מקצוע או כיתה לא נבחרו. אנא בחר קודם לפני הזנת ציונים",
                                                 MessageType.OK_MESSAGE, MessagePurpose.ERROR);
             }
         }

@@ -206,7 +206,7 @@ namespace MySchoolYear.ViewModel
                     mySchool.Students.RemoveRange(mySchool.Students);
                     mySchool.Events.RemoveRange(mySchool.Events);
                     mySchool.Messages.RemoveRange(mySchool.Messages);
-                    mySchool.Scores.RemoveRange(mySchool.Scores);
+                    mySchool.Grades.RemoveRange(mySchool.Grades);
                     mySchool.Lessons.RemoveRange(mySchool.Lessons);
 
                     mySchool.SaveChanges();

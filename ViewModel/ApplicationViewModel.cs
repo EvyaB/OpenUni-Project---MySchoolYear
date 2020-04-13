@@ -117,6 +117,7 @@ namespace MySchoolYear.ViewModel
             allScreens.Add(new MessagesDisplayViewModel(connectedPerson));
 
             allScreens.Add(new LessonSummaryViewModel(connectedPerson, UpdateScreensCommand, messageBoxService));
+            allScreens.Add(new GradesReportViewModel(connectedPerson, UpdateScreensCommand, messageBoxService));
             allScreens.Add(new CreateMessageViewModel(connectedPerson, UpdateScreensCommand, messageBoxService));
             allScreens.Add(new EventManagementViewModel(connectedPerson, UpdateScreensCommand, messageBoxService));
             allScreens.Add(new ClassManagementViewModel(connectedPerson, UpdateScreensCommand, messageBoxService));

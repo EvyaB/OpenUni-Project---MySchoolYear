@@ -124,7 +124,7 @@ namespace MySchoolYear.ViewModel
                     OnPropertyChanged("CurrentStudent");
 
                     // Show this student's grades
-                    Grades = _currentStudent.Scores.Select(score =>
+                    Grades = _currentStudent.Grades.Select(score =>
                         new Grade() { CourseName = score.Course.courseName, Score = score.score, TeacherNotes = score.notes })
                         .ToList();
 

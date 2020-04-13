@@ -18,11 +18,11 @@ namespace MySchoolYear.Model
         public Course()
         {
             this.Lessons = new HashSet<Lesson>();
-            this.Scores = new HashSet<Score>();
             this.Teachers = new HashSet<Teacher>();
             this.Teachers1 = new HashSet<Teacher>();
             this.Teachers2 = new HashSet<Teacher>();
             this.Teachers3 = new HashSet<Teacher>();
+            this.Grades = new HashSet<Grade>();
         }
     
         public int courseID { get; set; }
@@ -32,8 +32,6 @@ namespace MySchoolYear.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Lesson> Lessons { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Score> Scores { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Teacher> Teachers { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Teacher> Teachers1 { get; set; }
@@ -41,5 +39,7 @@ namespace MySchoolYear.Model
         public virtual ICollection<Teacher> Teachers2 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Teacher> Teachers3 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Grade> Grades { get; set; }
     }
 }

@@ -25,6 +25,10 @@ namespace MySchoolYear.Model
 
         public readonly static string[] HOUR_NAMES = { "ראשונה", "שנייה", "שלישית", "רביעית", "חמישית", "שישית", "שביעית", "שמינית", "תשיעית", "עשירית" };
         public readonly static string[] DAY_NAMES = { "ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי" };
+
+        public const int GRADE_MAX_VALUE = 100;
+        public const int GRADE_MIN_VALUE = 1;
+        public const int GRADE_NO_VALUE = 0;
         #endregion
 
         #region Assistant Methods

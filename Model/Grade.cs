@@ -12,7 +12,7 @@ namespace MySchoolYear.Model
     using System;
     using System.Collections.Generic;
     
-    public partial class Score
+    public partial class Grade
     {
         public int studentID { get; set; }
         public int courseID { get; set; }

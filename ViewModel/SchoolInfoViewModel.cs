@@ -54,7 +54,7 @@ namespace MySchoolYear.ViewModel
             NumberOfClasses = dbContext.Classes.Count();
             NumberOfStudents = relevantStudentsQuery.Count();
             ClassAverageSize = NumberOfStudents / NumberOfClasses;
-            ScoreAverage = CalcAverageScore(relevantStudentsQuery.ToList());
+            ScoreAverage = CalcAverageGrade(relevantStudentsQuery.ToList());
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace MySchoolYear.ViewModel
         /// </summary>
         /// <param name="students"></param>
         /// <returns></returns>
-        private double CalcAverageScore(List<Student> students)
+        private double CalcAverageGrade(List<Student> students)
         {
             // Calculate the average score of each student, then the sum of averages
             double scoresSum = 0;
@@ -70,9 +70,9 @@ namespace MySchoolYear.ViewModel
             foreach (Student student in students)
             {
                 // The student has any scores
-                if (student.Scores != null && student.Scores.Count > 0)
+                if (student.Grades != null && student.Grades.Count > 0)
                 {
-                    scoresSum += Math.Round(student.Scores.Average(x => x.score), 1);
+                    scoresSum += Math.Round(student.Grades.Average(x => x.score), 1);
                     releventStudentsNumber++;
                 }
             }
