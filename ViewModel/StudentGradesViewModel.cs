@@ -13,8 +13,10 @@ namespace MySchoolYear.ViewModel
     public class StudentGradesViewModel : BaseViewModel, IScreenViewModel
     {
         #region Sub-Structs
-        public struct Grade
+        public struct GradeData
         {
+            public int CourseID { get; set; }
+            public int TeacherID { get; set; }
             public string CourseName { get; set; }
             public int Score { get; set; }
             public string TeacherNotes { get; set; }
@@ -22,13 +24,22 @@ namespace MySchoolYear.ViewModel
         #endregion
 
         #region Fields
+        private IMessageBoxService _messageBoxService;
+
+        private List<Student> _students;
+        private List<GradeData> _grades;
+
         private Student _currentStudent;
-        private List<Grade> _grades;
+        private GradeData _selectedGrade;
+
         private double _averageGrade;
         private int _absences;
-        private List<Student> _students;
-        private ICommand _changeStudentCommand;
         private string _homeroomTeacher;
+
+        private string _appealText;
+
+        private ICommand _changeStudentCommand;
+        private ICommand _appealGradeCommand;
         #endregion
 
         #region Properties / Commands
@@ -39,10 +50,73 @@ namespace MySchoolYear.ViewModel
         #endregion
 
         // Business Logic Properties / Commands
+
+        /// <summary>
+        /// All students that the current user can view
+        /// </summary>
+        public List<Student> Students
+        {
+            get
+            {
+                return _students;
+            }
+            set
+            {
+                if (_students != value)
+                {
+                    _students = value;
+                    OnPropertyChanged("Students");
+                }
+            }
+        }
+        /// <summary>
+        /// The student whose grades are viewed currently
+        /// </summary>
+        public Student CurrentStudent
+        {
+            get
+            {
+                return _currentStudent;
+            }
+            set
+            {
+                if (_currentStudent != value)
+                {
+                    _currentStudent = value;
+                    OnPropertyChanged("CurrentStudent");
+
+                    // Show this student's grades
+                    Grades = _currentStudent.Grades.Select(score =>
+                        new GradeData() 
+                        { 
+                            CourseID = score.courseID, 
+                            TeacherID = score.teacherID,
+                            CourseName = score.Course.courseName, 
+                            Score = score.score, 
+                            TeacherNotes = score.notes
+                        }).ToList();
+
+                    Absences = _currentStudent.absencesCounter;
+
+                    // Show this studen't homeroom teacher (if any)
+                    if (_currentStudent.Class.Teachers.Count > 0)
+                    {
+                        HomeroomTeacher = "מחנך: " +
+                                    _currentStudent.Class.Teachers.First().Person.firstName +
+                                    " " + _currentStudent.Class.Teachers.First().Person.lastName;
+                    }
+                    else
+                    {
+                        HomeroomTeacher = string.Empty;
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// The grades of the student
         /// </summary>
-        public List<Grade> Grades
+        public List<GradeData> Grades
         {
             get
             {
@@ -67,6 +141,19 @@ namespace MySchoolYear.ViewModel
                 }
             }
         }
+        public GradeData SelectedGrade
+        {
+            get
+            {
+                return _selectedGrade;
+            }
+            set
+            {
+                // Might have the same course for different student, so update selected grade everytime
+                _selectedGrade = value;
+                OnPropertyChanged("SelectedGrade");
+            }
+        }
 
         /// <summary>
         /// The average of the student's grades
@@ -86,7 +173,6 @@ namespace MySchoolYear.ViewModel
                 }
             }
         }
-
 
         /// <summary>
         /// The number of absences for this student
@@ -108,62 +194,8 @@ namespace MySchoolYear.ViewModel
         }
 
         /// <summary>
-        /// The student whose grades are viewed currently
+        /// The name of the Homeroom Teacher for this student
         /// </summary>
-        public Student CurrentStudent
-        {
-            get
-            {
-                return _currentStudent;
-            }
-            set
-            {
-                if (_currentStudent != value)
-                {
-                    _currentStudent = value;
-                    OnPropertyChanged("CurrentStudent");
-
-                    // Show this student's grades
-                    Grades = _currentStudent.Grades.Select(score =>
-                        new Grade() { CourseName = score.Course.courseName, Score = score.score, TeacherNotes = score.notes })
-                        .ToList();
-
-                    Absences = _currentStudent.absencesCounter;
-
-                    // Show this studen't homeroom teacher (if any)
-                    if (_currentStudent.Class.Teachers.Count > 0)
-                    {
-                        HomeroomTeacher = "מחנך: " +
-                                    _currentStudent.Class.Teachers.First().Person.firstName +
-                                    " " + _currentStudent.Class.Teachers.First().Person.lastName;
-                    }
-                    else
-                    {
-                        HomeroomTeacher = string.Empty;
-                    }
-                }
-            }
-        }
-        
-        /// <summary>
-        /// All students that the current user can view
-        /// </summary>
-        public List<Student> Students
-        {
-            get
-            {
-                return _students;
-            }
-            set
-            {
-                if (_students != value)
-                {
-                    _students = value;
-                    OnPropertyChanged("Students");
-                }
-            }
-        }
-
         public string HomeroomTeacher
         {
             get
@@ -180,7 +212,34 @@ namespace MySchoolYear.ViewModel
             }
         }
 
+        /// <summary>
+        /// Can the connected person view grades of multiple students?
+        /// </summary>
         public bool CanViewDifferentStudents { get; private set; }
+
+        /// <summary>
+        /// Can the connected person appeal the grades?
+        /// </summary>
+        public bool CanAppealGrades { get; set; }
+
+        /// <summary>
+        /// An appeal request's text
+        /// </summary>
+        public string AppealText
+        {
+            get
+            {
+                return _appealText;
+            }
+            set
+            {
+                if (_appealText != value)
+                {
+                    _appealText = value;
+                    OnPropertyChanged("AppealText");
+                }
+            }
+        }
 
         /// <summary>
         /// Changes which student's grades are viewed
@@ -200,9 +259,23 @@ namespace MySchoolYear.ViewModel
             }
         }
 
-        #region Constructors
-        public StudentGradesViewModel(Person connectedPerson)
+        public ICommand AppealGradeCommand
         {
+            get
+            {
+                if (_appealGradeCommand == null)
+                {
+                    _appealGradeCommand = new RelayCommand(p => AppealGrade());
+                }
+
+                return _appealGradeCommand;
+            }
+        }
+
+        #region Constructors
+        public StudentGradesViewModel(Person connectedPerson, IMessageBoxService messageBoxService)
+        {
+            _messageBoxService = messageBoxService;
 
             // Check if this page is relevent to the user - is a student, parent or homeroom teacher
             if (connectedPerson.isStudent || connectedPerson.isParent || connectedPerson.isTeacher && connectedPerson.Teacher.classID != null)
@@ -211,7 +284,7 @@ namespace MySchoolYear.ViewModel
             }
 
             Students = new List<Student>();
-            Grades = new List<Grade>();
+            Grades = new List<GradeData>();
         }
         #endregion
 
@@ -231,18 +304,23 @@ namespace MySchoolYear.ViewModel
                     // A student can only see his own grades
                     Students.Add(ConnectedPerson.Student);
                     CanViewDifferentStudents = false;
+
+                    // Only a student can appeal grades (and only his own)
+                    CanAppealGrades = true;
                 }
                 else if (ConnectedPerson.isTeacher && ConnectedPerson.Teacher.classID != null)
                 {
                     // An homeroom teacher can see the grades of all of his students
                     Students.AddRange(ConnectedPerson.Teacher.Class.Students.Where(student => student.Person.User.isDisabled == false));
                     CanViewDifferentStudents = true;
+                    CanAppealGrades = false;
                 }
                 else if (ConnectedPerson.isParent)
                 {
                     // A parent can see the grades of all of his children
                     Students.AddRange(ConnectedPerson.ChildrenStudents.Where(student => student.Person.User.isDisabled == false));
                     CanViewDifferentStudents = true;
+                    CanAppealGrades = false;
                 }
 
                 CurrentStudent = Students.First();
@@ -259,6 +337,40 @@ namespace MySchoolYear.ViewModel
             if (Students.Contains(newStudent))
             {
                 CurrentStudent = newStudent;
+            }
+        }
+
+        /// <summary>
+        /// Attempt to appeal the currently selected grade
+        /// </summary>
+        private void AppealGrade()
+        {
+            // Check that a grade was selected
+            if (SelectedGrade.CourseName != string.Empty)
+            {
+                // Check that a appeal text was entered 
+                if (AppealText.Count() > 0)
+                {
+                    // Send an appeal message to the relevent teacher
+                    MessagesHandler.CreateMessageToPerson("בקשת ערעור", AppealText, SelectedGrade.TeacherID, ConnectedPerson.personID);
+
+                    // Report that the appeal has been sent to the user
+                    _messageBoxService.ShowMessage("הוזן ערעור", "הוזנה בקשת ערעור במקצוע " + SelectedGrade.CourseName,
+                                                    MessageType.OK_MESSAGE, MessagePurpose.INFORMATION);
+
+                    // Clear after appeal
+                    AppealText = string.Empty;
+                }
+                else
+                {
+                    // Report invalid input
+                    _messageBoxService.ShowMessage("נכשל בהזנת ערעור", "אנא הזן הודעה לערעור", MessageType.OK_MESSAGE, MessagePurpose.ERROR);
+                }
+            }
+            else
+            {
+                // Report invalid input
+                _messageBoxService.ShowMessage("נכשל בהזנת ערעור", "אנא בחר מקצוע לפני הזנת בקשת ערעור", MessageType.OK_MESSAGE, MessagePurpose.ERROR);
             }
         }
         #endregion

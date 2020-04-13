@@ -37,8 +37,9 @@
         <AssociationConnector Association="schoolModel.FK_Events_ToClasses" />
         <AssociationConnector Association="schoolModel.FK_Events_ToPersons" />
         <AssociationConnector Association="schoolModel.FK_Events_ToRecipientPersons" />
-        <EntityTypeShape EntityType="schoolModel.Grade" Width="1.5" PointX="6.125" PointY="3.625" />
+        <EntityTypeShape EntityType="schoolModel.Grade" Width="1.5" PointX="5.75" PointY="3.625" />
         <AssociationConnector Association="schoolModel.FK_Scores_ToCourses" />
+        <AssociationConnector Association="schoolModel.FK_Grades_ToTeachers" />
         <AssociationConnector Association="schoolModel.FK_Scores_ToStudents" />
       </Diagram>
     </edmx:Diagrams>

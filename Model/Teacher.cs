@@ -18,6 +18,7 @@ namespace MySchoolYear.Model
         public Teacher()
         {
             this.Lessons = new HashSet<Lesson>();
+            this.Grades = new HashSet<Grade>();
         }
     
         public int teacherID { get; set; }
@@ -35,5 +36,7 @@ namespace MySchoolYear.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Lesson> Lessons { get; set; }
         public virtual Person Person { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Grade> Grades { get; set; }
     }
 }

@@ -338,7 +338,13 @@ namespace MySchoolYear.ViewModel
                         Student studentInfo = _schoolData.Students.Find(student.StudentID);
 
                         // Report the grade
-                        Grade grade = new Grade() { studentID = studentInfo.studentID, courseID = SelectedCourse, score = Convert.ToByte(student.Score) };
+                        Grade grade = new Grade() 
+                        { 
+                            studentID = studentInfo.studentID, 
+                            courseID = SelectedCourse, 
+                            teacherID = ConnectedPerson.Teacher.teacherID,
+                            score = Convert.ToByte(student.Score) 
+                        };
                         string gradeReport = reportTemplate;
                         gradeReport += "ציון: " + student.Score + "\n";
 
@@ -350,13 +356,13 @@ namespace MySchoolYear.ViewModel
 
                         // Save the grade, and send a message to the student about it
                         _schoolData.Grades.Add(grade);
-                        MessagesHandler.CreateMessageToPerson("קיבלת ציון", gradeReport, student.StudentID, ConnectedPerson.Teacher.teacherID);
+                        MessagesHandler.CreateMessageToPerson("קיבלת ציון", gradeReport, student.StudentID);
 
                         // If the student has any parents, send a message to them too
                         if (studentInfo.parentID.HasValue)
                         {
                             string parentReport = "ילדך " + student.Name + " קיבל ציון:\n" + gradeReport;
-                            MessagesHandler.CreateMessageToPerson("ילדך קיבל ציון", parentReport, studentInfo.parentID.Value, ConnectedPerson.Teacher.teacherID);
+                            MessagesHandler.CreateMessageToPerson("ילדך קיבל ציון", parentReport, studentInfo.parentID.Value);
                         }
 
                         didSendAnyReport = true;
