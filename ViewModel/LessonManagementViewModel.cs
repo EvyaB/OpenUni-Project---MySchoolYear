@@ -972,41 +972,24 @@ namespace MySchoolYear.ViewModel
             {
                 // Get the selected teacher's information
                 Teacher selectedTeacher = _schoolData.Teachers.Find(SelectedTeacher);
+                bool isHomeroomTeacherClass = selectedTeacher.classID == SelectedClass;
 
-                // Gather the teacher courses' information
-                if (selectedTeacher.firstCourseID != null)
-                {
-                    TeacherAvailableCourses.Add(selectedTeacher.firstCourseID.Value, selectedTeacher.FirstCourse.courseName);
-                }
-                if (selectedTeacher.secondCourseID != null)
-                {
-                    TeacherAvailableCourses.Add(selectedTeacher.secondCourseID.Value, selectedTeacher.SecondCourse.courseName);
-                }
-                if (selectedTeacher.thirdCourseID != null)
-                {
-                    TeacherAvailableCourses.Add(selectedTeacher.thirdCourseID.Value, selectedTeacher.ThirdCourse.courseName);
-                }
-                if (selectedTeacher.fourthCourseID != null)
-                {
-                    TeacherAvailableCourses.Add(selectedTeacher.fourthCourseID.Value, selectedTeacher.FourthCourse.courseName);
-                }
-
-                // Homeroom teachers can also teach their homeroom class any homeroom course
-                if (selectedTeacher.classID == SelectedClass)
-                {
-                    foreach (Course course in _schoolData.Courses.Where(course=>course.isHomeroomTeacherOnly))
-                    {
-                        // Make sure the course wasn't added already
-                        if (!TeacherAvailableCourses.ContainsKey(course.courseID))
-                        {
-                            TeacherAvailableCourses.Add(course.courseID, course.courseName);
-                        }
-                    }
-                }
-
-                // For some reason, after re-initializing a collection, a related selection in it is not updated properly in the view unless called explicitly
-                OnPropertyChanged("SelectedCourse");
+                // Update the teacher courses collection with this teaher's courses
+                TeacherAvailableCourses = new ObservableDictionary<int, string>(TeacherCoursesHandler.GetTeacherCourses(selectedTeacher, isHomeroomTeacherClass));
             }
+            
+            // Update the selected course per the new courses collection
+            if (TeacherAvailableCourses.Count() > 0)
+            {
+                SelectedCourse = TeacherAvailableCourses.First().Key;
+            }
+            else
+            {
+                SelectedCourse = NOT_ASSIGNED;
+            }
+
+            // For some reason, after re-initializing a collection, a related selection in it is not updated properly in the view unless called explicitly
+            //OnPropertyChanged("SelectedCourse");
         }
         #endregion
     }

@@ -219,14 +219,14 @@ namespace MySchoolYear.ViewModel
             if (ConnectedPerson.isStudent)
             {
                 // Get the events of the student's class
-                userEvents.UnionWith(eventsQuery.Where(schoolEvent =>
+                userEvents.UnionWith(eventsQuery.AsEnumerable().Where(schoolEvent =>
                                                        schoolEvent.recipientClassID == ConnectedPerson.Student.classID)
                                                        .ToHashSet());
             }
             else if (ConnectedPerson.isParent)
             {
                 // Get all events of the parent's children classes
-                userEvents.UnionWith(eventsQuery.Where(schoolEvent => 
+                userEvents.UnionWith(eventsQuery.AsEnumerable().Where(schoolEvent => 
                                                         ConnectedPerson.ChildrenStudents.Any(childStudent => 
                                                                                             childStudent.classID == schoolEvent.recipientClassID))
                                                         .ToHashSet());
@@ -234,7 +234,7 @@ namespace MySchoolYear.ViewModel
             else if (ConnectedPerson.isTeacher)
             {
                 // Show a teacher any event of his own class, as well as any self-submitted events
-                userEvents.UnionWith(eventsQuery.Where(schoolEvent => 
+                userEvents.UnionWith(eventsQuery.AsEnumerable().Where(schoolEvent => 
                                                         (schoolEvent.recipientClassID == ConnectedPerson.Teacher.classID ||
                                                         schoolEvent.submitterID == ConnectedPerson.personID))
                                                         .ToHashSet());

@@ -201,39 +201,21 @@ namespace MySchoolYear.ViewModel
         /// <param name="teacher">The teacher to use</param>
         private void GatherTeacherCourses(Teacher teacher)
         {
-            // Reset the Courses collection
-            Courses.Clear();
-
-            // Gather the teacher courses' information
-            if (teacher.firstCourseID != null)
-            {
-                Courses.Add(teacher.firstCourseID.Value, teacher.FirstCourse.courseName);
-            }
-            if (teacher.secondCourseID != null)
-            {
-                Courses.Add(teacher.secondCourseID.Value, teacher.SecondCourse.courseName);
-            }
-            if (teacher.thirdCourseID != null)
-            {
-                Courses.Add(teacher.thirdCourseID.Value, teacher.ThirdCourse.courseName);
-            }
-            if (teacher.fourthCourseID != null)
-            {
-                Courses.Add(teacher.fourthCourseID.Value, teacher.FourthCourse.courseName);
-            }
+            // Reset the Courses collection to fit the current teacher
+            Courses = new ObservableDictionary<int, string>(TeacherCoursesHandler.GetTeacherCourses(teacher, true));
 
             // Automatically select a course if possible
             if (Courses.Count() > 0)
             {
                 SelectedCourse = Courses.First().Key;
-
-                // For some reason the selections are not updated properly in the view unless called again
-                OnPropertyChanged("SelectedCourse");
             }
             else
             {
                 SelectedCourse = NOT_ASSIGNED;
             }
+
+            // For some reason the selections are not updated properly in the view unless called again
+            OnPropertyChanged("SelectedCourse");
         }
 
         /// <summary>
@@ -252,6 +234,17 @@ namespace MySchoolYear.ViewModel
             foreach (Class schoolClass in teacherClasses)
             {
                 Classes.Add(schoolClass.classID, schoolClass.className);
+            }
+
+            // For courses that are Homeroom courses, add the teacher's homeroom class too
+            if (_schoolData.Courses.Find(courseID).isHomeroomTeacherOnly)
+            {
+                // Gather the teacher info, and check if he is an homeroom teacher for a class that wasn't added before already
+                Teacher teacherInfo = _schoolData.Teachers.Find(teacherID);
+                if (teacherInfo.classID.HasValue && !Classes.ContainsKey(teacherInfo.classID.Value))
+                {
+                    Classes.Add(teacherInfo.Class.classID, teacherInfo.Class.className);
+                }
             }
 
             // Automatically select a class if possible

@@ -240,6 +240,7 @@
     <Compile Include="Model\Teacher.cs">
       <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\TeacherCoursesHandler.cs" />
     <Compile Include="Model\User.cs">
       <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
