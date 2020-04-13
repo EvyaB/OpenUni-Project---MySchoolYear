@@ -21,6 +21,13 @@ namespace MySchoolYear.ViewModel
             Everyone,
         }
 
+        private enum ActionOnEvent
+        { 
+            Created,
+            Deleted,
+            Updated
+        }
+
         public class EventData
         {
             public int ID { get; set; }
@@ -698,6 +705,7 @@ namespace MySchoolYear.ViewModel
 
                     // Save and report changes
                     _schoolData.SaveChanges();
+                    SendMessageAboutEvent(selectedEvent, ActionOnEvent.Deleted);
                     _messageBoxService.ShowMessage("האירוע נמחק בהצלחה!",
                             "מחיקת אירוע!", MessageType.OK_MESSAGE, MessagePurpose.INFORMATION);
                     _refreshDataCommand.Execute(null);
@@ -737,6 +745,7 @@ namespace MySchoolYear.ViewModel
                     _schoolData.SaveChanges();
 
                     // Report action success
+                    SendMessageAboutEvent(selectedEvent, ActionOnEvent.Updated);
                     _messageBoxService.ShowMessage("האירוע עודכן בהצלחה!", "עודכן אירוע", MessageType.OK_MESSAGE, MessagePurpose.INFORMATION);
 
                     // Update data in all screens
@@ -778,6 +787,7 @@ namespace MySchoolYear.ViewModel
                 _schoolData.SaveChanges();
 
                 // Report success
+                SendMessageAboutEvent(newEvent, ActionOnEvent.Created);
                 _messageBoxService.ShowMessage("אירוע נוצר בהצלחה ונשלח ל" + Recipients[SelectedRecipient],
                                                 "נשלח אירוע", MessageType.OK_MESSAGE, MessagePurpose.INFORMATION);
 
@@ -817,6 +827,63 @@ namespace MySchoolYear.ViewModel
             }
         }
 
+        /// <summary>
+        /// Send a message to the relevent recipients about an update in an event
+        /// </summary>
+        /// <param name="schoolEvent">The event to report</param>
+        private void SendMessageAboutEvent(Event schoolEvent, ActionOnEvent action)
+        {
+            string eventTitle;
+            string eventMessage;
+
+            // Create the event message & title depedning on the type of action that happens to the event
+            switch (action)
+            {
+                case ActionOnEvent.Created:
+                {
+                    eventTitle = "הוזן אירוע חדש ביומן!";
+                    eventMessage = ConnectedPerson.firstName + " " + ConnectedPerson.lastName 
+                        + " יצר את האירוע '" + schoolEvent.name + "' בתאריך " + schoolEvent.eventDate;
+                    break;
+                }
+                case ActionOnEvent.Deleted:
+                {
+                    eventTitle = "נמחק אירוע!";
+                    eventMessage = ConnectedPerson.firstName + " " + ConnectedPerson.lastName
+                        + " מחק את האירוע '" + schoolEvent.name + "' שהיה בתאריך " + schoolEvent.eventDate;
+                    break;
+                }
+                case ActionOnEvent.Updated:
+                {
+                    eventTitle = "עודכנו פרטי אירוע!";
+                    eventMessage = ConnectedPerson.firstName + " " + ConnectedPerson.lastName
+                        + " עדכן את האירוע '" + schoolEvent.name + "' שבתאריך " + schoolEvent.eventDate;
+                    break;
+                }
+                default:
+                {
+                    throw new ArgumentException("Invalid ActionOnEvent type");
+                }
+            }
+
+            // Check to whom to send the message depending on the recipients of the event
+            // Check if its a school event (has no specified recipients)
+            if (schoolEvent.recipientID == null && schoolEvent.recipientClassID == null)
+            {
+                MessagesHandler.CreateMessageToEveryone(eventTitle, eventMessage);
+            }
+            // Check if its an event for a specific class
+            else if (schoolEvent.recipientClassID != null)
+            {
+                MessagesHandler.CreateMessageToClass(eventTitle, eventMessage, schoolEvent.recipientClassID.Value);
+            }
+            // All other events are aimed for a specific person
+            else
+            {
+                MessagesHandler.CreateMessageToPerson(eventTitle, eventMessage, schoolEvent.recipientID.Value);
+            }
+        }
+        
         /// <summary>
         /// Checks if the input for the event is valid
         /// </summary>

@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:local="clr-namespace:MySchoolYear.View"
              mc:Ignorable="d" 
              d:DesignHeight="560" d:DesignWidth="650"
@@ -103,7 +104,7 @@
                     <TextBlock Text="תאריך:" Style="{StaticResource BasicText}"/>
                 </Border>
                 <Border Grid.Row="2" Grid.Column="1">
-                    <DatePicker Width="200" SelectedDate="{Binding EventDatetime}"/>
+                    <xctk:DateTimePicker Width="200" Value="{Binding EventDatetime}"/>
                 </Border>
 
                 <Border Grid.Row="3" Grid.Column="0" >
