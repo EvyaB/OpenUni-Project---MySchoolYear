@@ -21,6 +21,7 @@ namespace MySchoolYear.Model
         public string name { get; set; }
         public string description { get; set; }
         public System.DateTime eventDate { get; set; }
+        public string location { get; set; }
     
         public virtual Class Class { get; set; }
         public virtual Person Submitter { get; set; }

@@ -26,6 +26,7 @@ namespace MySchoolYear.ViewModel
             public int ID { get; set; }
             public string EventName { get; set; }
             public string EventText { get; set; }
+            public string EventLocation { get; set; }
             public string SubmitterName { get; set; }
             public DateTime EventDatetime { get; set; }
         }
@@ -59,7 +60,9 @@ namespace MySchoolYear.ViewModel
         private bool _canSendToEveryone;
 
         private ObservableCollection<string> _possibleEvents;
+        private ObservableCollection<string> _possibleLocations;
         private DateTime _eventDatetime;
+        private string _eventLocation;
         private string _eventName;
         private string _eventText;
 
@@ -337,6 +340,37 @@ namespace MySchoolYear.ViewModel
             }
         }
 
+        public ObservableCollection<string> PossibleLocations
+        {
+            get
+            {
+                return _possibleLocations;
+            }
+            set
+            {
+                if (_possibleLocations != value)
+                {
+                    _possibleLocations = value;
+                    OnPropertyChanged("PossibleLocations");
+                }
+            }
+        }
+        public string EventLocation
+        {
+            get
+            {
+                return _eventLocation;
+            }
+            set
+            {
+                if (_eventLocation != value)
+                {
+                    _eventLocation = value;
+                    OnPropertyChanged("EventLocation");
+                }
+            }
+        }
+
         public ObservableCollection<string> PossibleEvents 
         { 
             get
@@ -367,6 +401,7 @@ namespace MySchoolYear.ViewModel
                 }
             }
         }
+
         public string EventText
         { 
             get
@@ -468,8 +503,10 @@ namespace MySchoolYear.ViewModel
             AvailableSearchChoices = new ObservableDictionary<int, string>();
             EventsTableData = new ObservableCollection<EventData>();
             Recipients = new ObservableDictionary<int, string>();
+
+            PossibleLocations = new ObservableCollection<string>(_schoolData.Rooms.Select(room => "חדר " + room.roomName).ToList());
             PossibleEvents =
-                new ObservableCollection<string>(new List<string>() { "טיול", "מבחן", "חופשה","פגישה", "שינוי בשיעור", "טקס", "אירוע" });
+                new ObservableCollection<string>(new List<string>() { "מבחן", "טיול", "חופשה","פגישה", "שינוי בשיעור", "טקס", "אירוע" });
 
             // Select student category as the default category option
             SearchingStudentEvents = true;
@@ -485,6 +522,7 @@ namespace MySchoolYear.ViewModel
             // Get the date of Tommarow as the default
             EventDatetime = DateTime.Today.AddDays(1);
 
+            EventLocation = string.Empty;
             EventName = string.Empty;
             EventText = string.Empty;
         }
@@ -554,6 +592,7 @@ namespace MySchoolYear.ViewModel
                 SendingToClass = SearchingClassEvents;
                 SendingToEveryone = SearchingSchoolEvents;
                 EventDatetime = selectedEvent.EventDatetime;
+                EventLocation = selectedEvent.EventLocation;
                 EventName = selectedEvent.EventName;
                 EventText = selectedEvent.EventText;
             }
@@ -564,6 +603,7 @@ namespace MySchoolYear.ViewModel
                 SendingToClass = false;
                 SendingToEveryone = false;
                 EventDatetime = DateTime.Today.AddDays(1);
+                EventLocation = string.Empty;
                 EventName = string.Empty;
                 EventText = string.Empty;
             }
@@ -580,6 +620,7 @@ namespace MySchoolYear.ViewModel
             {
                 ID = schoolEvent.eventID,
                 EventDatetime = schoolEvent.eventDate,
+                EventLocation = schoolEvent.location,
                 EventName = schoolEvent.name,
                 EventText = schoolEvent.description,
                 SubmitterName = schoolEvent.Submitter.firstName + " " + schoolEvent.Submitter.lastName
@@ -687,6 +728,7 @@ namespace MySchoolYear.ViewModel
                     // Update the event's data
                     selectedEvent.submitterID = ConnectedPerson.personID;
                     selectedEvent.eventDate = EventDatetime;
+                    selectedEvent.location = EventLocation;
                     selectedEvent.name = EventName;
                     selectedEvent.description = EventText;
                     SetEventRecipients(selectedEvent);
@@ -724,6 +766,7 @@ namespace MySchoolYear.ViewModel
                 Event newEvent = new Event()
                 {
                     eventDate = EventDatetime,
+                    location = EventLocation,
                     name = EventName,
                     description = EventText,
                     submitterID = ConnectedPerson.personID

@@ -24,9 +24,18 @@
                   ScrollViewer.HorizontalScrollBarVisibility="Hidden" AutoGenerateColumns="False" IsReadOnly="True" FlowDirection="RightToLeft"
                   VerticalAlignment="Top" HorizontalContentAlignment="Center" RowHeaderWidth ="0" Margin="0,5,0,0" >
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="סוג" Binding="{Binding Path=EventName}" Width="90" HeaderStyle="{StaticResource ColumnHeaderMainStyle}">
+                    <DataGridTextColumn Header="סוג" Binding="{Binding Path=EventName}" Width="70" HeaderStyle="{StaticResource ColumnHeaderMainStyle}">
                         <DataGridTextColumn.ElementStyle>
                             <Style>
+                                <Setter Property="TextBlock.TextAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+
+                    <DataGridTextColumn Header="מיקום" Binding="{Binding Path=EventLocation}" Width="90" HeaderStyle="{StaticResource ColumnHeaderMainStyle}">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style>
+                                <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
                                 <Setter Property="TextBlock.TextAlignment" Value="Center"/>
                             </Style>
                         </DataGridTextColumn.ElementStyle>
@@ -56,10 +65,11 @@
         <StackPanel DockPanel.Dock="Left">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.4*"/>
+                    <ColumnDefinition Width="0.45*"/>
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
+                    <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
@@ -96,33 +106,42 @@
                     <DatePicker Width="200" SelectedDate="{Binding EventDatetime}"/>
                 </Border>
 
-                <Border Grid.Row="3" Grid.Column="0">
-                    <Separator/>
+                <Border Grid.Row="3" Grid.Column="0" >
+                    <TextBlock Text="מיקום:" Style="{StaticResource BasicText}"/>
                 </Border>
                 <Border Grid.Row="3" Grid.Column="1">
-                    <Separator/>
-                </Border>
-
-                <Border Grid.Row="4" Grid.Column="0" >
-                    <TextBlock Text="סוג האירוע:" Style="{StaticResource BasicText}"/>
-                </Border>
-                <Border Grid.Row="4" Grid.Column="1">
-                    <ComboBox ItemsSource="{Binding Path=PossibleEvents, Mode=TwoWay}" SelectedValue="{Binding Path=EventName, Mode=TwoWay}" 
+                    <ComboBox ItemsSource="{Binding Path=PossibleLocations, Mode=TwoWay}" Text="{Binding Path=EventLocation, Mode=TwoWay}" 
                           IsEditable="True" Width="200"/>
                 </Border>
 
+                <Border Grid.Row="4" Grid.Column="0">
+                    <Separator/>
+                </Border>
+                <Border Grid.Row="4" Grid.Column="1">
+                    <Separator/>
+                </Border>
+
                 <Border Grid.Row="5" Grid.Column="0" >
-                    <TextBlock Text="מידע" Style="{StaticResource BasicText}"/>
+                    <TextBlock Text="סוג האירוע:" Style="{StaticResource BasicText}"/>
                 </Border>
                 <Border Grid.Row="5" Grid.Column="1">
-                    <TextBox TextWrapping="Wrap" Height="200" Width="250" MaxLength="300" Text="{Binding EventText}"/>
+                    <ComboBox ItemsSource="{Binding Path=PossibleEvents, Mode=TwoWay}" Text="{Binding Path=EventName, Mode=TwoWay}" 
+                          IsEditable="True" Width="200"/>
+                </Border>
+
+                <Border Grid.Row="6" Grid.Column="0" >
+                    <TextBlock Text="מידע" Style="{StaticResource BasicText}"/>
+                </Border>
+                <Border Grid.Row="6" Grid.Column="1">
+                    <TextBox TextWrapping="Wrap" Height="200" Width="200" MaxLength="300" Text="{Binding EventText}"/>
                 </Border>
             </Grid>
-            <StackPanel Orientation="Horizontal" Margin="0,10">
+            
+            <StackPanel Orientation="Horizontal" Margin="0,5">
                 <Button Content="מחק" Background="{StaticResource DangerousActionColorBrush}" Command="{Binding DeleteEventCommand}" Margin="20,0,0,0" />
-                <Button Content="עדכן" Command="{Binding UpdateEventCommand}" Margin="80,3,0,0" />
+                <Button Content="עדכן" Command="{Binding UpdateEventCommand}" Margin="40,3,0,0" />
             </StackPanel>
-            <Button Content="צור אירוע חדש" Command="{Binding SendEventCommand}" Margin="0,10"/>
+            <Button Content="צור אירוע חדש" Command="{Binding SendEventCommand}" Margin="0,5"/>
         </StackPanel>
     </DockPanel>
 </UserControl>

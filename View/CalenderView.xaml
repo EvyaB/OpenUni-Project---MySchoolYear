@@ -36,8 +36,9 @@
                 <TextBlock Text="פרטי אירוע:" Style="{StaticResource SecondaryTitleText}" Margin="0,50,0,0"/>
                 <ComboBox ItemsSource="{Binding SelectedDayEvents}" DisplayMemberPath="name" SelectedValue="{Binding SelectedEvent}"/>
                 <Label Content="{Binding Path=SelectedEvent.Class.className}" ContentStringFormat="כיתה: {0}"/>
+                <TextBlock Text="{Binding SelectedEvent.location}" TextWrapping="Wrap" Style="{StaticResource BasicText}"/>
                 <TextBlock Text="{Binding SelectedEvent.eventDate}" TextWrapping="Wrap" Style="{StaticResource BasicText}"/>
-                <TextBlock Text="{Binding SelectedEvent.description}" TextWrapping="Wrap" Style="{StaticResource BasicText}"/>
+                <TextBlock Text="{Binding SelectedEvent.description}" TextWrapping="Wrap" Style="{StaticResource BasicText}" Margin="0,5,0,0"/>
             </StackPanel>
             
             <Jarloo:Calendar x:Name="Calendar" DockPanel.Dock="Left" 

@@ -31,6 +31,7 @@
           <Property Name="recipientClassID" Type="int" />
           <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="description" Type="nvarchar" MaxLength="250" />
+          <Property Name="location" Type="nvarchar" MaxLength="50" />
           <Property Name="eventDate" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="Grades">
@@ -1012,6 +1013,7 @@
           <NavigationProperty Name="Class" Relationship="schoolModel.FK_Events_ToClasses" FromRole="Event" ToRole="Class" />
           <NavigationProperty Name="Submitter" Relationship="schoolModel.FK_Events_ToPersons" FromRole="Event" ToRole="Person" />
           <NavigationProperty Name="Recipient" Relationship="schoolModel.FK_Events_ToRecipientPersons" FromRole="Event" ToRole="Person" />
+          <Property Name="location" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_Events_ToClasses">
           <End Type="schoolModel.Class" Role="Class" Multiplicity="0..1" />
@@ -1215,6 +1217,7 @@
           <EntitySetMapping Name="Events">
             <EntityTypeMapping TypeName="schoolModel.Event">
               <MappingFragment StoreEntitySet="Events">
+                <ScalarProperty Name="location" ColumnName="location" />
                 <ScalarProperty Name="eventDate" ColumnName="eventDate" />
                 <ScalarProperty Name="description" ColumnName="description" />
                 <ScalarProperty Name="name" ColumnName="name" />
