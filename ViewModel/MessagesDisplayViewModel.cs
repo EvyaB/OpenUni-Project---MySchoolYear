@@ -29,9 +29,6 @@ namespace MySchoolYear.ViewModel
         }
         #endregion
 
-        #region Fields
-        #endregion
-
         #region Properties / Commands
         // Base Properties
         public Person ConnectedPerson { get; private set; }

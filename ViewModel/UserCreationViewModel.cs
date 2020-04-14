@@ -177,7 +177,7 @@ namespace MySchoolYear.ViewModel
         {
             ConnectedPerson = connectedPerson;
 
-            ClearAllViewModelInfo();
+            ResetAll();
 
             if (HasRequiredPermissions)
             {
@@ -209,7 +209,7 @@ namespace MySchoolYear.ViewModel
         }
 
         // Clears all the data in this View Model
-        private void ClearAllViewModelInfo()
+        private void ResetAll()
         {
             // Reset all of the lists
             AvailableClasses.Clear();

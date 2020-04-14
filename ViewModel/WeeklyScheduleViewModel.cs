@@ -78,6 +78,21 @@ namespace MySchoolYear.ViewModel
             }
         }
         public bool CanViewDifferentSchedules { get; private set; }
+        public List<ScheduleData> AvailableSchedules
+        {
+            get
+            {
+                return _availableSchedules;
+            }
+            set
+            {
+                if (_availableSchedules != value)
+                {
+                    _availableSchedules = value;
+                    OnPropertyChanged("AvailableSchedules");
+                }
+            }
+        }
         public ScheduleData SelectedSchedule 
         { 
             get
@@ -95,21 +110,6 @@ namespace MySchoolYear.ViewModel
                     _selectedSchedule = value;
                     Schedule = _selectedSchedule.ActualSchedule;
                     OnPropertyChanged("SelectedSchedule");
-                }
-            }
-        }
-        public List<ScheduleData> AvailableSchedules
-        { 
-            get
-            {
-                return _availableSchedules;
-            }
-            set
-            {
-                if (_availableSchedules != value)
-                {
-                    _availableSchedules = value;
-                    OnPropertyChanged("AvailableSchedules");
                 }
             }
         }

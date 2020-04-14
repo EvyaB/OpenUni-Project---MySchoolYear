@@ -37,15 +37,6 @@ namespace MySchoolYear.Model
 
         #region Methods
         /// <summary>
-        /// Save a message to the DB
-        /// </summary>
-        static public void SaveMessage(Message newMessage)
-        {
-            _mySchoolDB.Messages.Add(newMessage);
-            _mySchoolDB.SaveChanges();
-        }
-
-        /// <summary>
         /// Creates a new message and saves it
         /// </summary>
         /// <param name="title">The title of the message</param>
@@ -118,6 +109,14 @@ namespace MySchoolYear.Model
             return newMessage;
         }
 
+        /// <summary>
+        /// Save a message to the DB
+        /// </summary>
+        static private void SaveMessage(Message newMessage)
+        {
+            _mySchoolDB.Messages.Add(newMessage);
+            _mySchoolDB.SaveChanges();
+        }
 
         /// <summary>
         /// Creates a new message to a specific person and saves it
