@@ -11,7 +11,7 @@ using MySchoolYear.ViewModel.Utilities;
 namespace MySchoolYear.ViewModel
 {
     /// <summary>
-    /// Manages the school's Rooms - creating, editing and deleting rooms
+    /// Manages the school's Courses - creating, editing and deleting courses
     /// </summary>
     public class CourseManagementViewModel : BaseViewModel, IScreenViewModel
     {

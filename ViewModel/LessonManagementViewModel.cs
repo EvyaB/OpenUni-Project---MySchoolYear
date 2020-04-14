@@ -43,6 +43,9 @@ namespace MySchoolYear.ViewModel
             public Nullable<int> HourFourth { get; set; }
         }
 
+        /// <summary>
+        /// Assistant enum with the possible ways to search for courses (e.g searching for all the lessons of specific teacher or class)
+        /// </summary>
         private enum SearchCategory
         {
             Classes,
@@ -975,7 +978,8 @@ namespace MySchoolYear.ViewModel
                 bool isHomeroomTeacherClass = selectedTeacher.classID == SelectedClass;
 
                 // Update the teacher courses collection with this teaher's courses
-                TeacherAvailableCourses = new ObservableDictionary<int, string>(TeacherCoursesHandler.GetTeacherCoursesNames(selectedTeacher, isHomeroomTeacherClass));
+                TeacherAvailableCourses =
+                    new ObservableDictionary<int, string>(TeacherCoursesHandler.GetTeacherCoursesNames(selectedTeacher, isHomeroomTeacherClass));
             }
             
             // Update the selected course per the new courses collection
@@ -989,7 +993,7 @@ namespace MySchoolYear.ViewModel
             }
 
             // For some reason, after re-initializing a collection, a related selection in it is not updated properly in the view unless called explicitly
-            //OnPropertyChanged("SelectedCourse");
+            OnPropertyChanged("SelectedCourse");
         }
         #endregion
     }

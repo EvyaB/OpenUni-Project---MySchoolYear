@@ -14,7 +14,7 @@ namespace MySchoolYear.ViewModel
     public class EventManagementViewModel : BaseViewModel, IScreenViewModel
     {
         #region Sub-Structs
-        private enum RecipientTypes
+        private enum EventRecipientsTypes
         {
             Students,
             Classes,
@@ -103,7 +103,7 @@ namespace MySchoolYear.ViewModel
                         // causing two options to be on at the same time, and in this case this causes an issue with the selected event
                         SearchingClassEvents = false;
                         SearchingSchoolEvents = false;
-                        UseSelectedSearchCategory(RecipientTypes.Students);
+                        UseSelectedSearchCategory(EventRecipientsTypes.Students);
                     }
                 }
             }
@@ -127,7 +127,7 @@ namespace MySchoolYear.ViewModel
                         // causing two options to be on at the same time, and in this case this causes an issue with the selected event
                         SearchingStudentEvents = false;
                         SearchingSchoolEvents = false;
-                        UseSelectedSearchCategory(RecipientTypes.Classes);
+                        UseSelectedSearchCategory(EventRecipientsTypes.Classes);
                     }
                 }
             }
@@ -151,7 +151,7 @@ namespace MySchoolYear.ViewModel
                         // causing two options to be on at the same time, and in this case this causes an issue with the selected event
                         SearchingStudentEvents = false;
                         SearchingClassEvents = false;
-                        UseSelectedSearchCategory(RecipientTypes.Everyone);
+                        UseSelectedSearchCategory(EventRecipientsTypes.Everyone);
                     }
                 }
             }
@@ -267,7 +267,7 @@ namespace MySchoolYear.ViewModel
                     // Update recipients list if it is changing to this category
                     if (value == true)
                     {
-                        UpdateRecipientsList(RecipientTypes.Students);
+                        UpdateRecipientsList(EventRecipientsTypes.Students);
                     }
                 }
             }
@@ -288,7 +288,7 @@ namespace MySchoolYear.ViewModel
                     // Update recipients list if it is changing to this category
                     if (value == true)
                     {
-                        UpdateRecipientsList(RecipientTypes.Classes);
+                        UpdateRecipientsList(EventRecipientsTypes.Classes);
                     }
                 }
             }
@@ -309,7 +309,7 @@ namespace MySchoolYear.ViewModel
                     // Update recipients list if it is changing to this category
                     if (value == true)
                     {
-                        UpdateRecipientsList(RecipientTypes.Everyone);
+                        UpdateRecipientsList(EventRecipientsTypes.Everyone);
                     }
                 }
             }
@@ -537,7 +537,7 @@ namespace MySchoolYear.ViewModel
         /// <summary>
         /// Updates the AvailableSearchChoices list with the options per the search category
         /// </summary>
-        private void UseSelectedSearchCategory(RecipientTypes searchCategory)
+        private void UseSelectedSearchCategory(EventRecipientsTypes searchCategory)
         {
             AvailableSearchChoices = CreateRecipientsList(searchCategory);
 
@@ -640,7 +640,7 @@ namespace MySchoolYear.ViewModel
         /// Update the recipients list following a selection of recipients category
         /// </summary>
         /// <param name="recipientsType">The category of recipients to use</param>
-        private void UpdateRecipientsList(RecipientTypes recipientsType)
+        private void UpdateRecipientsList(EventRecipientsTypes recipientsType)
         {
             // Create the list of recipients for the current category selection
             Recipients = CreateRecipientsList(recipientsType);
@@ -657,7 +657,7 @@ namespace MySchoolYear.ViewModel
         /// </summary>
         /// <param name="recipientsType">The category of recipients to use</param>
         /// <returns>An ObservableDictionary with all the relevent recipients (organized as <RecipientID, RecipientName>)</returns>
-        private ObservableDictionary<int, string> CreateRecipientsList(RecipientTypes recipientsType)
+        private ObservableDictionary<int, string> CreateRecipientsList(EventRecipientsTypes recipientsType)
         {
             // Create a recipients dictioanry
             ObservableDictionary<int, string> recipients = new ObservableDictionary<int, string>();
@@ -665,16 +665,16 @@ namespace MySchoolYear.ViewModel
             // Create the list of students
             switch (recipientsType)
             {
-                case RecipientTypes.Students:
+                case EventRecipientsTypes.Students:
                     // Add every active student in the school
                     _schoolData.Persons.Where(person => !person.User.isDisabled && person.isStudent).ToList()
                         .ForEach(person => recipients.Add(person.personID, person.firstName + " " + person.lastName));
                     break;
-                case RecipientTypes.Classes:
+                case EventRecipientsTypes.Classes:
                     // Add every class in the school
                     _schoolData.Classes.ToList().ForEach(schoolClass => recipients.Add(schoolClass.classID, schoolClass.className));
                     break;
-                case RecipientTypes.Everyone:
+                case EventRecipientsTypes.Everyone:
                     recipients.Add(EVERYONE_OPTION, "כל בית הספר");
                     break;
                 default:

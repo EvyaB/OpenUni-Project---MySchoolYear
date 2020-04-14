@@ -25,11 +25,11 @@ namespace MySchoolYear.ViewModel
             public Nullable<int> HomeroomTeacherID { get; set; }
             public string RoomName { get; set; }
             public Nullable<int> RoomID { get; set; }
-            public List<LessonsInClass> LessonsInThisClass { get; set; }
+            public List<LessonInClass> LessonsInThisClass { get; set; }
             public List<string> StudentsInThisClass { get; set; }
         }
 
-        public class LessonsInClass
+        public class LessonInClass
         {
             public int LessonID { get; set; }
             public int ClassID { get; set; }
@@ -63,7 +63,7 @@ namespace MySchoolYear.ViewModel
         public ObservableCollection<ClassData> _classesTableData;
         private ObservableDictionary<int, string> _availableTeachers;
         private ObservableDictionary<int, string> _availableRooms;
-        private ObservableCollection<LessonsInClass> _lessonsInSelectedClass;
+        private ObservableCollection<LessonInClass> _lessonsInSelectedClass;
         private ObservableCollection<string> _studentsInSelectedClass;
 
         private Nullable<int> _previousHomeroomTeacher;
@@ -188,7 +188,7 @@ namespace MySchoolYear.ViewModel
             }
         }
 
-        public ObservableCollection<LessonsInClass> LessonsInSelectedClass
+        public ObservableCollection<LessonInClass> LessonsInSelectedClass
         {
             get
             {
@@ -353,7 +353,7 @@ namespace MySchoolYear.ViewModel
             // Check if the class has lessons associated with it
             if (modelClass.Lessons != null && modelClass.Lessons.Count > 0)
             {
-                classData.LessonsInThisClass = modelClass.Lessons.Select(lesson => new LessonsInClass()
+                classData.LessonsInThisClass = modelClass.Lessons.Select(lesson => new LessonInClass()
                     {
                         LessonID = lesson.lessonID,
                         ClassID = lesson.classID,
@@ -390,7 +390,7 @@ namespace MySchoolYear.ViewModel
             SelectedTeacher = NOT_ASSIGNED;
             SelectedRoom = NOT_ASSIGNED;
             ClassName = string.Empty;
-            LessonsInSelectedClass = new ObservableCollection<LessonsInClass>();
+            LessonsInSelectedClass = new ObservableCollection<LessonInClass>();
             StudentsInSelectedClass = new ObservableCollection<string>();
 
             // Remove the previous class's homeroom teacher from the available teachers list as he/she are already assigned to the previous class
@@ -429,7 +429,7 @@ namespace MySchoolYear.ViewModel
                 // Create the list of lessons in the current class
                 if (selectedClass.LessonsInThisClass != null)
                 {
-                    LessonsInSelectedClass = new ObservableCollection<LessonsInClass>(selectedClass.LessonsInThisClass);
+                    LessonsInSelectedClass = new ObservableCollection<LessonInClass>(selectedClass.LessonsInThisClass);
                 }
 
                 // Create the list of students in the current clas

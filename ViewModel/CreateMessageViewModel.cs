@@ -14,7 +14,7 @@ namespace MySchoolYear.ViewModel
     public class CreateMessageViewModel : BaseViewModel, IScreenViewModel
     {
         #region Sub-Structs
-        private enum RecipientTypes
+        private enum MessageRecipientsTypes
         {
             Students,
             Parents,
@@ -60,8 +60,6 @@ namespace MySchoolYear.ViewModel
         public string ScreenName { get { return "שליחת הודעה"; } }
 
         // Business Logic Properties / Commands
-        
-        
         public ObservableDictionary<int, string> Recipients
         {
             get
@@ -109,7 +107,7 @@ namespace MySchoolYear.ViewModel
                     // Update recipients list if it is changing to this category
                     if (value == true)
                     {
-                        UpdateRecipientsList(RecipientTypes.Students);
+                        UpdateRecipientsList(MessageRecipientsTypes.Students);
                     }
                 }
             }
@@ -130,7 +128,7 @@ namespace MySchoolYear.ViewModel
                     // Update recipients list if it is changing to this category
                     if (value == true)
                     {
-                        UpdateRecipientsList(RecipientTypes.Teachers);
+                        UpdateRecipientsList(MessageRecipientsTypes.Teachers);
                     }
                 }
             }
@@ -151,7 +149,7 @@ namespace MySchoolYear.ViewModel
                     // Update recipients list if it is changing to this category
                     if (value == true)
                     {
-                        UpdateRecipientsList(RecipientTypes.Classes);
+                        UpdateRecipientsList(MessageRecipientsTypes.Classes);
                     }
                 }
             }
@@ -171,7 +169,7 @@ namespace MySchoolYear.ViewModel
                     // Update recipients list if it is changing to this category
                     if (value == true)
                     {
-                        UpdateRecipientsList(RecipientTypes.Parents);
+                        UpdateRecipientsList(MessageRecipientsTypes.Parents);
                     }
 
                     OnPropertyChanged("SendingToParent");
@@ -194,7 +192,7 @@ namespace MySchoolYear.ViewModel
                     // Update recipients list if it is changing to this category
                     if (value == true)
                     {
-                        UpdateRecipientsList(RecipientTypes.Management);
+                        UpdateRecipientsList(MessageRecipientsTypes.Management);
                     }
                 }
             }
@@ -215,7 +213,7 @@ namespace MySchoolYear.ViewModel
                     // Update recipients list if it is changing to this category
                     if (value == true)
                     {
-                        UpdateRecipientsList(RecipientTypes.Everyone);
+                        UpdateRecipientsList(MessageRecipientsTypes.Everyone);
                     }
                 }
             }
@@ -352,7 +350,7 @@ namespace MySchoolYear.ViewModel
         /// Update the recipients list following a selection of recipients category
         /// </summary>
         /// <param name="recipientsType">The category of recipients to use</param>
-        private void UpdateRecipientsList(RecipientTypes recipientsType)
+        private void UpdateRecipientsList(MessageRecipientsTypes recipientsType)
         {
             // Create the list of recipients for the current category selection
             CreateRecipientsList(recipientsType);
@@ -368,7 +366,7 @@ namespace MySchoolYear.ViewModel
         /// Uses the current category selection and creates the list of recipients accordingly
         /// </summary>
         /// <param name="recipientsType">The category of recipients to use</param>
-        private void CreateRecipientsList(RecipientTypes recipientsType)
+        private void CreateRecipientsList(MessageRecipientsTypes recipientsType)
         {
             // Reset the recipients list
             Recipients.Clear();
@@ -376,7 +374,7 @@ namespace MySchoolYear.ViewModel
             // Create the list of students
             switch (recipientsType)
             {
-                case RecipientTypes.Students:
+                case MessageRecipientsTypes.Students:
                     // Adding a 'send to every student' option if the user has relevent permissions
                     if (CanSendToEveryone)
                     {
@@ -387,12 +385,12 @@ namespace MySchoolYear.ViewModel
                     _schoolData.Persons.Where(person => !person.User.isDisabled && person.isStudent).ToList()
                         .ForEach(person => Recipients.Add(person.personID, person.firstName + " " + person.lastName));
                     break;
-                case RecipientTypes.Parents:
+                case MessageRecipientsTypes.Parents:
                     // Add every parent in the school
                     _schoolData.Persons.Where(person => !person.User.isDisabled && person.isParent).ToList()
                         .ForEach(person => Recipients.Add(person.personID, person.firstName + " " + person.lastName));
                     break;
-                case RecipientTypes.Teachers:
+                case MessageRecipientsTypes.Teachers:
                     // Add a 'send to management' option if the user has relevent permissions
                     if (CanSendToEveryone)
                     {
@@ -403,7 +401,7 @@ namespace MySchoolYear.ViewModel
                     _schoolData.Persons.Where(person => !person.User.isDisabled && person.isTeacher).ToList()
                         .ForEach(person => Recipients.Add(person.personID, person.firstName + " " + person.lastName));
                     break;
-                case RecipientTypes.Management:
+                case MessageRecipientsTypes.Management:
                     // Add a 'send to management' option if the user has relevent permissions
                     if (CanSendToEveryone)
                     {
@@ -414,11 +412,11 @@ namespace MySchoolYear.ViewModel
                     _schoolData.Persons.Where(person => !person.User.isDisabled && (person.isPrincipal || person.isSecretary)).ToList()
                         .ForEach(person => Recipients.Add(person.personID, person.firstName + " " + person.lastName));
                     break;
-                case RecipientTypes.Classes:
+                case MessageRecipientsTypes.Classes:
                     // Add every class in the school
                     _schoolData.Classes.ToList().ForEach(schoolClass => Recipients.Add(schoolClass.classID, schoolClass.className));
                     break;
-                case RecipientTypes.Everyone:
+                case MessageRecipientsTypes.Everyone:
                     Recipients.Add(EVERYONE_OPTION, "כל בית הספר");
                     break;
                 default:
