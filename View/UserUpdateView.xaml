@@ -11,7 +11,7 @@
         <Style TargetType="TextBlock" BasedOn="{StaticResource BasicText}"/>
     </UserControl.Resources>
     <StackPanel>
-        <TextBlock HorizontalAlignment="Center" Text="עדכון משתמשים" Style="{StaticResource MainTitleText}"/>
+        <TextBlock HorizontalAlignment="Center" Text="{Binding ScreenName}" Style="{StaticResource MainTitleText}"/>
         <Grid Height="400" Width="635">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/>

@@ -20,7 +20,7 @@
     </i:Interaction.Triggers>
     
     <Grid>        
-        <TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center" Text="לוח שנה" Style="{StaticResource MainTitleText}"/>
+        <TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center" Text="{Binding ScreenName}" Style="{StaticResource MainTitleText}"/>
         
         <ComboBox HorizontalAlignment="Center" Height="34" Margin="0,35,0,0" VerticalAlignment="Top" Width="152" FontSize="18.667" 
                   ItemsSource="{Binding Path=Months, Mode=OneWay}" SelectedValue="{Binding Path=SelectedMonth, Mode=TwoWay}">

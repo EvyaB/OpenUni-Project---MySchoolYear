@@ -8,7 +8,7 @@
              d:DesignHeight="560" d:DesignWidth="650"
              Background = "{StaticResource WindowBackgroundBrush}">
     <StackPanel>
-        <TextBlock Text="צור קשר - מזכירות" Style="{StaticResource MainTitleText}" HorizontalAlignment="Center"/>
+        <TextBlock Text="{Binding ScreenName}" Style="{StaticResource MainTitleText}" HorizontalAlignment="Center"/>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>

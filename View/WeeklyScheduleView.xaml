@@ -15,7 +15,7 @@
     </UserControl.Resources>
     <StackPanel>
         <DockPanel>
-            <TextBlock HorizontalAlignment="Center" Text="לוח שעות שבועי" Style="{StaticResource MainTitleText}" Margin="100,0,0,0"/>
+            <TextBlock HorizontalAlignment="Center" Text="{Binding ScreenName}" Style="{StaticResource MainTitleText}" Margin="100,0,0,0"/>
 
             <ComboBox ItemsSource="{Binding Path=AvailableSchedules}" SelectedValue="{Binding Path=SelectedSchedule}" Width="150" 
                   IsEnabled="{Binding Path=CanViewDifferentSchedules}" Margin="50,0,0,0">

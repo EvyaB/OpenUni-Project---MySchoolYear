@@ -8,7 +8,7 @@
              d:DesignHeight="560" d:DesignWidth="650"
              Background = "{StaticResource WindowBackgroundBrush}">
     <StackPanel>
-        <TextBlock HorizontalAlignment="Center" Text="ניהול בית הספר" Style="{StaticResource MainTitleText}"/>
+        <TextBlock HorizontalAlignment="Center" Text="{Binding ScreenName}" Style="{StaticResource MainTitleText}"/>
         <StackPanel Orientation="Horizontal">
             <Grid Width="450" HorizontalAlignment="Center" Margin="0,30,0,0">
                 <Grid.Resources >

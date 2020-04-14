@@ -8,7 +8,7 @@
              d:DesignHeight="560" d:DesignWidth="650"
              Background = "{StaticResource WindowBackgroundBrush}">
     <StackPanel>
-        <TextBlock Text="סיכום מצב לימודים" HorizontalAlignment="Center" Style="{StaticResource MainTitleText}"/>
+        <TextBlock Text="{Binding ScreenName}" HorizontalAlignment="Center" Style="{StaticResource MainTitleText}"/>
         
         <ComboBox ItemsSource="{Binding Path=Students}" SelectedValue="{Binding Path=CurrentStudent}" Width="200" 
                   IsEnabled="{Binding Path=CanViewDifferentStudents}">

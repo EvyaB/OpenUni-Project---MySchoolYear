@@ -8,7 +8,7 @@
              d:DesignHeight="560" d:DesignWidth="650"
              Background = "{StaticResource WindowBackgroundBrush}">
     <StackPanel>
-        <TextBlock Text="תצוגת הודעות" HorizontalAlignment="Center" Style="{StaticResource MainTitleText}"/>
+        <TextBlock Text="{Binding ScreenName}" HorizontalAlignment="Center" Style="{StaticResource MainTitleText}"/>
 
         <DataGrid ItemsSource="{Binding Path=Messages}" ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                   Width="500" RowHeaderWidth ="0" AutoGenerateColumns="False" BorderBrush="Black"

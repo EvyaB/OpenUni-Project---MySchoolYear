@@ -9,7 +9,7 @@
              d:DesignHeight="560" d:DesignWidth="650"
              Background = "{StaticResource WindowBackgroundBrush}">
     <DockPanel>
-        <TextBlock DockPanel.Dock="Top" Text="ניהול אירועים" HorizontalAlignment="Center" Style="{StaticResource MainTitleText}"/>
+        <TextBlock DockPanel.Dock="Top" Text="{Binding ScreenName}" HorizontalAlignment="Center" Style="{StaticResource MainTitleText}"/>
 
         <StackPanel DockPanel.Dock="Right">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">

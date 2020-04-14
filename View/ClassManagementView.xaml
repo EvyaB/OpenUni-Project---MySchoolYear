@@ -8,7 +8,7 @@
              d:DesignHeight="560" d:DesignWidth="650"
              Background = "{StaticResource WindowBackgroundBrush}">
     <DockPanel>
-        <TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center" Text="ניהול כיתות" Style="{StaticResource MainTitleText}"/>
+        <TextBlock DockPanel.Dock="Top" HorizontalAlignment="Center" Text="{Binding ScreenName}" Style="{StaticResource MainTitleText}"/>
         <StackPanel DockPanel.Dock="Right">
             <DataGrid ItemsSource="{Binding Path=ClassesTableData}" VerticalAlignment="Top" HorizontalContentAlignment="Center"
                   AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectedItem="{Binding Path=SelectedClass}"
