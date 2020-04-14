@@ -27,16 +27,6 @@ namespace MySchoolYear.ViewModel
             public string Title { get; set; }
             public string Details { get; set; }
         }
-
-        private enum MessageRecipientType
-        {
-            Direct,
-            Class,
-            Students,
-            Teachers,
-            Management,
-            Everyone,
-        }
         #endregion
 
         #region Fields
@@ -71,44 +61,44 @@ namespace MySchoolYear.ViewModel
 
             // Start by gathering the messages that are for everyone in the school or directly to the connected user.
             schoolMessages.Where(message => message.forEveryone).ToList()
-                .ForEach(message => Messages.Add(ModelMessageToDisplayedMessage(message, MessageRecipientType.Everyone)));
+                .ForEach(message => Messages.Add(ModelMessageToDisplayedMessage(message, MessageRecipientsTypes.Everyone)));
             schoolMessages.Where(message => message.recipientID == ConnectedPerson.personID).ToList()
-                .ForEach(message => Messages.Add(ModelMessageToDisplayedMessage(message, MessageRecipientType.Direct)));
+                .ForEach(message => Messages.Add(ModelMessageToDisplayedMessage(message, MessageRecipientsTypes.Person)));
 
             // Gather messages depending on the user permissions
             if (ConnectedPerson.isStudent)
             {
                 // User is a student => Gather messages for their class, and messages for all students
                 schoolMessages.Where(message => message.recipientClassID == ConnectedPerson.Student.classID)
-                    .ToList().ForEach(message => Messages.Add(ModelMessageToDisplayedMessage(message, MessageRecipientType.Class)));
+                    .ToList().ForEach(message => Messages.Add(ModelMessageToDisplayedMessage(message, MessageRecipientsTypes.Class)));
                 schoolMessages.Where(message => message.forAllStudents).ToList()
-                    .ForEach(message => Messages.Add(ModelMessageToDisplayedMessage(message, MessageRecipientType.Students)));
+                    .ForEach(message => Messages.Add(ModelMessageToDisplayedMessage(message, MessageRecipientsTypes.Students)));
             }
             if (ConnectedPerson.isParent)
             {
                 // Gather messages for the classes of the user's children (but not direct messages to them - keeping those private)
                 schoolMessages.AsEnumerable().Where(message => ConnectedPerson.ChildrenStudents.Any(childStudent => 
                                                                                       childStudent.classID == message.recipientClassID))
-                    .ToList().ForEach(message => Messages.Add(ModelMessageToDisplayedMessage(message, MessageRecipientType.Class)));
+                    .ToList().ForEach(message => Messages.Add(ModelMessageToDisplayedMessage(message, MessageRecipientsTypes.Class)));
             }
             if (ConnectedPerson.isTeacher)
             {
                 // Gather messages for all teachers
                 schoolMessages.Where(message => message.forAllTeachers).ToList()
-                    .ForEach(message => Messages.Add(ModelMessageToDisplayedMessage(message, MessageRecipientType.Teachers)));
+                    .ForEach(message => Messages.Add(ModelMessageToDisplayedMessage(message, MessageRecipientsTypes.Teachers)));
 
                 if (ConnectedPerson.Teacher.classID != null)
                 {
                     // User is an homeroom teacher - gather messages for his class
                     schoolMessages.Where(message => ConnectedPerson.Teacher.classID == message.recipientClassID).ToList()
-                        .ForEach(message => Messages.Add(ModelMessageToDisplayedMessage(message, MessageRecipientType.Class)));
+                        .ForEach(message => Messages.Add(ModelMessageToDisplayedMessage(message, MessageRecipientsTypes.Class)));
                 }
             }
             if (ConnectedPerson.isSecretary || ConnectedPerson.isPrincipal)
             {
                 // Gather messages for management
                 schoolMessages.Where(message => message.forAllManagement).ToList()
-                    .ForEach(message => Messages.Add(ModelMessageToDisplayedMessage(message, MessageRecipientType.Management)));
+                    .ForEach(message => Messages.Add(ModelMessageToDisplayedMessage(message, MessageRecipientsTypes.Management)));
             }
 
             // Order messages by date (latest first)
@@ -121,7 +111,7 @@ namespace MySchoolYear.ViewModel
         /// <param name="message">The message to convert</param>
         /// <param name="messageType">The message to convert</param>
         /// <returns>DisplayedMessage version of the message</returns>
-        private DisplayedMessage ModelMessageToDisplayedMessage(Message message, MessageRecipientType messageType)
+        private DisplayedMessage ModelMessageToDisplayedMessage(Message message, MessageRecipientsTypes messageType)
         {
             // Make sure input is correct
             if (message == null)
@@ -155,27 +145,27 @@ namespace MySchoolYear.ViewModel
         /// <param name="message">The source message</param>
         /// <param name="messageType">The type of recipient (class, everyone, specific person...)</param>
         /// <returns>The fitting recipient name</returns>
-        private static string GetRecipientName(Message message, MessageRecipientType messageType)
+        private static string GetRecipientName(Message message, MessageRecipientsTypes messageType)
         {
             string recipientName;
             switch (messageType)
             {
-                case MessageRecipientType.Class:
+                case MessageRecipientsTypes.Class:
                     recipientName = "כיתה " + message.Class.className;
                     break;
-                case MessageRecipientType.Everyone:
+                case MessageRecipientsTypes.Everyone:
                     recipientName = "הודעה כללית";
                     break;
-                case MessageRecipientType.Management:
+                case MessageRecipientsTypes.Management:
                     recipientName = "הנהלה";
                     break;
-                case MessageRecipientType.Students:
+                case MessageRecipientsTypes.Students:
                     recipientName = "תלמידים";
                     break;
-                case MessageRecipientType.Teachers:
+                case MessageRecipientsTypes.Teachers:
                     recipientName = "מורים";
                     break;
-                case MessageRecipientType.Direct:
+                case MessageRecipientsTypes.Person:
                 default:
                     recipientName = message.ReceiverPerson.firstName + " " + message.ReceiverPerson.lastName;
                     break;

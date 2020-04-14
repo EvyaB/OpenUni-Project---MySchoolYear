@@ -356,13 +356,13 @@ namespace MySchoolYear.ViewModel
 
                         // Save the grade, and send a message to the student about it
                         _schoolData.Grades.Add(grade);
-                        MessagesHandler.CreateMessageToPerson("קיבלת ציון", gradeReport, student.StudentID);
+                        MessagesHandler.CreateMessage("קיבלת ציון", gradeReport, MessageRecipientsTypes.Person, null, student.StudentID);
 
                         // If the student has any parents, send a message to them too
                         if (studentInfo.parentID.HasValue)
                         {
                             string parentReport = "ילדך " + student.Name + " קיבל ציון:\n" + gradeReport;
-                            MessagesHandler.CreateMessageToPerson("ילדך קיבל ציון", parentReport, studentInfo.parentID.Value);
+                            MessagesHandler.CreateMessage("ילדך קיבל ציון", parentReport, MessageRecipientsTypes.Person, null, studentInfo.parentID.Value);
                         }
 
                         didSendAnyReport = true;

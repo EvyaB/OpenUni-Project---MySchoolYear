@@ -870,17 +870,17 @@ namespace MySchoolYear.ViewModel
             // Check if its a school event (has no specified recipients)
             if (schoolEvent.recipientID == null && schoolEvent.recipientClassID == null)
             {
-                MessagesHandler.CreateMessageToEveryone(eventTitle, eventMessage);
+                MessagesHandler.CreateMessage(eventTitle, eventMessage, MessageRecipientsTypes.Everyone);
             }
             // Check if its an event for a specific class
             else if (schoolEvent.recipientClassID != null)
             {
-                MessagesHandler.CreateMessageToClass(eventTitle, eventMessage, schoolEvent.recipientClassID.Value);
+                MessagesHandler.CreateMessage(eventTitle, eventMessage, MessageRecipientsTypes.Class, null, schoolEvent.recipientClassID.Value);
             }
             // All other events are aimed for a specific person
             else
             {
-                MessagesHandler.CreateMessageToPerson(eventTitle, eventMessage, schoolEvent.recipientID.Value);
+                MessagesHandler.CreateMessage(eventTitle, eventMessage, MessageRecipientsTypes.Person, null, schoolEvent.recipientID.Value);
             }
         }
         

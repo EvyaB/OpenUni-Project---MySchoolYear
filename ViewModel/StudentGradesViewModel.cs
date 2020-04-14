@@ -352,7 +352,7 @@ namespace MySchoolYear.ViewModel
                 if (AppealText.Count() > 0)
                 {
                     // Send an appeal message to the relevent teacher
-                    MessagesHandler.CreateMessageToPerson("בקשת ערעור", AppealText, SelectedGrade.TeacherID, ConnectedPerson.personID);
+                    MessagesHandler.CreateMessage("בקשת ערעור", AppealText, MessageRecipientsTypes.Person, ConnectedPerson.personID, SelectedGrade.TeacherID);
 
                     // Report that the appeal has been sent to the user
                     _messageBoxService.ShowMessage("הוזן ערעור", "הוזנה בקשת ערעור במקצוע " + SelectedGrade.CourseName,

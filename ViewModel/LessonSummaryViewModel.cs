@@ -339,13 +339,16 @@ namespace MySchoolYear.ViewModel
                         }
 
                         // Send a message to the student about the report
-                        MessagesHandler.CreateMessageToPerson("קיבלת הערה בשיעור", report, student.StudentID, ConnectedPerson.Teacher.teacherID);
+                        MessagesHandler.CreateMessage("קיבלת הערה בשיעור", report, 
+                                                        MessageRecipientsTypes.Person, ConnectedPerson.Teacher.teacherID, student.StudentID);
 
                         // If the student has any parents, send the report to them too
                         if (studentInfo.parentID.HasValue)
                         {
                             string parentReport = "ילדך " + student.Name + " קיבל את ההערה הבאה בשיעור:\n" + report;
-                            MessagesHandler.CreateMessageToPerson("ילדך קיבל הערה בשיעור", parentReport, studentInfo.parentID.Value, ConnectedPerson.Teacher.teacherID);
+                            MessagesHandler.CreateMessage("ילדך קיבל הערה בשיעור", parentReport,
+                                                            MessageRecipientsTypes.Person, 
+                                                            ConnectedPerson.Teacher.teacherID, studentInfo.parentID.Value);
                         }
 
                         didSendAnyReport = true;

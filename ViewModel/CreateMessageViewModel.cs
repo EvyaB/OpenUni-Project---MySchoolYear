@@ -13,19 +13,6 @@ namespace MySchoolYear.ViewModel
     /// </summary>
     public class CreateMessageViewModel : BaseViewModel, IScreenViewModel
     {
-        #region Sub-Structs
-        private enum MessageRecipientsTypes
-        {
-            Students,
-            Parents,
-            Teachers,
-            Management,
-            Classes,
-            Everyone,
-        }
-
-        #endregion
-
         #region Fields
         private ICommand _refreshDataCommand;
         private ICommand _sendMessageCommand;
@@ -149,7 +136,7 @@ namespace MySchoolYear.ViewModel
                     // Update recipients list if it is changing to this category
                     if (value == true)
                     {
-                        UpdateRecipientsList(MessageRecipientsTypes.Classes);
+                        UpdateRecipientsList(MessageRecipientsTypes.Class);
                     }
                 }
             }
@@ -169,7 +156,7 @@ namespace MySchoolYear.ViewModel
                     // Update recipients list if it is changing to this category
                     if (value == true)
                     {
-                        UpdateRecipientsList(MessageRecipientsTypes.Parents);
+                        UpdateRecipientsList(MessageRecipientsTypes.Parent);
                     }
 
                     OnPropertyChanged("SendingToParent");
@@ -385,7 +372,7 @@ namespace MySchoolYear.ViewModel
                     _schoolData.Persons.Where(person => !person.User.isDisabled && person.isStudent).ToList()
                         .ForEach(person => Recipients.Add(person.personID, person.firstName + " " + person.lastName));
                     break;
-                case MessageRecipientsTypes.Parents:
+                case MessageRecipientsTypes.Parent:
                     // Add every parent in the school
                     _schoolData.Persons.Where(person => !person.User.isDisabled && person.isParent).ToList()
                         .ForEach(person => Recipients.Add(person.personID, person.firstName + " " + person.lastName));
@@ -412,7 +399,7 @@ namespace MySchoolYear.ViewModel
                     _schoolData.Persons.Where(person => !person.User.isDisabled && (person.isPrincipal || person.isSecretary)).ToList()
                         .ForEach(person => Recipients.Add(person.personID, person.firstName + " " + person.lastName));
                     break;
-                case MessageRecipientsTypes.Classes:
+                case MessageRecipientsTypes.Class:
                     // Add every class in the school
                     _schoolData.Classes.ToList().ForEach(schoolClass => Recipients.Add(schoolClass.classID, schoolClass.className));
                     break;
@@ -436,29 +423,29 @@ namespace MySchoolYear.ViewModel
                 // Check first the options to send a message to everyone from a specific group
                 if (SendingToStudent && SelectedRecipient == EVERYONE_OPTION)
                 {
-                    MessagesHandler.CreateMessageToAllStudents(MessageTitle, MessageText, ConnectedPerson.personID);
+                    MessagesHandler.CreateMessage(MessageTitle, MessageText, MessageRecipientsTypes.Students, ConnectedPerson.personID);
                 }
                 else if (SendingToTeacher && SelectedRecipient == EVERYONE_OPTION)
                 {
-                    MessagesHandler.CreateMessageToTeachers(MessageTitle, MessageText, ConnectedPerson.personID);
+                    MessagesHandler.CreateMessage(MessageTitle, MessageText, MessageRecipientsTypes.Teachers, ConnectedPerson.personID);
                 }
                 else if (SendingToManagement && SelectedRecipient == EVERYONE_OPTION)
                 {
-                    MessagesHandler.CreateMessageToAllManagement(MessageTitle, MessageText, ConnectedPerson.personID);
+                    MessagesHandler.CreateMessage(MessageTitle, MessageText, MessageRecipientsTypes.Management, ConnectedPerson.personID);
                 }
                 else if (SendingToEveryone)
                 {
-                    MessagesHandler.CreateMessageToEveryone(MessageTitle, MessageText, ConnectedPerson.personID);
+                    MessagesHandler.CreateMessage(MessageTitle, MessageText, MessageRecipientsTypes.Everyone, ConnectedPerson.personID);
                 }
                 // Handle messages for a specific class
                 else if (SendingToClass)
                 {
-                    MessagesHandler.CreateMessageToClass(MessageTitle, MessageText, SelectedRecipient, ConnectedPerson.personID);
+                    MessagesHandler.CreateMessage(MessageTitle, MessageText, MessageRecipientsTypes.Class, ConnectedPerson.personID, SelectedRecipient);
                 }
                 // All other messages are aimed for a specific person
                 else
                 {
-                    MessagesHandler.CreateMessageToPerson(MessageTitle, MessageText, SelectedRecipient, ConnectedPerson.personID);
+                    MessagesHandler.CreateMessage(MessageTitle, MessageText, MessageRecipientsTypes.Person, ConnectedPerson.personID, SelectedRecipient);
                 }
 
                 // Report success
