@@ -93,21 +93,9 @@ namespace MySchoolYear.ViewModel
             string courseNames = string.Empty;
 
             // Get the name of each course the teacher teaches
-            if (teacher.firstCourseID.HasValue)
+            foreach (string teacherCourseName in TeacherCoursesHandler.GetTeacherCoursesNames(teacher, false).Values)
             {
-                courseNames = teacher.FirstCourse.courseName + ", ";
-            }
-            if (teacher.secondCourseID.HasValue)
-            {
-                courseNames += teacher.SecondCourse.courseName + ", ";
-            }
-            if (teacher.thirdCourseID.HasValue)
-            {
-                courseNames += teacher.ThirdCourse.courseName + ", ";
-            }
-            if (teacher.fourthCourseID.HasValue)
-            {
-                courseNames += teacher.FourthCourse.courseName + ", ";
+                courseNames += teacherCourseName + ", ";
             }
 
             // Remove the last ', '

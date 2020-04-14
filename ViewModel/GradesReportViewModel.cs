@@ -202,7 +202,7 @@ namespace MySchoolYear.ViewModel
         private void GatherTeacherCourses(Teacher teacher)
         {
             // Reset the Courses collection to fit the current teacher
-            Courses = new ObservableDictionary<int, string>(TeacherCoursesHandler.GetTeacherCourses(teacher, true));
+            Courses = new ObservableDictionary<int, string>(TeacherCoursesHandler.GetTeacherCoursesNames(teacher, true));
 
             // Automatically select a course if possible
             if (Courses.Count() > 0)

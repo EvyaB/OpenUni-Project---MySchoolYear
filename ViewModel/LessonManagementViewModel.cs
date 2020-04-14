@@ -975,7 +975,7 @@ namespace MySchoolYear.ViewModel
                 bool isHomeroomTeacherClass = selectedTeacher.classID == SelectedClass;
 
                 // Update the teacher courses collection with this teaher's courses
-                TeacherAvailableCourses = new ObservableDictionary<int, string>(TeacherCoursesHandler.GetTeacherCourses(selectedTeacher, isHomeroomTeacherClass));
+                TeacherAvailableCourses = new ObservableDictionary<int, string>(TeacherCoursesHandler.GetTeacherCoursesNames(selectedTeacher, isHomeroomTeacherClass));
             }
             
             // Update the selected course per the new courses collection
