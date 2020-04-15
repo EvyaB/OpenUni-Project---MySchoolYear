@@ -24,8 +24,6 @@ namespace MySchoolYear.ViewModel
         #endregion
 
         #region Fields
-        private IMessageBoxService _messageBoxService;
-
         private List<Student> _students;
         private List<GradeData> _grades;
 
@@ -274,9 +272,8 @@ namespace MySchoolYear.ViewModel
 
         #region Constructors
         public StudentGradesViewModel(Person connectedPerson, IMessageBoxService messageBoxService)
+            : base(messageBoxService)
         {
-            _messageBoxService = messageBoxService;
-
             // Check if this page is relevent to the user - is a student, parent or homeroom teacher
             if (connectedPerson.isStudent || connectedPerson.isParent || connectedPerson.isTeacher && connectedPerson.Teacher.classID != null)
             {

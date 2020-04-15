@@ -27,7 +27,6 @@ namespace MySchoolYear.ViewModel
         private ICommand _refreshDataCommand;
         private ICommand _reportLessonCommand;
 
-        private IMessageBoxService _messageBoxService;
         private SchoolEntities _schoolData;
 
         private ObservableDictionary<int, string> _classes;
@@ -170,9 +169,9 @@ namespace MySchoolYear.ViewModel
 
         #region Constructors
         public LessonSummaryViewModel(Person connectedPerson, ICommand refreshDataCommand, IMessageBoxService messageBoxService)
+            : base(messageBoxService)
         {
             _refreshDataCommand = refreshDataCommand;
-            _messageBoxService = messageBoxService;
 
             // Only teachers can use this
             if (connectedPerson.isTeacher)

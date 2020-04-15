@@ -51,7 +51,6 @@ namespace MySchoolYear.ViewModel
         private ICommand _createNewRoomCommand;
 
         private SchoolEntities _schoolData;
-        private IMessageBoxService _messageBoxService;
 
         private RoomData _selectedRoom;
         private string _selectedRoomName;
@@ -216,10 +215,10 @@ namespace MySchoolYear.ViewModel
 
         #region Constructors
         public RoomManagementViewModel(Person connectedPerson, ICommand refreshDataCommand, IMessageBoxService messageBoxService)
+            : base(messageBoxService)
         {
             HasRequiredPermissions = connectedPerson.isSecretary || connectedPerson.isPrincipal;
             _refreshDataCommand = refreshDataCommand;
-            _messageBoxService = messageBoxService;
 
             if (HasRequiredPermissions)
             {

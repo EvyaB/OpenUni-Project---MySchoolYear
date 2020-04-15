@@ -75,5 +75,16 @@ namespace MySchoolYear.ViewModel.Utilities
         }
 
         #endregion // INotifyPropertyChanged Members
+
+        #region Fields
+        protected IMessageBoxService _messageBoxService;
+        #endregion
+
+        #region Constructors
+        public BaseViewModel(IMessageBoxService messageBoxService = null) 
+        {
+            _messageBoxService = messageBoxService;
+        }
+        #endregion
     }
 }

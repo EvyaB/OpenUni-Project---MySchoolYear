@@ -16,7 +16,6 @@ namespace MySchoolYear.ViewModel
         private ICommand _deleteUserCommand;
         private ICommand _updateUserCommand;
         private ICommand _refreshDataCommand;
-        private IMessageBoxService _messageBoxService;
         private SchoolEntities _schoolData;
         private string _selectedUserType;
         private int _selectedUser;
@@ -375,9 +374,8 @@ namespace MySchoolYear.ViewModel
 
         #region Constructors
         public UserUpdateViewModel(Person connectedPerson, ICommand refreshDataCommand, IMessageBoxService messageBoxService)
+            : base(messageBoxService)
         {
-            _messageBoxService = messageBoxService;
-
             // Check if the user is part of the management team (and therefor is allowed to update users)
             if (connectedPerson.isSecretary || connectedPerson.isPrincipal)
             {

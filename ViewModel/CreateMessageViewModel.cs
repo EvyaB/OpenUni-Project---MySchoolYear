@@ -17,7 +17,6 @@ namespace MySchoolYear.ViewModel
         private ICommand _refreshDataCommand;
         private ICommand _sendMessageCommand;
 
-        private IMessageBoxService _messageBoxService;
         private SchoolEntities _schoolData;
 
         private ObservableDictionary<int, string> _recipients;
@@ -287,9 +286,9 @@ namespace MySchoolYear.ViewModel
 
         #region Constructors
         public CreateMessageViewModel(Person connectedPerson, ICommand refreshDataCommand, IMessageBoxService messageBoxService)
+            : base (messageBoxService)
         {
             _refreshDataCommand = refreshDataCommand;
-            _messageBoxService = messageBoxService;
             _schoolData = new SchoolEntities();
 
             // Set permissions

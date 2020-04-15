@@ -17,7 +17,6 @@ namespace MySchoolYear.ViewModel
     public class LoginViewModel : BaseViewModel
     {
         #region Fields
-        private IMessageBoxService _messageBoxService;
         private SchoolEntities _mySchoolModel;
         private ICommand _loginCommand;
         #endregion
@@ -42,8 +41,8 @@ namespace MySchoolYear.ViewModel
 
         #region Constructors
         public LoginViewModel(IMessageBoxService messageBoxService)
+            : base(messageBoxService)
         {
-            _messageBoxService = messageBoxService;
             _mySchoolModel = new SchoolEntities();
         }
         #endregion

@@ -61,7 +61,6 @@ namespace MySchoolYear.ViewModel
         private ICommand _createLessonCommand;
 
         private SchoolEntities _schoolData;
-        private IMessageBoxService _messageBoxService;
 
         private bool _searchingByClass;
         private bool _searchingByCourse;
@@ -591,10 +590,10 @@ namespace MySchoolYear.ViewModel
 
         #region Constructors
         public LessonManagementViewModel(Person connectedPerson, ICommand refreshDataCommand, IMessageBoxService messageBoxService)
+            : base(messageBoxService)
         {
             HasRequiredPermissions = connectedPerson.isSecretary || connectedPerson.isPrincipal;
             _refreshDataCommand = refreshDataCommand;
-            _messageBoxService = messageBoxService;
 
             if (HasRequiredPermissions)
             {

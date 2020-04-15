@@ -49,7 +49,6 @@ namespace MySchoolYear.ViewModel
         private ICommand _createNewCourseCommand;
 
         private SchoolEntities _schoolData;
-        private IMessageBoxService _messageBoxService;
 
         private CourseData _selectedCourse;
         private string _selectedCourseName;
@@ -210,10 +209,10 @@ namespace MySchoolYear.ViewModel
 
         #region Constructors
         public CourseManagementViewModel(Person connectedPerson, ICommand refreshDataCommand, IMessageBoxService messageBoxService)
+            : base (messageBoxService)
         {
             HasRequiredPermissions = connectedPerson.isSecretary || connectedPerson.isPrincipal;
             _refreshDataCommand = refreshDataCommand;
-            _messageBoxService = messageBoxService;
 
             if (HasRequiredPermissions)
             {

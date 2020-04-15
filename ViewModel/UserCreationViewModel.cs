@@ -15,7 +15,6 @@ namespace MySchoolYear.ViewModel
         #region Fields
         private ICommand _registerUserCommand;
         private ICommand _refreshDataCommand;
-        private IMessageBoxService _messageBoxService;
 
         private bool _isNewStudent;
         private bool _isNewTeacher;
@@ -138,9 +137,8 @@ namespace MySchoolYear.ViewModel
 
         #region Constructors
         public UserCreationViewModel(Person connectedPerson, ICommand refreshDataCommand, IMessageBoxService messageBoxService)
+            : base(messageBoxService)
         {
-            _messageBoxService = messageBoxService;
-
             // Check if the user is part of the management team (and therefor is allowed to create users)
             if (connectedPerson.isSecretary || connectedPerson.isPrincipal)
             {

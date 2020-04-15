@@ -45,7 +45,6 @@ namespace MySchoolYear.ViewModel
         private ICommand _deleteEventCommand;
         private ICommand _updateEventCommand;
 
-        private IMessageBoxService _messageBoxService;
         private SchoolEntities _schoolData;
 
         private bool _searchingStudentEvents;

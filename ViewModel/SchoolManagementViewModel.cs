@@ -20,8 +20,6 @@ namespace MySchoolYear.ViewModel
         private string _schoolDescription;
         private string _schoolLogo;
 
-        private IMessageBoxService _messageBoxService;
-
         private ICommand _chooseImageCommand;
         private ICommand _prepareNewYearCommand;
         private ICommand _saveChangesCommand;
@@ -142,7 +140,8 @@ namespace MySchoolYear.ViewModel
         #endregion
 
         #region Constructors
-        public SchoolManagementViewModel(Person connectedPerson, ICommand refreshDataCommand)
+        public SchoolManagementViewModel(Person connectedPerson, ICommand refreshDataCommand, IMessageBoxService messageBoxService)
+            : base (messageBoxService)
         {
             if (connectedPerson.isPrincipal)
             {
@@ -163,8 +162,6 @@ namespace MySchoolYear.ViewModel
                 SchoolName = mySchoolInfo.Find("schoolName").value;
                 SchoolDescription = mySchoolInfo.Find("schoolDescription").value;
                 SchoolLogo = mySchoolInfo.Find("schoolImage").value;
-
-                _messageBoxService = Application.Current.Resources["MessageBoxService"] as IMessageBoxService;
             }
         }
 

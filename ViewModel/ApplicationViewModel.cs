@@ -21,8 +21,6 @@ namespace MySchoolYear.ViewModel
         private ICommand _updateScreensCommand;
         private ICommand _logoutCommand;
 
-        private IMessageBoxService _messageBoxService;
-
         private IScreenViewModel _currentScreenViewModel;
         private List<IScreenViewModel> _screenViewModels;
 
@@ -103,8 +101,8 @@ namespace MySchoolYear.ViewModel
 
         #region Constructors
         public ApplicationViewModel(Person connectedPerson, IMessageBoxService messageBoxService)
+            : base(messageBoxService)
         {
-            _messageBoxService = messageBoxService;
             _connectedPersonID = connectedPerson.personID;
 
             // Create a list of all possible screens
@@ -126,8 +124,7 @@ namespace MySchoolYear.ViewModel
             allScreens.Add(new LessonManagementViewModel(connectedPerson, RefreshScreensCommand, messageBoxService));
             allScreens.Add(new UserCreationViewModel(connectedPerson, RefreshScreensCommand, messageBoxService));
             allScreens.Add(new UserUpdateViewModel(connectedPerson, RefreshScreensCommand, messageBoxService));
-
-            allScreens.Add(new SchoolManagementViewModel(connectedPerson, RefreshScreensCommand));
+            allScreens.Add(new SchoolManagementViewModel(connectedPerson, RefreshScreensCommand, messageBoxService));
 
             // Use only the screens that are relevent to the current user
             foreach (IScreenViewModel screen in allScreens)
