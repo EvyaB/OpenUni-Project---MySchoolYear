@@ -114,9 +114,9 @@ namespace MySchoolYear.ViewModel
             allScreens.Add(new CalenderViewModel(connectedPerson));
             allScreens.Add(new MessagesDisplayViewModel(connectedPerson));
 
+            allScreens.Add(new CreateMessageViewModel(connectedPerson, RefreshScreensCommand, messageBoxService));
             allScreens.Add(new LessonSummaryViewModel(connectedPerson, RefreshScreensCommand, messageBoxService));
             allScreens.Add(new GradesReportViewModel(connectedPerson, RefreshScreensCommand, messageBoxService));
-            allScreens.Add(new CreateMessageViewModel(connectedPerson, RefreshScreensCommand, messageBoxService));
             allScreens.Add(new EventManagementViewModel(connectedPerson, RefreshScreensCommand, messageBoxService));
             allScreens.Add(new ClassManagementViewModel(connectedPerson, RefreshScreensCommand, messageBoxService));
             allScreens.Add(new RoomManagementViewModel(connectedPerson, RefreshScreensCommand, messageBoxService));

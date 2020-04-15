@@ -231,12 +231,11 @@ namespace MySchoolYear.ViewModel
                                                                                             childStudent.classID == schoolEvent.recipientClassID))
                                                         .ToHashSet());
             }
-            else if (ConnectedPerson.isTeacher)
+            else if (ConnectedPerson.isTeacher && ConnectedPerson.Teacher.classID != null)
             {
-                // Show a teacher any event of his own class, as well as any self-submitted events
+                // Show an homeroom teacher any event of his own class
                 userEvents.UnionWith(eventsQuery.AsEnumerable().Where(schoolEvent => 
-                                                        (schoolEvent.recipientClassID == ConnectedPerson.Teacher.classID ||
-                                                        schoolEvent.submitterID == ConnectedPerson.personID))
+                                                        schoolEvent.recipientClassID == ConnectedPerson.Teacher.classID)
                                                         .ToHashSet());
             }
             else if (ConnectedPerson.isSecretary || ConnectedPerson.isPrincipal)
