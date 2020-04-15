@@ -274,8 +274,8 @@ namespace MySchoolYear.ViewModel
         public StudentGradesViewModel(Person connectedPerson, IMessageBoxService messageBoxService)
             : base(messageBoxService)
         {
-            // Check if this page is relevent to the user - is a student, parent or homeroom teacher
-            if (connectedPerson.isStudent || connectedPerson.isParent || connectedPerson.isTeacher && connectedPerson.Teacher.classID != null)
+            // This page is relevent to every one in the school, except for teachers that aren't homeroom teachers
+            if (!connectedPerson.isTeacher || (connectedPerson.isTeacher && connectedPerson.Teacher.classID != null))
             {
                 HasRequiredPermissions = true;
             }
@@ -316,6 +316,14 @@ namespace MySchoolYear.ViewModel
                 {
                     // A parent can see the grades of all of his children
                     Students.AddRange(ConnectedPerson.ChildrenStudents.Where(student => student.Person.User.isDisabled == false));
+                    CanViewDifferentStudents = true;
+                    CanAppealGrades = false;
+                }
+                else if (ConnectedPerson.isPrincipal || ConnectedPerson.isSecretary)
+                {
+                    // The school management can see the grades of all the students in the school
+                    SchoolEntities schoolData = new SchoolEntities();
+                    Students.AddRange(schoolData.Students.Where(student => student.Person.User.isDisabled == false));
                     CanViewDifferentStudents = true;
                     CanAppealGrades = false;
                 }
